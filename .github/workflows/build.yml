@@ -1,0 +1,83 @@
+name: Build Cross-Platform Executables
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows
+            asset_path: dist/ViceCity_AI_Agent.exe
+          - os: macos-latest
+            platform: macos
+            asset_path: dist/ViceCity_AI_Agent-macOS.zip
+          - os: ubuntu-latest
+            platform: linux
+            asset_path: dist/ViceCity_AI_Agent-Linux
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install pygame pyinstaller
+
+      - name: Build Windows Executable
+        if: matrix.platform == 'windows'
+        shell: bash
+        run: |
+          pyinstaller --onefile --noconsole --name="ViceCity_AI_Agent" gta_agent.py
+
+      - name: Build macOS App Bundle
+        if: matrix.platform == 'macos'
+        shell: bash
+        run: |
+          pyinstaller --onefile --windowed --name="ViceCity_AI_Agent" gta_agent.py
+          cd dist && zip -r ViceCity_AI_Agent-macOS.zip ViceCity_AI_Agent.app
+
+      - name: Build Linux Executable
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          pyinstaller --onefile --noconsole --name="ViceCity_AI_Agent-Linux" gta_agent.py
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: executable-${{ matrix.platform }}
+          path: ${{ matrix.asset_path }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all executables
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+
+      - name: Publish to GitHub Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v1.0.0 --title "Vice City GTA-6 AI Agent v1.0.0" --notes "Download the executable matching your operating system below." || true
+          gh release upload v1.0.0 release-assets/* --clobber
