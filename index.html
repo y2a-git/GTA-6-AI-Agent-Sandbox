@@ -4,20 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#090b14">
+  <meta name="description" content="Vice City 3D — a fan-made, neon-soaked open-world prototype.">
   <title>Vice City 3D — Enhanced Edition</title>
   <style>
     :root{color-scheme:dark;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#080a12;color:#f5f2f4}
     *{box-sizing:border-box}
     html,body{width:100%;height:100%;margin:0;overflow:hidden}
-    body{display:grid;place-items:center;background:radial-gradient(ellipse at 50% 32%,#351b32 0,#11101a 52%,#070910 100%);}
+    body{display:grid;place-items:center;background:radial-gradient(ellipse at 50% 32%,#351b32 0,#11101a 52%,#070910 100%)}
     #boot{width:min(440px,calc(100vw - 40px));padding:26px 28px;border:1px solid #ffffff24;border-radius:18px;background:linear-gradient(145deg,#171520ed,#0c1019f2);box-shadow:0 24px 90px #0009;text-align:center}
-    #boot h1{margin:0 0 8px;font-size:clamp(26px,7vw,42px);line-height:1;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(100deg,#49e9ef,#f879ae 70%,#ffc879);color:transparent;background-clip:text;-webkit-background-clip:text}
+    #boot h1{margin:0 0 8px;font-size:clamp(26px,7vw,42px);line-height:1;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(100deg,#49e9ef,#f879ae 70%,#ffc879);color:transparent;-webkit-background-clip:text;background-clip:text}
     #boot p{margin:12px 0;color:#d4d0dc}
     #boot small{color:#9995a4}
     #boot .pulse{width:100%;height:3px;margin-top:18px;overflow:hidden;border-radius:4px;background:#ffffff16}
     #boot .pulse:after{display:block;width:40%;height:100%;content:"";background:linear-gradient(90deg,#4ce2ed,#f87bac);animation:load 1.3s ease-in-out infinite alternate}
     @keyframes load{from{transform:translateX(-20%)}to{transform:translateX(170%)}}
     #error{display:none;margin-top:14px;padding:10px;border:1px solid #ff647066;border-radius:9px;color:#ffd9dd;background:#571d2b88;text-align:left;overflow-wrap:anywhere}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
   </style>
 </head>
 <body>
@@ -30,64 +32,87 @@
   </main>
   <script>
     'use strict';
-    // Pin the original game revision so this enhancement layer never fetches itself.
+    // Load the known-good game revision, not this enhancement wrapper.
     const sourceURL='https://raw.githubusercontent.com/y2a-git/GTA-6-AI-Agent-Sandbox/98c5676f7acdd2324aa0f0f66cb95eb598015957/index.html';
-    const polish=String.raw`/* Vice City HUD polish: cinematic glass, restrained neon, accessible sizing */
-:root{--c:#66e8e8;--p:#fa83b5;--g:#8ee6a5;--bg:rgba(12,14,22,.80);--hud-line:rgba(255,255,255,.14)}
+    const polish=String.raw`
+/* Vice City: cinematic, responsive HUD polish. No extra image or font requests. */
+:root{--vc-cyan:#75e8e7;--vc-pink:#f783b2;--vc-gold:#f4d18c;--vc-line:#ffffff24}
 html,body{font-family:Inter,"Segoe UI",system-ui,sans-serif;letter-spacing:.012em}
-canvas.main{filter:saturate(1.05) contrast(1.025)}
+canvas.main{filter:saturate(1.08) contrast(1.035)}
+/* Fine grain, vignette and letterbox framing sit above the scene but never eat input. */
+body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,#03040a66 100%),linear-gradient(180deg,#05071120,transparent 18%,transparent 82%,#05071130);box-shadow:inset 0 0 12vmin #03040a55}
 #hud-layer{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-.box,#tele-pill{border:1px solid var(--hud-line);border-radius:14px;background:linear-gradient(145deg,rgba(18,20,30,.88),rgba(8,11,18,.74));backdrop-filter:blur(14px) saturate(135%);-webkit-backdrop-filter:blur(14px) saturate(135%);box-shadow:0 12px 38px #0007,0 1px 0 #ffffff12 inset}
-#gta-hud{width:min(350px,calc(100vw - 32px));padding:13px 16px 14px;border:1px solid rgba(248,131,181,.32);border-top:2px solid rgba(248,131,181,.72);text-shadow:0 1px 10px #0008}
-#gta-hud:before{content:"VICE CITY  /  FIELD REPORT";display:block;margin:0 0 6px;color:#c7c1cc;font-size:9px;font-weight:800;letter-spacing:.2em;opacity:.82}
-#w{font-size:19px;letter-spacing:5px;color:#f4c778}
+.box,#tele-pill{border:1px solid var(--vc-line);border-radius:14px;background:linear-gradient(145deg,rgba(18,20,30,.9),rgba(8,11,18,.78));backdrop-filter:blur(14px) saturate(135%);-webkit-backdrop-filter:blur(14px) saturate(135%);box-shadow:0 12px 36px #0007,inset 0 1px #ffffff0c}
+#gta-hud{width:min(350px,calc(100vw - 32px));padding:13px 16px 14px;border:1px solid #f883b255;border-top:2px solid #f883b2bb;text-shadow:0 1px 10px #0009}
+#gta-hud:before{content:"VICE CITY  /  FIELD REPORT";display:block;margin:0 0 6px;color:#c7c1cc;font-size:9px;font-weight:800;letter-spacing:.2em;opacity:.86}
+#w{font-size:19px;letter-spacing:5px;color:var(--vc-gold)}
 #ms{font-size:29px;letter-spacing:.035em;color:#a6e9b0}
 .hud-row{font-size:11px;color:#d2ced6}
 .bars{gap:8px;margin:8px 0}
-.bar{height:6px;border:0;background:#ffffff18}
+.bar{height:6px;border:0;background:#ffffff20}
 #bi,#si{border-radius:8px;box-shadow:0 0 10px currentColor}
-#stg{font-size:10px;letter-spacing:.12em;color:#8ce4e5;border-top-color:#ffffff20}
+#stg{font-size:10px;letter-spacing:.12em;color:var(--vc-cyan);border-top-color:#ffffff20}
 #obj{color:#f3d9aa;font-size:11px}
-#tm{color:#f69abe;font-variant-numeric:tabular-nums}
+#tm{color:var(--vc-pink);font-variant-numeric:tabular-nums}
 #radar-wrap{left:max(16px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom));gap:11px}
-#mmw{border:1px solid #ffffff40;background:rgba(8,11,18,.84);box-shadow:0 12px 34px #0009,0 0 0 5px #090b12aa,inset 0 0 20px #6fe4e51a}
+#mmw{border:1px solid #ffffff55;background:rgba(8,11,18,.86);box-shadow:0 12px 34px #0009,0 0 0 5px #090b12aa,inset 0 0 20px #6fe4e51a}
 #mm{filter:saturate(.88) contrast(1.08)}
-#north-badge{top:-9px;padding:2px 6px;border-radius:5px;background:#121722;border-color:#e8c788;color:#f2d89e;letter-spacing:.08em}
+#north-badge{top:-9px;padding:2px 6px;border-radius:5px;background:#121722;border-color:var(--vc-gold);color:var(--vc-gold);letter-spacing:.08em}
 #tele-pill{padding:9px 12px;color:#dedbe2;font-size:10px}
-#tele-pill b{color:#8ce4e5}
-#help{max-width:min(360px,calc(100vw - 32px));padding:10px 13px;color:#d7d2dc;font-size:10px;border-color:#ffffff20}
+#tele-pill b{color:var(--vc-cyan)}
+#help{max-width:min(360px,calc(100vw - 32px));padding:10px 13px;color:#d7d2dc;font-size:10px;border-color:#ffffff26}
 #help b{color:#9ce3e5}
-#msg{top:17%;padding:8px 18px;border:1px solid #ffffff25;border-radius:10px;background:linear-gradient(90deg,#10121bd9,#19121dd9);font-family:Impact,"Arial Narrow",sans-serif;letter-spacing:.12em;text-align:center;max-width:calc(100vw - 28px);white-space:normal;backdrop-filter:blur(8px);text-shadow:0 2px 14px #000}
+#msg{top:17%;padding:8px 18px;border:1px solid #ffffff30;border-radius:10px;background:linear-gradient(90deg,#10121bd9,#19121dd9);font-family:Impact,"Arial Narrow",sans-serif;letter-spacing:.12em;box-shadow:0 12px 36px #0007}
 #menu{padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 28%,rgba(112,49,82,.48),rgba(14,14,23,.91) 54%,rgba(5,7,12,.97));backdrop-filter:blur(5px)}
+#menu:before{content:"ROCKSTAR PRESENTS · A FAN-MADE VICE CITY EXPERIENCE";display:block;margin-bottom:12px;color:#d8c6ce;font-size:9px;font-weight:800;letter-spacing:.24em;text-align:center}
 #menu h2{font-family:Impact,"Arial Narrow",sans-serif;font-weight:500;letter-spacing:.13em;text-shadow:0 4px 38px #ff5ba64a}
 #menu p{max-width:520px;color:#d5d0dc;line-height:1.65}
 #go{border-radius:999px;padding:13px 42px;box-shadow:0 7px 28px #ed6f9b36;transition:transform .18s,filter .18s}
 #go:hover{filter:brightness(1.12);transform:translateY(-2px)}
 #go:focus-visible{outline:2px solid #fff;outline-offset:4px}
 #menu table{width:min(520px,100%);border-collapse:separate;border-spacing:0;font-size:11px;text-align:left}
-#menu td{padding:6px 10px;border-bottom:1px solid #ffffff12}
+#menu td{padding:6px 10px;border-bottom:1px solid #ffffff16}
 #menu td:first-child{width:38%;color:#9be2e4;text-align:right;font-size:10px;letter-spacing:.035em}
-#menu tr:first-child td{border-top:1px solid #ffffff12}
-@media(max-width:860px){#help{display:none}#gta-hud{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:min(320px,calc(100vw - 20px));padding:10px 12px}#radar-wrap{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))}#mmw{width:124px;height:124px;padding:5px}#mm{width:108px;height:108px}#tele-pill{font-size:9px;padding:7px 9px}}
-@media(max-width:520px){#gta-hud{width:min(292px,calc(100vw - 20px))}#ms{font-size:25px}#gta-hud:before{font-size:8px}#radar-wrap{gap:8px}#mmw{width:104px;height:104px;padding:4px}#mm{width:90px;height:90px}#tele-pill{max-width:145px;font-size:9px}#menu{overflow:auto;justify-content:flex-start;padding-top:max(12vh,40px)}#menu h2{font-size:clamp(38px,12vw,56px)}#menu table{font-size:10px}#menu td{padding:5px 6px}#menu td:first-child{width:40%;font-size:9px}}
+#menu tr:first-child td{border-top:1px solid #ffffff16}
+#vc-runtime-error{position:fixed;z-index:9999;left:50%;top:12px;transform:translateX(-50%);width:min(680px,calc(100vw - 24px));padding:12px 16px;border:1px solid #ff657788;border-radius:12px;background:#190d16f2;color:#fff;box-shadow:0 12px 40px #000b;font:13px/1.5 system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}
+#vc-runtime-error b{color:#ff9daf}
+@media(max-width:860px){#help{display:none}#gta-hud{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:min(320px,calc(100vw - 20px));padding:10px 12px}#radar-wrap{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))}#mmw{width:124px;height:124px}#mm{width:108px;height:108px}}
+@media(max-width:520px){#gta-hud{width:min(292px,calc(100vw - 20px))}#ms{font-size:25px}#gta-hud:before{font-size:8px}#radar-wrap{gap:8px}#mmw{width:104px;height:104px;padding:4px}#mm{width:90px;height:90px}#tele-pill{font-size:9px;padding:7px 9px}#menu table{font-size:10px}#menu td{padding:5px 7px}#menu td:first-child{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 `;
+
+    const showBootError=(message)=>{
+      document.querySelector('#boot p').textContent='The game could not start.';
+      document.querySelector('#boot .pulse').style.display='none';
+      const error=document.getElementById('error');error.style.display='block';error.textContent=message;
+    };
+
     async function boot(){
-      const error=document.getElementById('error');
       try{
-        const response=await fetch(sourceURL,{cache:'force-cache'});
-        if(!response.ok)throw new Error('The saved game source returned HTTP '+response.status+'.');
+        // A timeout avoids leaving the boot screen spinning forever on blocked/offline requests.
+        const controller=new AbortController();
+        const timeout=setTimeout(()=>controller.abort(),15000);
+        let response;
+        try{response=await fetch(sourceURL,{mode:'cors',cache:'no-cache',signal:controller.signal})}
+        finally{clearTimeout(timeout)}
+        if(!response.ok)throw new Error('Game source request failed (HTTP '+response.status+').');
         let html=await response.text();
-        if(!html.includes('</style>')||!html.includes("addEventListener('keydown'"))throw new Error('The original game file could not be verified.');
+        if(!html.includes('</style>')||!html.includes("addEventListener('keydown'")||!html.includes('THREE.WebGLRenderer'))throw new Error('The saved game source did not pass its integrity checks.');
+
+        // Install diagnostics before the game's external Three.js script and application code run.
+        const diagnostics=`<script>(function(){function report(message){var old=document.getElementById('vc-runtime-error');if(old)return;var box=document.createElement('div');box.id='vc-runtime-error';box.setAttribute('role','alert');box.innerHTML='<b>Game runtime error</b><br>';box.appendChild(document.createTextNode(String(message||'Unknown error')));document.body.appendChild(box)}window.addEventListener('error',function(e){if(e.message)report(e.message);else if(e.target&&e.target.src)report('Could not load dependency: '+e.target.src)},{capture:true});window.addEventListener('unhandledrejection',function(e){report(e.reason&&e.reason.message||e.reason)});setTimeout(function(){if(!document.querySelector('canvas.main'))report('The game renderer did not initialize. Check that WebGL is enabled and that the Three.js CDN is reachable.')},12000)})();<\/script>`;
+        html=html.replace('</head>',diagnostics+'\n</head>');
         html=html.replace('</style>',polish+'\n</style>');
-        // Ignore keyboard auto-repeat for one-shot actions (character/time/camera/reset) while preserving movement keys.
-        html=html.replace("addEventListener('keydown',e=>{const k=e.key.toLowerCase();keys[k]=true;", "addEventListener('keydown',e=>{const k=e.key.toLowerCase();keys[k]=true;if(e.repeat)return;");
-        if(html.includes("addEventListener('keydown',e=>{const k=e.key.toLowerCase();keys[k]=true;"))throw new Error('Could not apply the input repeat fix.');
+
+        // Ignore keyboard auto-repeat for one-shot actions, while movement keys remain continuously held.
+        const keydown=/addEventListener\(['"]keydown['"]\s*,\s*e\s*=>\s*\{\s*const\s+k\s*=\s*e\.key\.toLowerCase\(\)\s*;\s*keys\[k\]\s*=\s*true\s*;/;
+        if(!keydown.test(html))throw new Error('Could not locate the game keyboard handler; refusing to apply an incomplete input fix.');
+        html=html.replace(keydown,match=>match+'if(e.repeat)return;');
+
         document.open();document.write(html);document.close();
       }catch(err){
-        document.querySelector('#boot p').textContent='The game could not start.';
-        document.querySelector('#boot .pulse').style.display='none';
-        error.style.display='block';error.textContent=String(err&&err.message||err)+' Check your connection and reload the page.';
+        const reason=err&&err.name==='AbortError'?'Loading timed out. Check your connection and reload.':String(err&&err.message||err);
+        showBootError(reason+'\n\nRun this page from a web server (not file://), and allow access to raw.githubusercontent.com and cdnjs.cloudflare.com.');
       }
     }
     boot();
