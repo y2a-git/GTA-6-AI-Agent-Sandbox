@@ -1,6 +1,6 @@
-# 🤖 Vice City 3D GTA-6 AI Agent (Autonomous 3D Open-World Sandbox)
+# 🤖 3D AI gaming Agent inspired version of GTA-6 Vice City   (Autonomous 3D Open-World Sandbox)
 
-A **100% free, cross-platform 3D Autonomous AI Agent** set in a neon-lit Vice City open-world sandbox powered by **Three.js (WebGL)**. Unlike a standard passive game or app, the AI Agent runs a continuous **Sense → Decide → Act** neural loop with 3D lidar obstacle avoidance—navigating 3D city streets, hijacking sports cars, evading police cruisers, and completing missions completely on its own.
+A **100% free, cross-platform 3D Autonomous AI Gaming Agent** set in a neon-lit Vice City inspired open-world sandbox powered by **Three.js (WebGL)**. Unlike a standard passive game or app, the AI Agent runs a continuous **Sense → Decide → Act** neural loop with 3D lidar obstacle avoidance—navigating 3D city streets, hijacking sports cars, evading police cruisers, and completing missions completely on its own.
 
 Zero coding, zero engine installs, and zero API keys required—just download the executable for your operating system and double-click to launch.
 
@@ -60,3 +60,6 @@ HUD and recovery: the HUD shows cash, health, stamina, the stage objective and a
 BUSTED: if police reach you while you're on foot or nearly stopped, you lose 10% of your cash and restart the stage.
 WASTED: dying costs 5% of your cash.
 Winning: finishing all stages shows "YOU BEAT VICE CITY!", and you can keep exploring afterward.
+
+## Disclaimer
+This is not the original GTA vice city game. This is an inspired version of vice city which is an open source. 
