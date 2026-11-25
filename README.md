@@ -31,16 +31,18 @@ Zero coding, zero engine installs, and zero API keys required—just download th
 ---
 
 ## 🎮 Controls
+
 | Key | Action |
-WASD or arrow keys: walk and drive.
-SHIFT: sprint, which uses stamina.
-** F or E: hijack, enter or exit a car.
-** SPACE: handbrake.
-** H: horn.
-** C: change camera.
-** Mouse drag: look around.
-** R: restart the current stage.
-** ESC: pause. The game also pauses when you switch to another window.
+| :--- | :--- |
+| **`W` `A` `S` `D`** or **Arrow Keys** | Walk on foot or steer, accelerate, and brake in Manual Mode |
+| **`SHIFT`** | sprint, which uses stamina |
+| **`F or E`** | Hijack / enter the nearest vehicle, or exit your current vehicle |
+| **`SPACE`** | handbrake |
+| **`H`** | horn |
+| **`C`** | Cycle 3D Camera Angles (Chase Cam / Wide Action Cam / Tactical Overhead) |
+| **`Mouse drag`** | look around |
+| **`R`** | restart the current stage |
+| **`ESC`** | pause |
 
 
 ## Game Features
