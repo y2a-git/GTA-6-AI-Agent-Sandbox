@@ -58,3 +58,15 @@ If you prefer to inspect or modify the Python source code:
 ```bash
 pip install -r requirements.txt
 python gta_agent.py
+
+---
+
+## ⚠️ "Windows protected your PC" or Mac "Unidentified Developer" warning?
+
+Because this open-source AI Agent is compiled from source and distributed for free, it does not have an expensive, paid developer certificate. This causes operating systems to display a standard "unrecognized app" security alert. 
+
+### How to run it:
+*   **💻 Windows (SmartScreen):** Click **More info** (under the main text) ➡️ then click **Run anyway** when it appears.
+*   **🍏 macOS:** Double-click the `.zip` file, right-click the extracted `ViceCity_AI_Agent.app` file ➡️ click **Open** (or go to **System Settings > Privacy & Security** and allow it to open).
+
+*💡 Since this project is 100% open-source, you can easily inspect `gta_agent.py` directly to verify it contains no malware!*
