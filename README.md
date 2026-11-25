@@ -1,45 +1,60 @@
-# 🚗 GTA 6: Autonomous AI Agent Sandbox
+# 🤖 Vice City GTA-6 AI Agent (Autonomous Open-World Sandbox)
 
-An offline, open-world GTA-6 "minor 2D sandbox" powered by an **Autonomous AI Agent**! Designed to run with **zero technical setup, API keys, or coding**. Download, execute, and inspect the sandbox anywhere!
+A **100% free, cross-platform Autonomous AI Agent** set in a procedural open-world action sandbox inspired by GTA-6. Unlike a standard passive game or app, you can press **`A`** at any time to hand full control over to a self-navigating **AI Agent** that perceives its environment, makes tactical decisions, hijacks vehicles, evades police pursuits, and completes missions completely on its own.
 
----
-
-## 🌟 Capabilities
-*   **🤖 Full AI Agent Mode:** Toggle Autopilot `[TAB]` to let **Tommy AI** roam, make pathfinding decisions, avoid building colliders, hijack vehicles, trigger pursuits, and use adaptive tactics.
-*   **🎮 Manual Controls:** Play yourself! Shoot targets, hijack cars `[F]`, and inspect boundaries.
-*   **⚔️ Active Wanted & Squad Systems:** Star Ratings (⭐ - ⭐⭐⭐⭐⭐) spawn patrol squads as your wanted level rises.
-*   **📟 Natural Commander Overrides:** Control the AI Agent directly by typing targets into your terminal shell: `survive`, `fight cops`, `steal car`, `roam`, or `flee`.
+Zero coding, zero Python setup, and zero API keys required—just download the executable for your operating system and run it.
 
 ---
 
-## 🚀 Instant Launch (For Non-Technical Users)
+## 🚀 Download & Play (No Coding Required)
 
-No Python or console code is required. Double-click to run!
+1. Open the **[Releases](releases/latest)** page (or click **Releases** on the right-hand sidebar of this repository).
+2. Under **Assets** (`v1.0.0`), download the file for your operating system:
 
-1. Check the right sidebar of this page and open **Releases**.
-2. Download the version specifically matched with your Operating System:
-    *   💻 **Windows:** `GTA_AI_Agent_Sandbox.exe`
-    *   🍏 **macOS:** `GTA_AI_Agent_Sandbox.app` (or zip bundle)
-    *   🐧 **Linux:** `GTA_AI_Agent_Sandbox`
-3. Just double-click the file to open and inspect!
+| Operating System | File to Download | How to Launch |
+| :--- | :--- | :--- |
+| **💻 Windows** | `ViceCity_AI_Agent.exe` | Double-click the `.exe` file to launch immediately. |
+| **🍏 macOS** | `ViceCity_AI_Agent-macOS.zip` | Double-click the `.zip` to extract, then open `ViceCity_AI_Agent.app`. |
+| **🐧 Linux** | `ViceCity_AI_Agent-Linux` | Right-click → **Properties** → enable **Allow executing file as program** (or run `chmod +x ViceCity_AI_Agent-Linux`), then run it. |
 
-*(Note for Mac Users: If a security prompt appears, Ctrl+Click the download and press "Open", or allow it in Mac System Settings > Privacy & Security).*
+> **First-Launch Security Prompts:** Because these free open-source executables are unsigned, Windows SmartScreen may show *"Windows protected your PC"* (click **More info → Run anyway**), and macOS may show an *"unidentified developer"* alert (right-click the app → click **Open**).
 
 ---
 
-## 🛠️ Code Setup & Custom Compiling (Developers)
+## 🧠 Why It’s an AI Agent (Not Just an App)
 
-To customize visual elements or modify agent states:
+When **Autonomous Mode (`[A]`)** is activated, the agent runs a continuous **Sense → Decide → Act** loop in real time:
+* **Environmental Perception:** Continuously scans the 3000×3000 city grid for nearby vehicles, active mission checkpoints, and police pursuit proximity.
+* **Tactical Decision Tree:** Evaluates distance-to-target vs. distance-to-vehicle to decide autonomously whether to sprint on foot or hijack the nearest car for faster transit.
+* **Autonomous Navigation & Driving:** Calculates steering angles, acceleration, and braking physics dynamically to reach targets without human input.
+* **Live Intelligence Logs HUD:** Displays the agent's real-time internal reasoning and active mission state directly on screen.
+
+---
+
+## ✨ Key Features
+
+* **Autonomous Autopilot (`[A]`):** Watch the AI Agent play, drive, steal cars, and complete objectives independently.
+* **Dynamic Wanted & Pursuit System:** Stealing vehicles and completing missions raises your Wanted level (up to 5 stars), triggering active police NPC chases.
+* **Procedural City & Day/Night Cycle:** Generates roads, buildings, traffic, pedestrians, exhaust particles, and smooth day-to-night lighting shifts on the fly with zero external asset downloads.
+* **100% Free & Offline Ready:** Runs locally on Windows, macOS, and Linux with no subscriptions or accounts.
+
+---
+
+## 🎮 Controls
+
+| Key | Action |
+| :--- | :--- |
+| **`A`** | **Toggle Autonomous AI Agent Mode (On / Off)** |
+| **`W` `A` `S` `D`** or **Arrow Keys** | Walk on foot or steer, accelerate, and brake in Manual Mode |
+| **`F`** | Enter / hijack the nearest vehicle, or exit your current vehicle |
+| **`R`** | Respawn and redeploy the agent if **BUSTED** by police |
+
+---
+
+## 🛠️ Run from Source (For Developers)
+
+If you prefer to inspect or modify the Python source code:
 
 ```bash
-# Double check you have Python installed, then inspect & install:
 pip install -r requirements.txt
-
-# Start sandbox
-python agent.py
-
-To generate standalone executable files for non-technical users to download, double-click, and play without Python setup, run `pyinstaller` on your target machines and attach the outputs:
-
-1. Open your terminal or Command Prompt, and generate your build:
-
-   pyinstaller --onefile --noconsole --name="GTA_AI_Agent_Sandbox" agent.py
+python gta_agent.py
