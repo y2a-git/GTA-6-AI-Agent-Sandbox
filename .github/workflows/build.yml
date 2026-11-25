@@ -11,6 +11,7 @@ permissions:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows-latest
@@ -34,7 +35,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install Linux system packages
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y binutils libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+
+      - name: Install Python dependencies
         shell: bash
         run: |
           python -m pip install --upgrade pip
@@ -57,7 +65,7 @@ jobs:
         if: matrix.platform == 'linux'
         shell: bash
         run: |
-          pyinstaller --onefile --noconsole --name="ViceCity_AI_Agent-Linux" gta_agent.py
+          pyinstaller --onefile --name="ViceCity_AI_Agent-Linux" gta_agent.py
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -68,7 +76,12 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Download all executables
         uses: actions/download-artifact@v4
         with:
@@ -76,8 +89,9 @@ jobs:
           merge-multiple: true
 
       - name: Publish to GitHub Releases
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create v1.0.0 --title "Vice City GTA-6 AI Agent v1.0.0" --notes "Download the executable matching your operating system below." || true
-          gh release upload v1.0.0 release-assets/* --clobber
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0
+          name: Vice City GTA-6 AI Agent v1.0.0
+          body: Download the executable matching your operating system below.
+          files: release-assets/*
