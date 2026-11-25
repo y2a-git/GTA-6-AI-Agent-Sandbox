@@ -32,8 +32,8 @@ Zero coding, zero engine installs, and zero API keys required—just download th
 
 ## 🎮 Controls
 | Key | Action |
-** WASD or arrow keys: walk and drive.
-** SHIFT: sprint, which uses stamina.
+WASD or arrow keys: walk and drive.
+SHIFT: sprint, which uses stamina.
 ** F or E: hijack, enter or exit a car.
 ** SPACE: handbrake.
 ** H: horn.
