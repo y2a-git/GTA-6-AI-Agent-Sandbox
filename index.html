@@ -32,64 +32,52 @@
   </main>
   <script>
     'use strict';
-    // Load the known-good game revision, not this enhancement wrapper.
+    // Pin the original game revision; the wrapper must never fetch itself.
     const sourceURL='https://raw.githubusercontent.com/y2a-git/GTA-6-AI-Agent-Sandbox/98c5676f7acdd2324aa0f0f66cb95eb598015957/index.html';
     const polish=String.raw`
-/* Vice City: cinematic, responsive HUD polish. No extra image or font requests. */
-:root{--vc-cyan:#75e8e7;--vc-pink:#f783b2;--vc-gold:#f4d18c;--vc-line:#ffffff24}
+/* Vice City: cinematic HUD and restrained filmic framing. */
+:root{--vc-cyan:#8de4e4;--vc-pink:#ed9bb7;--vc-gold:#e9cf9c;--vc-line:#ffffff24}
 html,body{font-family:Inter,"Segoe UI",system-ui,sans-serif;letter-spacing:.012em}
-canvas.main{filter:saturate(1.08) contrast(1.035)}
-/* Fine grain, vignette and letterbox framing sit above the scene but never eat input. */
-body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,#03040a66 100%),linear-gradient(180deg,#05071120,transparent 18%,transparent 82%,#05071130);box-shadow:inset 0 0 12vmin #03040a55}
+canvas.main{filter:saturate(.91) contrast(1.055) brightness(.98)}
+/* Soft lens vignette; the overlay remains transparent to mouse/touch input. */
+body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 48%,rgba(5,6,12,.28) 100%),linear-gradient(180deg,rgba(5,7,14,.12),transparent 16%,transparent 82%,rgba(5,7,14,.16));box-shadow:inset 0 0 10vmin #03040a44}
 #hud-layer{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-.box,#tele-pill{border:1px solid var(--vc-line);border-radius:14px;background:linear-gradient(145deg,rgba(18,20,30,.9),rgba(8,11,18,.78));backdrop-filter:blur(14px) saturate(135%);-webkit-backdrop-filter:blur(14px) saturate(135%);box-shadow:0 12px 36px #0007,inset 0 1px #ffffff0c}
-#gta-hud{width:min(350px,calc(100vw - 32px));padding:13px 16px 14px;border:1px solid #f883b255;border-top:2px solid #f883b2bb;text-shadow:0 1px 10px #0009}
+.box,#tele-pill{border:1px solid var(--vc-line);border-radius:12px;background:linear-gradient(145deg,rgba(18,20,28,.84),rgba(8,10,16,.76));backdrop-filter:blur(12px) saturate(115%);-webkit-backdrop-filter:blur(12px) saturate(115%);box-shadow:0 10px 32px #0006,inset 0 1px #ffffff0a}
+#gta-hud{width:min(350px,calc(100vw - 32px));padding:13px 16px 14px;border:1px solid #ed9bb744;border-top:2px solid #ed9bb799;text-shadow:0 1px 10px #0009}
 #gta-hud:before{content:"VICE CITY  /  FIELD REPORT";display:block;margin:0 0 6px;color:#c7c1cc;font-size:9px;font-weight:800;letter-spacing:.2em;opacity:.86}
 #w{font-size:19px;letter-spacing:5px;color:var(--vc-gold)}
 #ms{font-size:29px;letter-spacing:.035em;color:#a6e9b0}
 .hud-row{font-size:11px;color:#d2ced6}
-.bars{gap:8px;margin:8px 0}
-.bar{height:6px;border:0;background:#ffffff20}
-#bi,#si{border-radius:8px;box-shadow:0 0 10px currentColor}
+.bars{gap:8px;margin:8px 0}.bar{height:6px;border:0;background:#ffffff20}
+#bi,#si{border-radius:8px;box-shadow:0 0 8px currentColor}
 #stg{font-size:10px;letter-spacing:.12em;color:var(--vc-cyan);border-top-color:#ffffff20}
-#obj{color:#f3d9aa;font-size:11px}
-#tm{color:var(--vc-pink);font-variant-numeric:tabular-nums}
+#obj{color:#f3d9aa;font-size:11px}#tm{color:var(--vc-pink);font-variant-numeric:tabular-nums}
 #radar-wrap{left:max(16px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom));gap:11px}
 #mmw{border:1px solid #ffffff55;background:rgba(8,11,18,.86);box-shadow:0 12px 34px #0009,0 0 0 5px #090b12aa,inset 0 0 20px #6fe4e51a}
 #mm{filter:saturate(.88) contrast(1.08)}
 #north-badge{top:-9px;padding:2px 6px;border-radius:5px;background:#121722;border-color:var(--vc-gold);color:var(--vc-gold);letter-spacing:.08em}
-#tele-pill{padding:9px 12px;color:#dedbe2;font-size:10px}
-#tele-pill b{color:var(--vc-cyan)}
-#help{max-width:min(360px,calc(100vw - 32px));padding:10px 13px;color:#d7d2dc;font-size:10px;border-color:#ffffff26}
-#help b{color:#9ce3e5}
+#tele-pill{padding:9px 12px;color:#dedbe2;font-size:10px}#tele-pill b{color:var(--vc-cyan)}
+#help{max-width:min(360px,calc(100vw - 32px));padding:10px 13px;color:#d7d2dc;font-size:10px;border-color:#ffffff26}#help b{color:#9ce3e5}
 #msg{top:17%;padding:8px 18px;border:1px solid #ffffff30;border-radius:10px;background:linear-gradient(90deg,#10121bd9,#19121dd9);font-family:Impact,"Arial Narrow",sans-serif;letter-spacing:.12em;box-shadow:0 12px 36px #0007}
-#menu{padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 28%,rgba(112,49,82,.48),rgba(14,14,23,.91) 54%,rgba(5,7,12,.97));backdrop-filter:blur(5px)}
-#menu:before{content:"ROCKSTAR PRESENTS · A FAN-MADE VICE CITY EXPERIENCE";display:block;margin-bottom:12px;color:#d8c6ce;font-size:9px;font-weight:800;letter-spacing:.24em;text-align:center}
+#menu{padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 28%,rgba(112,49,82,.48),rgba(14,14,23,.91) 54%,rgba(5,7,12,.97));backdrop-filter:blur(4px)}
+#menu:before{content:"VICE CITY · FLORIDA, USA";display:block;margin-bottom:12px;color:#d8c6ce;font-size:9px;font-weight:800;letter-spacing:.24em;text-align:center}
 #menu h2{font-family:Impact,"Arial Narrow",sans-serif;font-weight:500;letter-spacing:.13em;text-shadow:0 4px 38px #ff5ba64a}
 #menu p{max-width:520px;color:#d5d0dc;line-height:1.65}
 #go{border-radius:999px;padding:13px 42px;box-shadow:0 7px 28px #ed6f9b36;transition:transform .18s,filter .18s}
-#go:hover{filter:brightness(1.12);transform:translateY(-2px)}
-#go:focus-visible{outline:2px solid #fff;outline-offset:4px}
-#menu table{width:min(520px,100%);border-collapse:separate;border-spacing:0;font-size:11px;text-align:left}
-#menu td{padding:6px 10px;border-bottom:1px solid #ffffff16}
-#menu td:first-child{width:38%;color:#9be2e4;text-align:right;font-size:10px;letter-spacing:.035em}
-#menu tr:first-child td{border-top:1px solid #ffffff16}
-#vc-runtime-error{position:fixed;z-index:9999;left:50%;top:12px;transform:translateX(-50%);width:min(680px,calc(100vw - 24px));padding:12px 16px;border:1px solid #ff657788;border-radius:12px;background:#190d16f2;color:#fff;box-shadow:0 12px 40px #000b;font:13px/1.5 system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}
-#vc-runtime-error b{color:#ff9daf}
+#go:hover{filter:brightness(1.12);transform:translateY(-2px)}#go:focus-visible{outline:2px solid #fff;outline-offset:4px}
+#menu table{width:min(520px,100%);border-collapse:separate;border-spacing:0;font-size:11px;text-align:left}#menu td{padding:6px 10px;border-bottom:1px solid #ffffff16}#menu td:first-child{width:38%;color:#9be2e4;text-align:right;font-size:10px;letter-spacing:.035em}#menu tr:first-child td{border-top:1px solid #ffffff16}
+#vc-runtime-error{position:fixed;z-index:9999;left:50%;top:12px;transform:translateX(-50%);width:min(680px,calc(100vw - 24px));padding:12px 16px;border:1px solid #ff657788;border-radius:12px;background:#190d16f2;color:#fff;box-shadow:0 12px 40px #000b;font:13px/1.5 system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}#vc-runtime-error b{color:#ff9daf}
 @media(max-width:860px){#help{display:none}#gta-hud{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:min(320px,calc(100vw - 20px));padding:10px 12px}#radar-wrap{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))}#mmw{width:124px;height:124px}#mm{width:108px;height:108px}}
 @media(max-width:520px){#gta-hud{width:min(292px,calc(100vw - 20px))}#ms{font-size:25px}#gta-hud:before{font-size:8px}#radar-wrap{gap:8px}#mmw{width:104px;height:104px;padding:4px}#mm{width:90px;height:90px}#tele-pill{font-size:9px;padding:7px 9px}#menu table{font-size:10px}#menu td{padding:5px 7px}#menu td:first-child{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 `;
-
     const showBootError=(message)=>{
       document.querySelector('#boot p').textContent='The game could not start.';
       document.querySelector('#boot .pulse').style.display='none';
       const error=document.getElementById('error');error.style.display='block';error.textContent=message;
     };
-
     async function boot(){
       try{
-        // A timeout avoids leaving the boot screen spinning forever on blocked/offline requests.
         const controller=new AbortController();
         const timeout=setTimeout(()=>controller.abort(),15000);
         let response;
@@ -99,16 +87,22 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         let html=await response.text();
         if(!html.includes('</style>')||!html.includes("addEventListener('keydown'")||!html.includes('THREE.WebGLRenderer'))throw new Error('The saved game source did not pass its integrity checks.');
 
-        // Install diagnostics before the game's external Three.js script and application code run.
-        const diagnostics=`<script>(function(){function report(message){var old=document.getElementById('vc-runtime-error');if(old)return;var box=document.createElement('div');box.id='vc-runtime-error';box.setAttribute('role','alert');box.innerHTML='<b>Game runtime error</b><br>';box.appendChild(document.createTextNode(String(message||'Unknown error')));document.body.appendChild(box)}window.addEventListener('error',function(e){if(e.message)report(e.message);else if(e.target&&e.target.src)report('Could not load dependency: '+e.target.src)},{capture:true});window.addEventListener('unhandledrejection',function(e){report(e.reason&&e.reason.message||e.reason)});setTimeout(function(){if(!document.querySelector('canvas.main'))report('The game renderer did not initialize. Check that WebGL is enabled and that the Three.js CDN is reachable.')},12000)})();<\/script>`;
+        // Show script/CDN failures directly in the page instead of silently appearing frozen.
+        const diagnostics=`<script>(function(){function report(message){if(document.getElementById('vc-runtime-error'))return;var box=document.createElement('div');box.id='vc-runtime-error';box.setAttribute('role','alert');box.innerHTML='<b>Game runtime error</b><br>';box.appendChild(document.createTextNode(String(message||'Unknown error')));document.body.appendChild(box)}window.addEventListener('error',function(e){if(e.message)report(e.message);else if(e.target&&e.target.src)report('Could not load dependency: '+e.target.src)},{capture:true});window.addEventListener('unhandledrejection',function(e){report(e.reason&&e.reason.message||e.reason)});setTimeout(function(){if(!document.querySelector('canvas.main'))report('The renderer did not initialize. Check WebGL and the Three.js CDN connection.')},12000)})();<\/script>`;
         html=html.replace('</head>',diagnostics+'\n</head>');
         html=html.replace('</style>',polish+'\n</style>');
 
-        // Ignore keyboard auto-repeat for one-shot actions, while movement keys remain continuously held.
-        const keydown=/addEventListener\(['"]keydown['"]\s*,\s*e\s*=>\s*\{\s*const\s+k\s*=\s*e\.key\.toLowerCase\(\)\s*;\s*keys\[k\]\s*=\s*true\s*;/;
-        if(!keydown.test(html))throw new Error('Could not locate the game keyboard handler; refusing to apply an incomplete input fix.');
-        html=html.replace(keydown,match=>match+'if(e.repeat)return;');
+        // Improve material response and lighting after the character materials exist.
+        // This is a subtle render treatment, not a replacement for high-detail character assets.
+        const visualTune=`\n/* Enhanced natural-light/material response; keep stylized meshes and gameplay intact. */\nR.toneMappingExposure=1.08;\nhemi.color.setHex(0xffd5c4);hemi.groundColor.setHex(0x38333a);hemi.intensity=.82;\nsun.color.setHex(0xffe1c2);sun.intensity=2.0;sun.shadow.bias=-.00025;sun.shadow.normalBias=.025;\nscene.fog.color.setHex(0xc78d91);scene.fog.density=.0028;\nfor(const material of skinCache.values()){material.roughness=.56;material.metalness=0;material.envMapIntensity=.22;material.needsUpdate=true}\n`;
+        const sceneReady='scene.add(jasonMesh,luciaMesh);';
+        if(!html.includes(sceneReady))throw new Error('Could not find the character setup point to apply the visual treatment.');
+        html=html.replace(sceneReady,sceneReady+visualTune);
 
+        // Ignore keyboard auto-repeat on one-shot actions, not held movement keys.
+        const keydown=/addEventListener\(['"]keydown['"]\s*,\s*e\s*=>\s*\{\s*const\s+k\s*=\s*e\.key\.toLowerCase\(\)\s*;\s*keys\[k\]\s*=\s*true\s*;/;
+        if(!keydown.test(html))throw new Error('Could not locate the keyboard handler; refusing to apply an incomplete input fix.');
+        html=html.replace(keydown,match=>match+'if(e.repeat)return;');
         document.open();document.write(html);document.close();
       }catch(err){
         const reason=err&&err.name==='AbortError'?'Loading timed out. Check your connection and reload.':String(err&&err.message||err);
