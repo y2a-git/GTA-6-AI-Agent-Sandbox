@@ -8,7 +8,7 @@ Zero coding, zero Python setup, and zero API keys required—just download the e
 
 ## 🚀 Download & Play (No Coding Required)
 
-1. Open the **[Releases](releases/latest)** page (or click **Releases** on the right-hand sidebar of this repository).
+1. Open the **[(https://github.com/y2a-git/GTA-6-AI-Agent-Sandbox/releases/tag/v1.0.0)]** page (or click **Releases** on the right-hand sidebar of this repository).
 2. Under **Assets** (`v1.0.0`), download the file for your operating system:
 
 | Operating System | File to Download | How to Launch |
