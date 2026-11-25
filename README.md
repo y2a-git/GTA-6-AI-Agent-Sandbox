@@ -31,11 +31,30 @@ Zero coding, zero engine installs, and zero API keys required—just download th
 ---
 
 ## 🎮 Controls
-
 | Key | Action |
-| :--- | :--- |
-| **`TAB`** or **`P`** | **Toggle Autonomous AI Autopilot Mode (On / Off)** |
-| **`W` `A` `S` `D`** or **Arrow Keys** | Walk on foot or steer, accelerate, and brake in Manual Mode |
-| **`F`** | Hijack / enter the nearest vehicle, or exit your current vehicle |
-| **`C`** | Cycle 3D Camera Angles (Chase Cam / Wide Action Cam / Tactical Overhead) |
-| **`R`** | Respawn and redeploy the agent if **BUSTED** by police |
+** WASD or arrow keys: walk and drive.
+** SHIFT: sprint, which uses stamina.
+** F or E: hijack, enter or exit a car.
+** SPACE: handbrake.
+** H: horn.
+** C: change camera.
+** Mouse drag: look around.
+** R: restart the current stage.
+** ESC: pause. The game also pauses when you switch to another window.
+
+
+## Game Features
+Start screen: a title screen with a controls list and a START button.
+7 stages with cash rewards:
+Walk to the marker.
+Hijack a car and drive to the marker.
+A timed courier run across town.
+A 6-checkpoint street race.
+Collect 8 cash bags on the sidewalks.
+Reach 3 wanted stars, then lose the police.
+A final getaway with police already chasing you.
+GPS route: the minimap draws a route along the roads to your objective. Cash bags show as yellow dots.
+HUD and recovery: the HUD shows cash, health, stamina, the stage objective and a countdown timer. Health slowly regenerates if you avoid damage for a few seconds.
+BUSTED: if police reach you while you're on foot or nearly stopped, you lose 10% of your cash and restart the stage.
+WASTED: dying costs 5% of your cash.
+Winning: finishing all stages shows "YOU BEAT VICE CITY!", and you can keep exploring afterward.
