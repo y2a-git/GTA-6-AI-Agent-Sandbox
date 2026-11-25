@@ -2,62 +2,75 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vice City 3D</title>
 <style>
-:root{--c:#19e6ff;--p:#ff3da6;--g:#19e68c;--bg:rgba(10,13,24,.78)}
-*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#05070d;font:13px/1.45 'Segoe UI',Consolas,sans-serif;color:#eef4ff;user-select:none}
-canvas.main{display:block}
-.box{position:absolute;background:var(--bg);border:1px solid rgba(25,230,255,.32);border-radius:10px;padding:10px 14px;backdrop-filter:blur(6px)}
+:root{--c:#19e6ff;--p:#ff3da6;--g:#2ee88a;--bg:rgba(9,12,24,.82)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#05070d;font:13px/1.4 'Segoe UI',system-ui,sans-serif;color:#eef4ff;user-select:none}
+canvas.main{display:block;width:100vw;height:100vh}
 
-/* GTA-Style Top-Right HUD (Stars, Cash, Health, Objective) */
-#gta-hud{right:18px;top:16px;width:320px;text-align:right;background:linear-gradient(180deg,rgba(8,10,20,.82),rgba(8,10,20,.62));border:1px solid rgba(255,61,166,.35)}
-#w{font-size:22px;letter-spacing:3px;color:#ffd23c;text-shadow:0 2px 8px rgba(0,0,0,.85);line-height:1.1}
-#ms{font:800 28px Impact,'Arial Black',sans-serif;color:#39e67a;letter-spacing:1px;text-shadow:0 2px 8px rgba(0,0,0,.9);margin:2px 0}
-.hud-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#cbd5e1;margin-top:4px}
-#bar{height:8px;border-radius:4px;background:#1a2030;overflow:hidden;margin:4px 0 6px;border:1px solid rgba(255,255,255,.12)}
-#bi{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ff3d5e,#19e68c);transition:width .15s}
-#stg{font-weight:700;color:var(--c);font-size:12px;letter-spacing:.5px;margin-top:6px;border-top:1px solid rgba(255,255,255,.12);padding-top:6px}
-#obj{color:#ffd166;font-size:12px;margin-top:2px}
-#tm{color:#ff6ec7;font-weight:700;font-size:12px;margin-top:2px}
+/* Responsive Viewport-Safe HUD Layer */
+#hud-layer{position:fixed;inset:0;pointer-events:none;z-index:4}
+.box{position:absolute;background:var(--bg);border:1px solid rgba(25,230,255,.32);border-radius:12px;padding:10px 14px;backdrop-filter:blur(8px);box-shadow:0 8px 28px rgba(0,0,0,.55)}
 
-/* GTA-Style Bottom-Left Circular Radar Minimap */
-#mmw{left:18px;bottom:18px;padding:6px;border-radius:50%;background:rgba(8,12,22,.88);border:3px solid #2b3548;box-shadow:0 0 24px rgba(0,0,0,.8),inset 0 0 12px rgba(25,230,255,.25)}
-#mm{width:164px;height:164px;border-radius:50%;display:block}
-#radar-tag{position:absolute;left:18px;bottom:196px;background:var(--bg);border:1px solid rgba(25,230,255,.3);border-radius:6px;padding:3px 10px;font-size:11px;color:#cbd5e1}
-#radar-tag b{color:var(--c)}
+/* Top-Right GTA-VI Status & Mission Card */
+#gta-hud{right:16px;top:16px;width:min(310px,42vw);text-align:right;background:linear-gradient(180deg,rgba(10,13,26,.88),rgba(10,13,26,.72));border:1px solid rgba(255,61,166,.38)}
+#w{font-size:20px;letter-spacing:3px;color:#ffd23c;text-shadow:0 2px 8px rgba(0,0,0,.9);line-height:1.1}
+#ms{font:800 26px Impact,'Arial Black',sans-serif;color:var(--g);letter-spacing:1px;text-shadow:0 2px 8px rgba(0,0,0,.9);margin:2px 0}
+.hud-row{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:#cbd5e1;margin-top:3px;gap:8px}
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:5px 0 6px}
+.bar{height:7px;border-radius:4px;background:#1a2032;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+#bi{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ff3d5e,var(--g));transition:width .15s}
+#si{display:block;height:100%;width:100%;background:linear-gradient(90deg,#0099ff,var(--c));transition:width .1s}
+#char-lbl{color:#ff6ec7;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#stg{font-weight:700;color:var(--c);font-size:11.5px;letter-spacing:.4px;margin-top:6px;border-top:1px solid rgba(255,255,255,.12);padding-top:6px}
+#obj{color:#ffd166;font-size:11.5px;margin-top:2px;line-height:1.35}
+#tm{color:#ff6ec7;font-weight:700;font-size:11.5px;margin-top:3px}
+
+/* Bottom-Left Circular GPS Radar & Telemetry Pill */
+#radar-wrap{position:absolute;left:16px;bottom:16px;display:flex;align-items:flex-end;gap:10px}
+#mmw{position:relative;width:154px;height:154px;padding:5px;border-radius:50%;background:rgba(8,12,22,.9);border:3px solid #2c384e;box-shadow:0 0 24px rgba(0,0,0,.85),inset 0 0 12px rgba(25,230,255,.25);flex-shrink:0}
+#mm{width:138px;height:138px;border-radius:50%;display:block}
+#north-badge{position:absolute;top:-7px;left:50%;transform:translateX(-50%);background:#0f172a;border:1px solid var(--c);color:var(--c);font-size:9px;font-weight:800;padding:0 5px;border-radius:4px}
+#tele-pill{background:var(--bg);border:1px solid rgba(25,230,255,.32);border-radius:10px;padding:7px 11px;font-size:11px;line-height:1.45;backdrop-filter:blur(8px)}
+#tele-pill b{color:var(--c)}
 
 /* Bottom-Right Compact Controls */
-#help{right:18px;bottom:18px;font-size:11.5px;line-height:1.55;text-align:right}
+#help{right:16px;bottom:16px;font-size:11px;line-height:1.55;text-align:right;max-width:340px}
 #help b{color:var(--c)}
 
-#msg{position:absolute;left:50%;top:22%;transform:translateX(-50%);font:700 44px Impact,sans-serif;letter-spacing:3px;color:#ff3d5e;text-shadow:0 0 20px #000;opacity:0;transition:opacity .4s;white-space:nowrap;pointer-events:none}
-@media(max-width:900px){#help{display:none}}
+#msg{position:fixed;left:50%;top:20%;transform:translateX(-50%);font:700 clamp(26px,4vw,44px) Impact,sans-serif;letter-spacing:3px;color:#ff3d5e;text-shadow:0 2px 18px #000;opacity:0;transition:opacity .35s;white-space:nowrap;pointer-events:none;z-index:6}
+@media(max-width:860px){#help{display:none}#mmw{width:124px;height:124px}#mm{width:108px;height:108px}}
 
 /* Start / Pause Menu */
-#menu{position:absolute;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(rgba(28,16,48,.8),rgba(5,7,13,.95));text-align:center}
-#menu h2{font:700 64px Impact,sans-serif;letter-spacing:5px;margin:0;background:linear-gradient(90deg,#19e6ff,#ff3da6);-webkit-background-clip:text;background-clip:text;color:transparent}
-#menu p{max-width:500px;color:#cbd5e1;margin:8px 0 4px}
-#go{padding:12px 46px;font:700 18px Impact,sans-serif;letter-spacing:2px;border:0;border-radius:8px;background:linear-gradient(90deg,#19e6ff,#ff3da6);color:#060812;cursor:pointer;margin:10px 0 18px}
-#menu table{border-collapse:collapse}#menu td{padding:3px 14px;border-bottom:1px solid #1d3a50}#menu td:first-child{color:#19e6ff;text-align:right;font-weight:700}
+#menu{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;background:radial-gradient(rgba(28,16,48,.76),rgba(5,7,13,.94));text-align:center}
+#menu h2{font:700 clamp(42px,6vw,64px) Impact,sans-serif;letter-spacing:5px;margin:0;background:linear-gradient(90deg,#19e6ff,#ff3da6);-webkit-background-clip:text;background-clip:text;color:transparent}
+#menu p{max-width:480px;color:#cbd5e1;margin:8px 0 4px;font-size:13.5px}
+#go{padding:12px 46px;font:700 18px Impact,sans-serif;letter-spacing:2px;border:0;border-radius:8px;background:linear-gradient(90deg,#19e6ff,#ff3da6);color:#060812;cursor:pointer;margin:10px 0 16px;box-shadow:0 4px 20px rgba(25,230,255,.35)}
+#menu table{border-collapse:collapse;font-size:12.5px}#menu td{padding:3px 12px;border-bottom:1px solid #1d3a50}#menu td:first-child{color:#19e6ff;text-align:right;font-weight:700}
 </style></head><body>
 
-<div id="gta-hud" class="box">
-  <div id="w">☆☆☆☆☆</div>
-  <div id="ms">$500</div>
-  <div class="hud-row"><span>HEALTH <b id="av" style="color:#19e68c">100</b></span><span id="ck">17:45 SUNSET</span></div>
-  <div id="bar"><i id="bi"></i></div>
-  <div class="hud-row"><span id="char-lbl" style="color:#ff6ec7;font-weight:700">PLAYING: JASON (LUCIA PARTNER)</span><span id="sp" style="color:#19e6ff">ON FOOT</span></div>
-  <div id="stg">STAGE 1/7: WELCOME TO VICE CITY</div>
-  <div id="obj">Walk to the green marker. Hold SHIFT to sprint.</div>
-  <div id="tm"></div>
-</div>
+<div id="hud-layer">
+  <div id="gta-hud" class="box">
+    <div id="w">☆☆☆☆☆</div>
+    <div id="ms">$500</div>
+    <div class="hud-row"><span>HP <b id="av" style="color:#2ee88a">100</b> • STM <b id="stam-tag" style="color:#19e6ff">100%</b></span><span id="ck">17:45 SUNSET</span></div>
+    <div class="bars"><div class="bar"><i id="bi"></i></div><div class="bar"><i id="si"></i></div></div>
+    <div class="hud-row"><span id="char-lbl">JASON &amp; LUCIA</span><span id="sp" style="color:#19e6ff;font-weight:700">0 MPH</span></div>
+    <div id="stg">STAGE 1/7: WELCOME TO VICE CITY</div>
+    <div id="obj">Walk to the green marker. Hold SHIFT to sprint.</div>
+    <div id="tm"></div>
+  </div>
 
-<div id="radar-tag"><b id="mode-tag">ON FOOT</b> • STAMINA <b id="stam-tag">100%</b></div>
-<div id="mmw"><canvas id="mm" width="164" height="164"></canvas></div>
+  <div id="radar-wrap">
+    <div id="mmw"><span id="north-badge">N</span><canvas id="mm" width="138" height="138"></canvas></div>
+    <div id="tele-pill"><b id="mode-tag">ON FOOT</b><br>Press <b>G</b> Switch Hero<br>Press <b>T</b> Sunset/Day/Night</div>
+  </div>
 
-<div id="help" class="box">
-  <b>WASD / Arrows</b> move &amp; drive &nbsp; <b>SHIFT</b> sprint<br>
-  <b>F / E</b> enter or exit car &nbsp; <b>SPACE</b> drift / brake<br>
-  <b>G</b> switch Jason / Lucia &nbsp; <b>T</b> Sunset / Day / Night<br>
-  <b>H</b> horn &nbsp; <b>C</b> camera &nbsp; <b>Mouse drag</b> look &nbsp; <b>R</b> reset
+  <div id="help" class="box">
+    <b>WASD / Arrows</b> move &amp; drive &nbsp; <b>SHIFT</b> sprint<br>
+    <b>F / E</b> enter or exit car &nbsp; <b>SPACE</b> drift / brake<br>
+    <b>G</b> switch Jason / Lucia &nbsp; <b>T</b> Sunset / Day / Night<br>
+    <b>H</b> horn &nbsp; <b>C</b> camera &nbsp; <b>Mouse drag</b> look &nbsp; <b>R</b> reset
+  </div>
 </div>
 
 <div id="msg"></div>
@@ -91,8 +104,8 @@ R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.02;R.outputEnc
 R.domElement.className='main';document.body.prepend(R.domElement);
 
 const scene=new THREE.Scene(),fog=new THREE.FogExp2(0xe68a9c,.0034);scene.fog=fog;
-const cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.2,1500);
-const hemi=new THREE.HemisphereLight(0xffc4d6,0x2a2e42,.68),sun=new THREE.DirectionalLight(0xffd6aa,2.45);
+const cam=new THREE.PerspectiveCamera(56,innerWidth/innerHeight,.2,1500);
+const hemi=new THREE.HemisphereLight(0xffc4d6,0x2a2e42,.72),sun=new THREE.DirectionalLight(0xffd6aa,2.45);
 sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);const sc=sun.shadow.camera;sc.left=sc.bottom=-100;sc.right=sc.top=100;sc.far=500;sc.near=1;sun.shadow.bias=-.0004;
 scene.add(hemi,sun,sun.target);
 const spot=new THREE.SpotLight(0xfff2c8,0,95,.5,.5,1.2);scene.add(spot,spot.target);
@@ -223,61 +236,113 @@ for(let i=-N+1;i<N;i++)for(let j=-N+1;j<N;j++){
  }
 }
 
-// ---------- HIGH-DEFINITION SCULPTED 3D HUMANS, REALISTIC FACES & HAIRLINES ----------
-const TP=[[.001,-.03],[.158,-.02],[.166,.12],[.176,.28],[.204,.46],[.212,.56],[.152,.63],[.070,.68],[.001,.70]],
-      TF=[[.001,-.03],[.174,-.02],[.180,.10],[.130,.26],[.152,.40],[.174,.52],[.134,.60],[.064,.66],[.001,.68]];
+// ---------- PLANAR-MAPPED SCULPTED 3D HUMANS, REALISTIC FACES & GTA-6 HERO GEAR ----------
+const TP=[[.001,-.03],[.158,-.02],[.166,.12],[.176,.28],[.204,.46],[.212,.56],[.152,.63],[.064,.68],[.001,.70]],
+      TF=[[.001,-.03],[.172,-.02],[.178,.10],[.128,.26],[.150,.40],[.172,.52],[.132,.60],[.058,.66],[.001,.68]];
 const rAt=(pr,y)=>{for(let i=1;i<pr.length;i++){if(y<=pr[i][1]){const a=pr[i-1],b=pr[i];return a[0]+(b[0]-a[0])*(y-a[1])/(b[1]-a[1]||1)}}return pr[pr.length-1][0]};
 const shell=(pr,y0,y1,e)=>{const a=[];for(let i=0;i<=14;i++){const y=y0+(y1-y0)*i/14;a.push([rAt(pr,y)+e,y])}return a};
 const mkLathe=(pts,n)=>new THREE.LatheGeometry(pts.slice().sort((a,b)=>a[1]-b[1]).map(p=>new THREE.Vector2(p[0],p[1])),n||24);
 
-// Vertex-sculpted 3D head: prominent brow ridge, recessed orbital sockets, sculpted nose bridge & nostrils,
-// cheekbones, hollow cheeks, sculpted lips & defined jawline/chin (creates real 3D shadows under sunlight!)
-const sculptedHeadGeo=(()=>{
- const g=new THREE.SphereGeometry(.146,48,36);
- const p=g.attributes.position;
+// Planar-UV Vertex-Sculpted Head: u=0.5 is dead-center front (+Z), v=0..1 is linear vertical!
+// Eliminates equirectangular eye/brow warping and aligns 1:1 with high-res portrait canvas.
+function buildHeadGeo(female){
+ const g=new THREE.SphereGeometry(1,64,48);
+ const p=g.attributes.position,uv=g.attributes.uv;
+ const rx=female?.078:.082,ry=female?.110:.114,rz=female?.094:.098;
  for(let i=0;i<p.count;i++){
-  let x=p.getX(i),y=p.getY(i),z=p.getZ(i);
-  x*=0.87;
-  y*=1.13;
+  let ux=p.getX(i),uy=p.getY(i),uz=p.getZ(i);
   // Jawline & chin taper below cheekbones
-  if(y<0.01){
-   const t=clamp((0.01-y)/0.17,0,1);
-   x*=1-0.34*t*t;
-   if(z>0){
-    z*=1-0.12*t*t;
-    // Defined chin prominence
-    const chin=Math.exp(-((x/0.028)*(x/0.028)+((y+0.125)/0.024)*((y+0.125)/0.024)));
-    z+=0.014*chin;
-   }else{
-    z*=1-0.32*t;
-   }
+  if(uy<0.04){
+   const t=clamp((0.04-uy)/1.04,0,1);
+   ux*=1-(female?0.35:0.27)*t*t;
+   if(uz>0)uz*=1-0.12*t*t;
+   else uz*=1-0.36*t;
   }
-  if(z>0.02){
-   // Prominent brow ridge
-   const browY=(y-0.036)/0.014;
-   if(Math.abs(x)<0.072)z+=0.011*Math.exp(-browY*browY);
-   // Deep recessed orbital eye sockets so 3D eyeballs sit naturally inside
-   const ex=(Math.abs(x)-0.036)/0.020,ey=(y-0.014)/0.015;
-   z-=0.014*Math.exp(-(ex*ex+ey*ey));
-   // Cheekbones (zygomatic arch)
-   const cx=(Math.abs(x)-0.056)/0.024,cy=(y+0.016)/0.022;
+  let x=ux*rx,y=uy*ry,z=uz*rz;
+  if(z>0.01){
+   // Brow ridge (y ≈ +0.032)
+   const browY=(y-0.032)/0.011;
+   if(Math.abs(x)<0.056)z+=0.006*Math.exp(-browY*browY);
+   // Orbital eye sockets (y ≈ +0.015, x ≈ ±0.031)
+   const ex=(Math.abs(x)-0.031)/0.015,ey=(y-0.015)/0.010;
+   z-=0.0075*Math.exp(-(ex*ex+ey*ey));
+   // Cheekbones
+   const cx=(Math.abs(x)-0.046)/0.018,cy=(y-0.002)/0.018;
    const cheek=Math.exp(-(cx*cx+cy*cy));
-   z+=0.008*cheek;
-   x+=Math.sign(x)*0.005*cheek;
+   z+=0.0045*cheek;x+=Math.sign(x)*0.003*cheek;
    // Sculpted nose bridge & tip
-   const nx=x/0.016,ny=(y+0.006)/0.036;
-   const noseBridge=Math.exp(-(nx*nx+ny*ny))*Math.max(0,1-Math.abs(y+0.014)/0.046);
-   const tipX=x/0.015,tipY=(y+0.030)/0.013;
-   const noseTip=Math.exp(-(tipX*tipX+tipY*tipY));
-   z+=0.021*noseBridge+0.012*noseTip;
-   // Sculpted upper & lower lips
-   const lx=x/0.026,uly=(y+0.064)/0.008,lly=(y+0.078)/0.009;
-   z+=0.008*Math.exp(-(lx*lx+uly*uly))+0.007*Math.exp(-(lx*lx+lly*lly));
+   const nx=x/0.012,ny=(y+0.004)/0.025;
+   const bridge=Math.exp(-(nx*nx+ny*ny))*Math.max(0,1-Math.abs(y+0.006)/0.034);
+   const tipX=x/0.011,tipY=(y+0.020)/0.009;
+   const tip=Math.exp(-(tipX*tipX+tipY*tipY));
+   z+=0.0135*bridge+0.008*tip;
+   // Sculpted lips
+   const lx=x/0.021,uly=(y+0.048)/0.0055,lly=(y+0.058)/0.0065;
+   z+=0.005*Math.exp(-(lx*lx+uly*uly))+0.0045*Math.exp(-(lx*lx+lly*lly));
+   // Chin prominence
+   const chin=Math.exp(-((x/0.020)*(x/0.020)+((y+0.084)/0.016)*((y+0.084)/0.016)));
+   z+=0.0075*chin;
   }
   p.setXYZ(i,x,y,z);
+  // Cylindrical/planar UVs: u=0.5 at front center (+Z), v=0.5+uy*0.5 linear top-to-bottom
+  const u=0.5+Math.atan2(x,z)/(2*Math.PI);
+  const v=0.5+uy*0.5;
+  uv.setXY(i,u,v);
  }
  g.computeVertexNormals();
  return g;
+}
+
+// Cranial Hair Cap strictly above forehead hairline (y > 0.36*ry in front) — zero face/eye intersection!
+function buildHairCapGeo(female){
+ const g=new THREE.SphereGeometry(1,48,28,0,Math.PI*2,0,Math.PI*.45);
+ const p=g.attributes.position,uv=g.attributes.uv;
+ const rx=(female?.078:.082)+.0045,ry=(female?.110:.114)+.0050,rz=(female?.094:.098)+.0045;
+ for(let i=0;i<p.count;i++){
+  let x=p.getX(i),y=p.getY(i),z=p.getZ(i);
+  const v=uv.getY(i);
+  // Lift front rim cleanly above eyebrows/hairline while letting back crown cover nape
+  if(z>0){
+   y=Math.max(y,0.44+0.12*z);
+  }
+  const loft=clamp(v*2.0,0,1);
+  const s=1+0.024*loft;
+  p.setXYZ(i,x*rx*s,y*ry*s,z*rz*s);
+ }
+ g.computeVertexNormals();
+ return g;
+}
+
+// Draped V-front paisley neck bandana that rests naturally over collarbones & shirt
+const neckBandanaGeo=(()=>{
+ const g=new THREE.CylinderGeometry(.074,.128,.115,28,6,true);
+ const p=g.attributes.position;
+ for(let i=0;i<p.count;i++){
+  let x=p.getX(i),y=p.getY(i),z=p.getZ(i);
+  // Drop front center (+Z) into a classic triangular bandana drape over upper chest
+  if(z>0&&y<0){
+   const frontFactor=clamp(z/0.11,0,1);
+   y-=0.078*frontFactor*frontFactor;
+   z+=0.055*frontFactor;
+  }
+  p.setXYZ(i,x*1.12,y,z*1.26);
+ }
+ g.computeVertexNormals();
+ return g;
+})();
+
+// Diagonal cross-body duffel strap cleared cleanly outside Jason's white T-shirt chest
+const bagStrapGeo=(()=>{
+ const curve=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(-.175,.61,.05),
+  new THREE.Vector3(-.05,.44,.182),
+  new THREE.Vector3(.09,.24,.186),
+  new THREE.Vector3(.232,.04,.06),
+  new THREE.Vector3(.17,.18,-.165),
+  new THREE.Vector3(-.02,.42,-.175),
+  new THREE.Vector3(-.175,.61,-.04)
+ ]);
+ return new THREE.TubeGeometry(curve,28,.019,8,true);
 })();
 
 const HGEO={
@@ -285,31 +350,32 @@ const HGEO={
  belt:mkLathe([[.176,.045],[.186,.045],[.186,.092],[.176,.092]],20),
  buckle:new THREE.BoxGeometry(.052,.042,.022),
  torsoM:mkLathe(TP,24),torsoF:mkLathe(TF,24),
- clothM:mkLathe(shell(TP,-.008,.635,.0045),24),
- clothF:mkLathe(shell(TF,-.008,.615,.0045),24),
- cropF:mkLathe(shell(TF,.14,.595,.0045),24),
+ // 0.007m shell offset guarantees skin never bleeds through shirts
+ clothM:mkLathe(shell(TP,-.008,.635,.007),24),
+ clothF:mkLathe(shell(TF,-.008,.615,.007),24),
+ cropF:mkLathe(shell(TF,.14,.595,.007),24),
  chestM:new THREE.SphereGeometry(.078,12,10),
  chestF:new THREE.SphereGeometry(.074,12,10),
- neck:new THREE.CylinderGeometry(.054,.066,.16,16),
- head:sculptedHeadGeo,
- eye:new THREE.SphereGeometry(.0165,16,12),
- ear:new THREE.SphereGeometry(.024,8,6),
- hoop:new THREE.TorusGeometry(.020,.0025,6,16),
- // Textured 3D hair volumes (blends directly into painted hairline on head!)
- quiffTop:new THREE.SphereGeometry(.096,16,12),
- fadeBack:new THREE.SphereGeometry(.144,22,14,0,Math.PI*2,0,Math.PI*.48),
- femaleCrown:new THREE.SphereGeometry(.147,22,14,0,Math.PI*2,0,Math.PI*.52),
- longBack:new THREE.SphereGeometry(.138,16,14),
- longSide:new THREE.SphereGeometry(.044,10,12),
- ponyBase:new THREE.SphereGeometry(.044,10,10),
- ponyTail:new THREE.SphereGeometry(.048,14,14),
- visor:new THREE.BoxGeometry(.175,.014,.125),
- bandana:new THREE.TorusGeometry(.145,.018,6,22),
- chain:new THREE.TorusGeometry(.084,.0055,6,22),
+ neck:new THREE.CylinderGeometry(.050,.062,.16,18),
+ headM:buildHeadGeo(false),
+ headF:buildHeadGeo(true),
+ hairCapM:buildHairCapGeo(false),
+ hairCapF:buildHairCapGeo(true),
+ ear:new THREE.SphereGeometry(.018,8,6),
+ hoop:new THREE.TorusGeometry(.017,.0022,6,16),
+ bandanaNeck:neckBandanaGeo,
+ bagStrap:bagStrapGeo,
+ // Wavy cascading ponytail curls for Lucia
+ ponyBase:new THREE.SphereGeometry(.034,12,10),
+ ponyCurl1:new THREE.SphereGeometry(.038,14,14),
+ ponyCurl2:new THREE.SphereGeometry(.034,14,14),
+ ponyLock:new THREE.SphereGeometry(.022,10,12),
+ visor:new THREE.BoxGeometry(.14,.012,.10),
+ chain:new THREE.TorusGeometry(.074,.0045,6,22),
  // Natural blended shoulders, arms & multi-finger hands
  shBall:new THREE.SphereGeometry(.056,12,10),
  upArm:mkLathe([[.054,.01],[.057,-.08],[.048,-.19],[.041,-.27]],14),
- sleeve:mkLathe([[.060,.01],[.063,-.08],[.058,-.14]],14),
+ sleeve:mkLathe([[.063,.01],[.066,-.08],[.061,-.155]],16),
  elBall:new THREE.SphereGeometry(.041,10,8),
  foreArm:mkLathe([[.041,0],[.045,-.06],[.037,-.18],[.029,-.25]],14),
  palm:new THREE.SphereGeometry(.032,10,8),
@@ -325,8 +391,9 @@ const HGEO={
  sole:new THREE.BoxGeometry(.100,.025,.248)
 };
 
-// High-Contrast 1024x512 Portrait + Hairline + Sideburns + Beard UV Texture
-// In Three.js SphereGeometry: u=0.25 (x=256) is Front Center (+Z), u=0 & u=1 are -X, u=0.5 is +X, u=0.75 is Back (-Z)
+// Planar-Mapped High-Resolution Portrait Texture (1024x512)
+// u=0.5 (x=512) is Front Center (+Z), cy=(1 - v)*512 where v=0.5+uy*0.5:
+// Hairline cy=118 | Eyebrows cy=180 | Eyes cy=220, x=512±52 | Nose tip cy=300 | Lips cy=362 | Chin cy=465
 const faceCache=new Map();
 function faceTex(o){
  const key=`${o.f}_${o.skin}_${o.hair}_${o.eye}_${o.st}_${o.hs}`;
@@ -335,120 +402,150 @@ function faceTex(o){
  const g=c.getContext('2d'),H=v=>'#'+v.toString(16).padStart(6,'0');
  g.fillStyle=H(o.skin);g.fillRect(0,0,1024,512);
 
- // Warm subsurface cheek/nose warmth & natural ambient occlusion around jawline/neck
- let r=g.createRadialGradient(256,260,20,256,260,185);
- r.addColorStop(0,'rgba(255,205,175,.20)');r.addColorStop(.65,'rgba(210,125,95,.08)');r.addColorStop(1,'rgba(55,22,12,.26)');
- g.fillStyle=r;g.fillRect(0,0,512,512);
+ // Warm facial skin tone & soft jaw/neck shadow centered at x=512
+ let r=g.createRadialGradient(512,265,25,512,265,235);
+ r.addColorStop(0,'rgba(255,205,175,.18)');r.addColorStop(.68,'rgba(205,120,90,.06)');r.addColorStop(1,'rgba(45,18,10,.22)');
+ g.fillStyle=r;g.fillRect(256,0,512,512);
 
- // Cheekbone highlights & blush
+ // Cheekbone warmth / subtle blush
  for(const s of[-1,1]){
-  r=g.createRadialGradient(256+s*72,285,4,256+s*72,285,44);
-  r.addColorStop(0,o.f?'rgba(232,88,108,.32)':'rgba(255,218,192,.22)');
-  r.addColorStop(1,'rgba(255,218,192,0)');
-  g.fillStyle=r;g.fillRect(256+s*72-46,240,92,92);
+  r=g.createRadialGradient(512+s*88,268,4,512+s*88,268,46);
+  r.addColorStop(0,o.f?'rgba(225,85,105,.24)':'rgba(255,212,185,.18)');
+  r.addColorStop(1,'rgba(255,212,185,0)');
+  g.fillStyle=r;g.fillRect(512+s*88-48,220,96,96);
  }
 
- // PAINTED HAIRLINE, CROWN, TEMPLES, SIDEBURNS & NAPE (eliminates plastic helmet seam!)
+ // Hairline, Crown, Temples, Sideburns & Back Nape (u=0..0.28 and u=0.72..1.0 are back of head)
  if(o.hs!=='bald'){
   g.fillStyle=H(o.hair);
-  // Top crown & back of head hair coverage
   g.beginPath();
-  g.moveTo(0,0);g.lineTo(1024,0);g.lineTo(1024,330);
-  g.quadraticCurveTo(768,365,512,295); // Back nape & right ear cutout
-  g.quadraticCurveTo(445,280,412,215); // Right temple
-  g.quadraticCurveTo(335,168,256,174); // Front hairline / subtle widow's peak
-  g.quadraticCurveTo(177,168,100,215); // Left temple
-  g.quadraticCurveTo(67,280,0,295);    // Left ear cutout
+  g.moveTo(0,0);g.lineTo(1024,0);g.lineTo(1024,360);
+  g.lineTo(750,360);                   // Back-left nape
+  g.quadraticCurveTo(705,285,682,195); // Left ear cutout & temple
+  g.quadraticCurveTo(605,112,512,118); // Front hairline (widow's peak)
+  g.quadraticCurveTo(419,112,342,195); // Right temple
+  g.quadraticCurveTo(319,285,274,360); // Right ear cutout & nape
+  g.lineTo(0,360);
   g.closePath();g.fill();
 
-  // Fine hair-strand texture along hairline & crown
-  g.strokeStyle='rgba(0,0,0,.22)';g.lineWidth=2;
-  for(let hx=0;hx<1024;hx+=6){
-   g.beginPath();g.moveTo(hx,150);g.lineTo(hx+rnd(-3,3),205);g.stroke();
+  // Natural feathered hair strands along hairline
+  g.strokeStyle=H(o.hair);g.lineWidth=2.2;
+  for(let hx=342;hx<=682;hx+=4){
+   const baseY=118+Math.pow((hx-512)/170,2)*76;
+   g.beginPath();g.moveTo(hx,baseY-10);g.lineTo(hx+rnd(-2,2),baseY+8);g.stroke();
   }
-  // Sideburns in front of ears (x≈112 and x≈400)
-  for(const sx of[114,398]){
+  // Tapered sideburns in front of ears (x≈356 and x≈668)
+  for(const sx of[356,668]){
    g.fillStyle=H(o.hair);
-   g.beginPath();g.ellipse(sx,262,10,o.f?36:30,0,0,Math.PI*2);g.fill();
+   g.beginPath();g.ellipse(sx,238,9,o.f?36:30,0,0,Math.PI*2);g.fill();
   }
  }
 
- // Expressive Eyebrows
- g.lineCap='round';g.strokeStyle=H(o.hair);g.lineWidth=o.f?6.5:10.5;
+ // Expressive Eyebrows (cy = 180)
+ g.lineCap='round';g.strokeStyle=H(o.hair);g.lineWidth=o.f?6.5:10.0;
  for(const s of[-1,1]){
   g.beginPath();
-  g.moveTo(256+s*20,204);
-  g.quadraticCurveTo(256+s*52,o.f?186:190,256+s*84,204);
+  g.moveTo(512+s*22,184);
+  g.quadraticCurveTo(512+s*55,o.f?166:172,512+s*88,184);
   g.stroke();
  }
 
- // Orbital socket shading & eyeliner/lashes framing the 3D eyeballs (centered at x=256±48, y=234)
+ // Realistic Almond-Shaped Eyes with Detailed Iris, Limbal Ring, Eyelid Crease & Catchlight (cy = 220, x = 512 ± 52)
  for(const s of[-1,1]){
-  const x=256+s*48;
-  r=g.createRadialGradient(x,234,8,x,234,34);
-  r.addColorStop(0,'rgba(45,18,12,.38)');r.addColorStop(1,'rgba(45,18,12,0)');
-  g.fillStyle=r;g.fillRect(x-36,200,72,68);
-  g.strokeStyle='#180e0a';g.lineWidth=o.f?6:4;
-  g.beginPath();g.ellipse(x,234,25,12,0,Math.PI,2*Math.PI);g.stroke();
+  const x=512+s*52,y=220;
+  g.strokeStyle='rgba(55,22,12,.38)';g.lineWidth=2.5;
+  g.beginPath();g.moveTo(x-25,y-6);g.quadraticCurveTo(x,y-17,x+25,y-6);g.stroke();
+
+  g.save();
+  g.beginPath();
+  g.moveTo(x-24,y+1);
+  g.quadraticCurveTo(x,y-13,x+24,y+1);
+  g.quadraticCurveTo(x,y+11,x-24,y+1);
+  g.closePath();
+  g.clip();
+
+  const sg=g.createRadialGradient(x,y,4,x,y,25);
+  sg.addColorStop(0,'#f2eee9');sg.addColorStop(.75,'#dfd8d0');sg.addColorStop(1,'#b8aba2');
+  g.fillStyle=sg;g.fillRect(x-26,y-15,52,30);
+
+  g.fillStyle=H(o.eye);
+  g.beginPath();g.arc(x,y,10.5,0,Math.PI*2);g.fill();
+  g.strokeStyle='rgba(12,10,8,.75)';g.lineWidth=2.2;g.stroke();
+
+  g.fillStyle='#08080a';
+  g.beginPath();g.arc(x,y,4.6,0,Math.PI*2);g.fill();
+  g.fillStyle='rgba(255,255,255,.92)';
+  g.beginPath();g.arc(x+3.2,y-3.2,2.2,0,Math.PI*2);g.fill();
+  g.restore();
+
+  g.strokeStyle='#180e0a';g.lineWidth=o.f?4.2:3.0;
+  g.beginPath();g.moveTo(x-24,y+1);g.quadraticCurveTo(x,y-13,x+24,y+1);g.stroke();
+  g.strokeStyle='rgba(35,18,12,.45)';g.lineWidth=1.6;
+  g.beginPath();g.moveTo(x-21,y+2);g.quadraticCurveTo(x,y+10,x+21,y+2);g.stroke();
   if(o.f){
-   g.lineWidth=2.5;
-   for(let l=-3;l<=3;l++){g.beginPath();g.moveTo(x+l*6,223);g.lineTo(x+l*8+s*5,214);g.stroke()}
+   g.strokeStyle='#140a08';g.lineWidth=2.0;
+   for(let l=-2;l<=3;l++){g.beginPath();g.moveTo(x+l*5,y-7);g.lineTo(x+l*6+s*4,y-14);g.stroke()}
   }
  }
 
- // Nose bridge highlight, side contour & nostrils (aligns with 3D sculpted nose at x=256, y=230..295)
- g.fillStyle='rgba(255,228,205,.24)';
- g.beginPath();g.ellipse(256,262,7,32,0,0,Math.PI*2);g.fill();
- g.strokeStyle='rgba(75,32,18,.28)';g.lineWidth=4;
+ // Nose Bridge Highlight & Soft Under-Nose Shadow (cy = 225..302)
+ g.fillStyle='rgba(255,228,205,.22)';
+ g.beginPath();g.ellipse(512,262,6.5,28,0,0,Math.PI*2);g.fill();
+ g.strokeStyle='rgba(75,32,18,.20)';g.lineWidth=3.2;
  for(const s of[-1,1]){
-  g.beginPath();g.moveTo(256+s*13,240);g.lineTo(256+s*18,292);g.stroke();
-  g.fillStyle='rgba(55,18,10,.62)';
-  g.beginPath();g.ellipse(256+s*14,298,6,3.5,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.moveTo(512+s*11,232);g.lineTo(512+s*15,288);g.stroke();
  }
+ const ns=g.createRadialGradient(512,298,2,512,298,25);
+ ns.addColorStop(0,'rgba(65,24,14,.34)');ns.addColorStop(1,'rgba(65,24,14,0)');
+ g.fillStyle=ns;g.fillRect(486,284,52,24);
 
- // Full sculpted two-tone lips & philtrum (x=256, y=344)
- g.fillStyle=o.f?'#b83248':'#9c5248';
- g.beginPath();g.ellipse(256,340,30,7.5,0,0,Math.PI*2);g.fill();
- g.fillStyle=o.f?'#d44a60':'#b86a5e';
- g.beginPath();g.ellipse(256,353,26,9.5,0,0,Math.PI*2);g.fill();
- g.fillStyle='rgba(255,235,235,.28)';
- g.beginPath();g.ellipse(256,354,13,3.5,0,0,Math.PI*2);g.fill();
- g.strokeStyle='rgba(40,10,10,.78)';g.lineWidth=2.8;
- g.beginPath();g.moveTo(226,345);g.quadraticCurveTo(256,350,286,345);g.stroke();
+ // Realistic Two-Tone Lips (cy = 362)
+ g.fillStyle=o.f?'#b2384c':'#9e5a50';
+ g.beginPath();
+ g.moveTo(472,362);g.quadraticCurveTo(498,354,512,357);g.quadraticCurveTo(526,354,552,362);
+ g.quadraticCurveTo(512,365,472,362);g.fill();
 
- // Jason's trimmed beard, mustache & jawline stubble (connects sideburns cleanly around jaw)
+ g.fillStyle=o.f?'#cc4e62':'#b46e63';
+ g.beginPath();
+ g.moveTo(474,363);g.quadraticCurveTo(512,365,550,363);
+ g.quadraticCurveTo(536,376,512,376);g.quadraticCurveTo(488,376,474,363);g.fill();
+
+ g.strokeStyle='rgba(45,14,12,.68)';g.lineWidth=2.2;
+ g.beginPath();g.moveTo(471,362);g.quadraticCurveTo(512,365,553,362);g.stroke();
+ const cs=g.createRadialGradient(512,385,2,512,385,24);
+ cs.addColorStop(0,'rgba(50,18,12,.26)');cs.addColorStop(1,'rgba(50,18,12,0)');
+ g.fillStyle=cs;g.fillRect(486,374,52,22);
+
+ // Jason's Realistic 5-O'Clock Shadow Beard & Mustache (connects sideburns 356 & 668 around jaw cy=435)
  if(!o.f&&o.st){
-  g.fillStyle='rgba(28,18,12,.22)';
-  // Jawline beard strap from left sideburn (114) around chin (256,395) to right sideburn (398)
+  g.fillStyle='rgba(26,16,10,.20)';
   g.beginPath();
-  g.moveTo(114,275);g.quadraticCurveTo(155,398,256,406);g.quadraticCurveTo(357,398,398,275);
-  g.lineTo(382,275);g.quadraticCurveTo(342,374,256,380);g.quadraticCurveTo(170,374,130,275);
+  g.moveTo(356,256);g.quadraticCurveTo(402,425,512,434);g.quadraticCurveTo(622,425,668,256);
+  g.lineTo(652,256);g.quadraticCurveTo(606,396,512,404);g.quadraticCurveTo(418,396,372,256);
   g.closePath();g.fill();
-  // Trimmed mustache & soul patch
-  g.beginPath();g.ellipse(256,322,28,5.5,0,0,Math.PI*2);g.fill();
-  g.beginPath();g.ellipse(256,370,11,7,0,0,Math.PI*2);g.fill();
-  // Fine beard hair stippling
-  g.fillStyle='rgba(20,12,8,.28)';
-  for(let i=0;i<1400;i++)g.fillRect(256+rnd(-135,135),rnd(312,412),1.6,1.6);
+  g.beginPath();g.ellipse(512,346,36,5.5,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(512,394,14,9,0,0,Math.PI*2);g.fill();
+  g.fillStyle='rgba(18,10,6,.26)';
+  for(let i=0;i<1800;i++)g.fillRect(512+rnd(-150,150),rnd(338,442),1.5,1.5);
  }
 
  const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;faceCache.set(key,t);return t}
 
-// 3D Glossy Eyeball Texture (Sclera, Iris, Pupil & Catchlight)
-const eyeCache=new Map();
-function eyeTex(col){
- if(eyeCache.has(col))return eyeCache.get(col);
- const c=document.createElement('canvas');c.width=256;c.height=128;const g=c.getContext('2d'),H='#'+col.toString(16).padStart(6,'0');
- g.fillStyle='#f4f1ea';g.fillRect(0,0,256,128);
- // Front of SphereGeometry is u=0.25 -> x=64, y=64
- const cx=64,cy=64;
- g.fillStyle=H;g.beginPath();g.arc(cx,cy,22,0,Math.PI*2);g.fill();
- g.strokeStyle='#111';g.lineWidth=3;g.stroke();
- g.fillStyle='#050505';g.beginPath();g.arc(cx,cy,10,0,Math.PI*2);g.fill();
- g.fillStyle='#ffffff';g.beginPath();g.arc(cx+6,cy-6,4.5,0,Math.PI*2);g.fill();
- const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;eyeCache.set(col,t);return t}
+// Paisley Bandana Texture (Crimson for Lucia, Navy for Jason)
+const bandanaCache=new Map();
+function bandanaTex(baseHex,accentHex){
+ const key=`${baseHex}_${accentHex}`;if(bandanaCache.has(key))return bandanaCache.get(key);
+ const c=document.createElement('canvas');c.width=256;c.height=128;const g=c.getContext('2d');
+ g.fillStyle=baseHex;g.fillRect(0,0,256,128);
+ g.strokeStyle=accentHex;g.lineWidth=2.5;
+ g.strokeRect(6,6,244,116);
+ for(let x=20;x<240;x+=32)for(let y=22;y<112;y+=28){
+  g.beginPath();g.arc(x,y,7,0,Math.PI*2);g.stroke();
+  g.fillStyle=accentHex;g.fillRect(x-1.5,y-1.5,3,3);
+ }
+ const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;bandanaCache.set(key,t);return t}
 
-// Tailored Garment Texture with Realistic Fabric Folds, Chest Contours & Alpha Neckline/Armhole Cutouts
+// Tailored Garment Texture with Realistic Fabric Folds & Alpha Neckline/Armhole Cutouts
 const clothCache=new Map();
 function clothTex(col,pat,cut){
  const key=`${col}_${pat}_${cut}`;if(clothCache.has(key))return clothCache.get(key);
@@ -456,7 +553,6 @@ function clothTex(col,pat,cut){
  g.clearRect(0,0,256,128);
  g.fillStyle=H;g.fillRect(0,0,256,128);
 
- // Realistic garment folds, chest/pectoral shading & waist tuck shadows
  const vg=g.createLinearGradient(0,0,0,128);
  vg.addColorStop(0,'rgba(255,255,255,.10)');
  vg.addColorStop(.38,'rgba(0,0,0,.04)');
@@ -464,15 +560,14 @@ function clothTex(col,pat,cut){
  vg.addColorStop(1,'rgba(0,0,0,.26)');
  g.fillStyle=vg;g.fillRect(0,0,256,128);
 
- // Diagonal fabric tension folds across ribs & waist
- g.strokeStyle='rgba(0,0,0,.12)';g.lineWidth=3;
- for(let fy=54;fy<118;fy+=14){
+ g.strokeStyle='rgba(0,0,0,.11)';g.lineWidth=3;
+ for(let fy=52;fy<118;fy+=14){
   g.beginPath();g.moveTo(14,fy);g.quadraticCurveTo(64,fy+8,114,fy-2);g.stroke();
   g.beginPath();g.moveTo(142,fy-2);g.quadraticCurveTo(192,fy+8,242,fy);g.stroke();
  }
 
  if(pat==='ribbed'){
-  g.fillStyle='rgba(0,0,0,.09)';for(let x=0;x<256;x+=3)g.fillRect(x,0,1,128);
+  g.fillStyle='rgba(0,0,0,.08)';for(let x=0;x<256;x+=3)g.fillRect(x,0,1,128);
  }else if(pat==='denim'){
   g.fillStyle='rgba(255,255,255,.07)';for(let i=-128;i<384;i+=5)g.fillRect(i,0,2,128);
   g.fillStyle='rgba(155,190,235,.15)';g.fillRect(36,36,56,64);g.fillRect(164,36,56,64);
@@ -489,49 +584,44 @@ function clothTex(col,pat,cut){
 
  if(cut==='tank'){
   g.globalCompositeOperation='destination-out';
-  g.beginPath();g.ellipse(0,0,28,36,0,0,Math.PI*2);g.fill();
-  g.beginPath();g.ellipse(256,0,28,36,0,0,Math.PI*2);g.fill();
-  g.beginPath();g.ellipse(128,0,26,28,0,0,Math.PI*2);g.fill();
-  g.beginPath();g.ellipse(64,14,24,42,0,0,Math.PI*2);g.fill();
-  g.beginPath();g.ellipse(192,14,24,42,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(0,0,26,32,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(256,0,26,32,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(128,0,24,24,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(64,14,22,38,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(192,14,22,38,0,0,Math.PI*2);g.fill();
   g.globalCompositeOperation='source-over';
   g.strokeStyle='rgba(0,0,0,.24)';g.lineWidth=2.5;
-  g.beginPath();g.ellipse(0,0,29,37,0,0,Math.PI*2);g.stroke();
-  g.beginPath();g.ellipse(256,0,29,37,0,0,Math.PI*2);g.stroke();
-  g.beginPath();g.ellipse(64,14,25,43,0,0,Math.PI*2);g.stroke();
-  g.beginPath();g.ellipse(192,14,25,43,0,0,Math.PI*2);g.stroke();
+  g.beginPath();g.ellipse(0,0,27,33,0,0,Math.PI*2);g.stroke();
+  g.beginPath();g.ellipse(256,0,27,33,0,0,Math.PI*2);g.stroke();
+  g.beginPath();g.ellipse(64,14,23,39,0,0,Math.PI*2);g.stroke();
+  g.beginPath();g.ellipse(192,14,23,39,0,0,Math.PI*2);g.stroke();
  }else if(cut==='tee'){
   g.globalCompositeOperation='destination-out';
-  g.beginPath();g.ellipse(0,0,22,16,0,0,Math.PI*2);g.fill();
-  g.beginPath();g.ellipse(256,0,22,16,0,0,Math.PI*2);g.fill();
-  g.beginPath();g.ellipse(128,0,22,10,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(0,0,20,14,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(256,0,20,14,0,0,Math.PI*2);g.fill();
+  g.beginPath();g.ellipse(128,0,20,8,0,0,Math.PI*2);g.fill();
   g.globalCompositeOperation='source-over';
+  g.strokeStyle='rgba(0,0,0,.18)';g.lineWidth=3;
+  g.beginPath();g.ellipse(0,0,21,15,0,0,Math.PI*2);g.stroke();
+  g.beginPath();g.ellipse(256,0,21,15,0,0,Math.PI*2);g.stroke();
  }
  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.encoding=THREE.sRGBEncoding;clothCache.set(key,t);return t}
 
-const tattooArmTex=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');
- g.fillStyle='#d29870';g.fillRect(0,0,128,128);
- g.strokeStyle='rgba(25,34,42,.52)';g.fillStyle='rgba(25,34,42,.42)';g.lineWidth=2.2;
- g.beginPath();g.arc(34,36,13,0,7);g.stroke();
- g.beginPath();g.moveTo(21,36);g.lineTo(47,36);g.moveTo(34,23);g.lineTo(34,49);g.stroke();
- g.beginPath();g.moveTo(22,53);g.quadraticCurveTo(34,68,46,53);g.fill();
- const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;return t})();
-
 const skinCache=new Map();
 function skinMat(col){if(skinCache.has(col))return skinCache.get(col);const m=new THREE.MeshStandardMaterial({color:col,roughness:.62,metalness:.02});skinCache.set(col,m);return m}
-const tattooMat=new THREE.MeshStandardMaterial({map:tattooArmTex,roughness:.62,metalness:.02}),
-      mGold=new THREE.MeshStandardMaterial({color:0xffd23c,metalness:.9,roughness:.2,envMap:ENV}),
+const mGold=new THREE.MeshStandardMaterial({color:0xffd23c,metalness:.9,roughness:.2,envMap:ENV}),
       mSilver=new THREE.MeshStandardMaterial({color:0xd8e0ea,metalness:.92,roughness:.18,envMap:ENV}),
-      mBelt=new THREE.MeshStandardMaterial({color:0x2b1d12,roughness:.6}),
+      mBelt=new THREE.MeshStandardMaterial({color:0x1c1816,roughness:.55}),
+      mStrap=new THREE.MeshStandardMaterial({color:0x1b202b,roughness:.65}),
       mWhiteSole=new THREE.MeshStandardMaterial({color:0xe8ecf2,roughness:.6}),
       mGlassShades=new THREE.MeshStandardMaterial({color:0x06080c,roughness:.08,metalness:.92,envMap:ENV});
 
-function makeHuman(o){o=Object.assign({f:0,shirt:0x19c6d9,pat:'plain',top:'tee',pants:0x222a3a,bottom:'jeans',skin:0xd89f78,hair:0x24160e,hs:'short',shoe:0xe6eaf0,sc:1,gl:0,chain:0,tat:0,eye:0x4a3320,acc:0xcc2222,st:0,cs:0},o);
+function makeHuman(o){o=Object.assign({f:0,shirt:0x19c6d9,pat:'plain',top:'tee',pants:0x222a3a,bottom:'jeans',skin:0xd89f78,hair:0x24160e,hs:'short',shoe:0xe6eaf0,sc:1,gl:0,chain:0,bandana:0,strap:0,eye:0x4a3320,acc:0xcc2222,st:0,cs:0},o);
  const cutType=(o.top==='tank'||o.top==='crop')?'tank':'tee';
  const mS=new THREE.MeshStandardMaterial({map:clothTex(o.shirt,o.pat,cutType),alphaTest:.5,side:THREE.DoubleSide,roughness:.88}),
        mP=new THREE.MeshStandardMaterial({map:clothTex(o.pants,o.bottom==='jeans'?'denim':'plain','none'),roughness:.86}),
        mK=skinMat(o.skin),
-       mH=new THREE.MeshStandardMaterial({color:o.hair,roughness:.52,metalness:.06}),
+       mH=new THREE.MeshStandardMaterial({color:o.hair,roughness:.58,metalness:.05}),
        mO=new THREE.MeshStandardMaterial({color:o.shoe,roughness:.55});
  const part=(geo,m,x,y,z,p,sx,sy,sz)=>{const q=new THREE.Mesh(geo,m);q.position.set(x,y,z);q.scale.set(sx||1,sy||1,sz||1);q.castShadow=!!o.cs;p.add(q);return q};
  const g=new THREE.Group(),hips=new THREE.Group(),torso=new THREE.Group(),head=new THREE.Group(),u={hips,torso,head,arms:[],legs:[]},f=o.f,aw=f?.86:1;
@@ -539,53 +629,51 @@ function makeHuman(o){o=Object.assign({f:0,shirt:0x19c6d9,pat:'plain',top:'tee',
 
  // Pelvis + leather belt & buckle
  part(HGEO.hips,mP,0,0,0,hips,1.08,1,.78);
- if(o.bottom==='jeans'){part(HGEO.belt,mBelt,0,0,0,hips,1.09,1,.79);part(HGEO.buckle,mSilver,0,.07,.146,hips)}
+ if(o.bottom==='jeans'||o.bottom==='shorts'){part(HGEO.belt,mBelt,0,0,0,hips,1.09,1,.79);part(HGEO.buckle,mSilver,0,.07,.146,hips)}
 
- // Unified anatomical torso + alpha-tailored tank/shirt shell
+ // Unified anatomical torso + alpha-tailored shirt/tank shell
  part(f?HGEO.torsoF:HGEO.torsoM,mK,0,0,0,torso,1.08,1,.74);
  const sGeo=o.top==='crop'?HGEO.cropF:(f?HGEO.clothF:HGEO.clothM);
  part(sGeo,mS,0,0,0,torso,1.08,1,.74);
  for(const s of[-1,1])part(f?HGEO.chestF:HGEO.chestM,mS,s*(f?.076:.086),f?.42:.43,.076,torso,1,1,.80);
  if(o.chain){const ch=part(HGEO.chain,o.chain===2?mSilver:mGold,0,.61,.022,torso,1.04,1,.86);ch.rotation.x=Math.PI/2.2}
+ if(o.strap)part(HGEO.bagStrap,mStrap,0,0,0,torso);
 
- // Neck & single-mesh sculpted head + 3D glossy eyeballs
- part(HGEO.neck,mK,0,.70,0,torso);head.position.y=.835;torso.add(head);
- const mF=new THREE.MeshStandardMaterial({map:faceTex(o),roughness:.62,metalness:.02});
- part(HGEO.head,mF,0,0,0,head,1,1,1);
- const mEye=new THREE.MeshStandardMaterial({map:eyeTex(o.eye),roughness:.10,metalness:.05});
+ // Neck, draped GTA-6 paisley neck bandana & planar-mapped sculpted head
+ part(HGEO.neck,mK,0,.70,0,torso);
+ if(o.bandana){
+  const bMat=new THREE.MeshStandardMaterial({map:bandanaTex(o.bandana==='#b81d38'?'#a81830':'#1e2942','#e6eef8'),side:THREE.DoubleSide,roughness:.85});
+  part(HGEO.bandanaNeck,bMat,0,.62,.008,torso);
+ }
+ head.position.y=.835;torso.add(head);
+ const mF=new THREE.MeshStandardMaterial({map:faceTex(o),roughness:.60,metalness:.02});
+ part(f?HGEO.headF:HGEO.headM,mF,0,0,0,head,1,1,1);
  for(const s of[-1,1]){
-  part(HGEO.eye,mEye,s*.034,.014,.114,head,1,1,1);
-  part(HGEO.ear,mK,s*.124,-.005,-.005,head,.44,1,.86);
-  if(f)part(HGEO.hoop,mGold,s*.126,-.036,-.002,head).rotation.y=Math.PI/2;
+  part(HGEO.ear,mK,s*(f?.076:.080),-.005,-.006,head,.45,1,.86);
+  if(f)part(HGEO.hoop,mGold,s*.078,-.032,-.004,head).rotation.y=Math.PI/2;
  }
 
- // 3D Volumetric Hair (seamless with painted hairline & sideburns)
- if(o.hs!=='bald'){const hc=o.hs==='cap'?new THREE.MeshStandardMaterial({color:o.acc,roughness:.75}):mH;
-  if(o.hs==='short'||o.hs==='quiff'||o.hs==='cap'){
-   part(HGEO.fadeBack,hc,0,.018,-.022,head,.89,1.12,.99);
-   if(o.hs==='quiff')part(HGEO.quiffTop,mH,0,.145,.018,head,1.05,.55,1.35);
-   if(o.hs==='cap')part(HGEO.visor,hc,0,.052,.148,head).rotation.x=.12;
-  }else{
-   part(HGEO.femaleCrown,mH,0,.018,-.022,head,.90,1.13,.99);
-   if(o.hs==='long'){
-    part(HGEO.longBack,mH,0,-.10,-.075,head,.98,1.76,.85);
-    for(const s of[-1,1])part(HGEO.longSide,mH,s*.118,-.085,.006,head,.56,1.98,.76);
-   }else if(o.hs==='pony'){
-    part(HGEO.ponyBase,mH,0,.056,-.150,head);
-    const pt=part(HGEO.ponyTail,mH,0,-.09,-.182,head,1.15,3.25,1.15);pt.rotation.x=.22;
-    for(const s of[-1,1])part(HGEO.longSide,mH,s*.115,-.065,.022,head,.44,1.35,.55);
-   }else if(o.hs==='bandana'){
-    part(HGEO.bandana,new THREE.MeshStandardMaterial({color:o.acc,roughness:.8}),0,.048,-.005,head,.91,1,1.06).rotation.x=Math.PI/2;
-   }
+ // Cranial-fitted 3D Hair Volume (strictly above hairline — zero face/eye clipping!)
+ if(o.hs!=='bald'){
+  const hc=o.hs==='cap'?new THREE.MeshStandardMaterial({color:o.acc,roughness:.75}):mH;
+  part(f?HGEO.hairCapF:HGEO.hairCapM,hc,0,0,0,head);
+  if(o.hs==='cap')part(HGEO.visor,hc,0,.052,.108,head).rotation.x=.12;
+  if(o.hs==='pony'){
+   part(HGEO.ponyBase,mH,0,.068,-.094,head);
+   const c1=part(HGEO.ponyCurl1,mH,-.015,.012,-.115,head,.95,1.85,.95);c1.rotation.x=.22;
+   const c2=part(HGEO.ponyCurl2,mH,-.028,-.068,-.122,head,.90,1.75,.90);c2.rotation.x=.14;
+   for(const s of[-1,1])part(HGEO.ponyLock,mH,s*.074,-.048,.014,head,.36,1.55,.46);
+  }else if(o.hs==='long'){
+   part(HGEO.ponyCurl1,mH,0,-.045,-.096,head,1.85,2.2,.95);
+   for(const s of[-1,1])part(HGEO.ponyLock,mH,s*.075,-.055,.010,head,.42,1.85,.52);
   }
  }
- if(o.gl){for(const s of[-1,1])part(new THREE.BoxGeometry(.068,.04,.016),mGlassShades,s*.048,.018,.134,head);part(new THREE.BoxGeometry(.17,.008,.016),mGlassShades,0,.03,.136,head)}
+ if(o.gl){for(const s of[-1,1])part(new THREE.BoxGeometry(.054,.032,.014),mGlassShades,s*.032,.016,.096,head);part(new THREE.BoxGeometry(.13,.007,.014),mGlassShades,0,.025,.098,head)}
 
  // Integrated shoulders, natural bent elbows & articulated hands
  for(const s of[-1,1]){const sh=new THREE.Group(),el=new THREE.Group();sh.position.set(s*(f?.178:.206),.545,0);torso.add(sh);
-  const armSkin=(o.tat&&s===-1)?tattooMat:mK;
-  part(HGEO.shBall,o.top==='tee'?mS:armSkin,0,0,0,sh,aw,1,aw);
-  part(HGEO.upArm,armSkin,0,0,0,sh,aw,1,aw);
+  part(HGEO.shBall,o.top==='tee'?mS:mK,0,0,0,sh,aw,1,aw);
+  part(HGEO.upArm,mK,0,0,0,sh,aw,1,aw);
   if(o.top==='tee')part(HGEO.sleeve,mS,0,0,0,sh,aw,1,aw);
   el.position.y=-.27;sh.add(el);
   part(HGEO.elBall,mK,0,0,0,el,aw,1,aw);
@@ -613,7 +701,7 @@ function animHuman(g,ph,amp,t){const u=g.userData;
   A.s.rotation.x=Math.sin(p)*.65*amp+(amp<.05?.05:0);
   A.e.rotation.x=-.28-.35*amp}
  u.hips.position.y=.92-Math.abs(Math.sin(ph))*.042*amp;
- u.hips.rotation.z=amp<.05?Math.sin(t*1.1)*.025:0;
+ u.hips.rotation.z=amp<.05?Math.sin(t*1.1)*.022:0;
  u.torso.rotation.y=Math.sin(ph)*.14*amp;u.torso.rotation.x=.07*amp;
  u.head.rotation.y=-Math.sin(ph)*.1*amp+Math.sin(t*.7)*.14*(1-Math.min(1,amp));
  u.torso.scale.y=1+Math.sin(t*2.2)*.008;
@@ -677,7 +765,7 @@ function makeCar(col,pol,kind){
  drv.userData.arms[0].e.rotation.x=-.35;drv.userData.arms[1].e.rotation.x=-.35;
  g.add(drv);
 
- const pax=makeHuman({f:1,top:'crop',shirt:0xe84d72,pants:0x2b456b,skin:0xd0966e,hair:0x1c110b,hs:'pony'});
+ const pax=makeHuman({f:1,top:'tank',shirt:0x232730,bottom:'shorts',pants:0x3b6399,skin:0xd0966e,hair:0x1c110b,hs:'pony',bandana:'#b81d38'});
  pax.scale.setScalar(.8);pax.position.set(.36,.12,-.18);pax.visible=false;
  g.add(pax);
 
@@ -737,12 +825,12 @@ function spawnT(far){for(let k=0;k<12;k++){const ax=ri(0,1),i=ri(-N,N),t=rnd(-EX
 function spawnParked(){const ax=ri(0,1),i=ri(-N,N),j=ri(-N,N-1),t=j*B+rnd(14,66),x=ax?t:i*B+7.5,z=ax?i*B+7.5:t;
  const c=addCar({x,z,type:'parked',tv:0,h:ax?Math.PI/2:0,kind:Math.random()<.55?'sp':'ms'});if(c.m.userData.drv)c.m.userData.drv.visible=false}
 
-// ---------- JASON & LUCIA PROTAGONISTS + COMPANION AI ----------
+// ---------- JASON & LUCIA PROTAGONISTS (MATCHING GTA-6 ARTWORK) + COMPANION AI ----------
 const P={x:0,z:14,h:0,car:null,armor:100,wanted:0,missions:0,amp:0,ws:0,walk:0,charIdx:0};
-const Bdy={x:-1.15,z:13.6,h:0,amp:0,ws:0,walk:0};
+const Bdy={x:-1.05,z:13.7,h:0,amp:0,ws:0,walk:0};
 
-const jasonMesh=makeHuman({f:0,cs:1,top:'tank',pat:'ribbed',bottom:'jeans',shirt:0xdce2ea,pants:0x2b456b,hs:'quiff',gl:0,chain:2,tat:1,skin:0xd29870,hair:0x24160e,eye:0x4a3520,shoe:0xe6eaf0,st:1,sc:1.03});
-const luciaMesh=makeHuman({f:1,cs:1,top:'crop',pat:'ribbed',bottom:'jeans',shirt:0xe84d72,pants:0x365582,hs:'pony',gl:0,chain:1,skin:0xd0966e,hair:0x1c110b,eye:0x3b2414,shoe:0xebeef2,sc:.98});
+const jasonMesh=makeHuman({f:0,cs:1,top:'tee',pat:'plain',bottom:'jeans',shirt:0xeef2f7,pants:0x2e4c78,hs:'short',bandana:'#1e2942',strap:1,skin:0xd29870,hair:0x24160e,eye:0x4a3520,shoe:0xe6eaf0,st:1,sc:1.03});
+const luciaMesh=makeHuman({f:1,cs:1,top:'tank',pat:'ribbed',bottom:'shorts',shirt:0x232730,pants:0x3b6399,hs:'pony',bandana:'#b81d38',skin:0xd0966e,hair:0x1c110b,eye:0x3b2414,shoe:0xebeef2,sc:.98});
 scene.add(jasonMesh,luciaMesh);
 let man=jasonMesh,buddyMesh=luciaMesh;
 
@@ -750,7 +838,7 @@ function switchCharacter(){
  P.charIdx=1-P.charIdx;
  man=P.charIdx===0?jasonMesh:luciaMesh;
  buddyMesh=P.charIdx===0?luciaMesh:jasonMesh;
- $('char-lbl').textContent=P.charIdx===0?'PLAYING: JASON (LUCIA PARTNER)':'PLAYING: LUCIA (JASON PARTNER)';
+ $('char-lbl').textContent=P.charIdx===0?'JASON (LUCIA PARTNER)':'LUCIA (JASON PARTNER)';
  flash(P.charIdx===0?'CONTROLLING JASON':'CONTROLLING LUCIA','#ff4fa3',1400);
 }
 
@@ -760,7 +848,7 @@ addCar({x:-4.5,z:36,type:'parked',tv:0,h:Math.PI,kind:'sd'}).m.userData.drv.visi
 
 const peds=[];
 function spawnPed(){const ax=ri(0,1),i=ri(-N,N),t=rnd(-EX+15,EX-15),s=Math.random()<.5?1:-1,off=i*B+(Math.random()<.5?1:-1)*10.9;
- const fm=Math.random()<.48,m=makeHuman({f:fm,top:pick(fm?['tee','tank','crop']:['tee','tank']),pat:pick(['plain','hawaii','ribbed','stripe']),bottom:pick(['jeans','shorts']),shirt:pick(SHC),pants:pick(PNC),skin:pick(SK),hair:pick(HR),hs:pick(fm?['long','pony','short','bandana']:['quiff','cap','short','bandana','bald']),
+ const fm=Math.random()<.48,m=makeHuman({f:fm,top:pick(fm?['tee','tank','crop']:['tee','tank']),pat:pick(['plain','hawaii','ribbed','stripe']),bottom:pick(['jeans','shorts']),shirt:pick(SHC),pants:pick(PNC),skin:pick(SK),hair:pick(HR),hs:pick(fm?['long','pony','short']:['cap','short','bald']),
   acc:pick(SHC),gl:Math.random()<.3?1:0,chain:Math.random()<.2?1:0,eye:pick([0x3a2414,0x4a6a8a,0x3a6a4a,0x6a4a24]),shoe:pick([0xe6eaf0,0x111111,0xc0392b,0x2980b9]),st:Math.random()<.5,sc:rnd(.95,1.06)});scene.add(m);
  peds.push({m,x:ax?t:off,z:ax?off:t,dir:ax?[s,0]:[0,s],sp:rnd(1.1,1.7),ph:rnd(0,6),down:0,fl:0,run:0})}
 for(let i=0;i<34;i++)spawnPed();
@@ -868,7 +956,7 @@ addEventListener('resize',()=>{R.setSize(innerWidth,innerHeight);cam.aspect=inne
 
 function respawn(){
  if(P.car){P.car.type='parked';if(P.car.m.userData.drv)P.car.m.userData.drv.visible=false;if(P.car.m.userData.pax)P.car.m.userData.pax.visible=false}
- P.car=null;P.x=0;P.z=14;Bdy.x=-1.15;Bdy.z=13.6;P.armor=100;P.wanted=0;
+ P.car=null;P.x=0;P.z=14;Bdy.x=-1.05;Bdy.z=13.7;P.armor=100;P.wanted=0;
  for(const c of cars)if(c.type==='police')c.type='parked';if(G.run)startStage(G.stage)
 }
 function enterExit(){
@@ -902,7 +990,7 @@ function update(dt){
  else{const fw=((keys.w||keys.arrowup)?1:0)-((keys.s||keys.arrowdown)?1:0),st=((keys.d||keys.arrowright)?1:0)-((keys.a||keys.arrowleft)?1:0);let mx=Math.sin(camYaw)*fw-Math.cos(camYaw)*st,mz=Math.cos(camYaw)*fw+Math.sin(camYaw)*st;const sr=keys.shift&&G.st>(G.sl?25:0)&&(fw||st);G.sl=G.st<=0?1:(G.st>25?0:G.sl);const sp=sr?8.5:5;G.st=clamp(G.st+(sr?-26:14)*dt,0,100);
   const l=Math.hypot(mx,mz);if(l>.01){mx/=l;mz/=l;P.x+=mx*sp*dt;P.z+=mz*sp*dt;P.h+=wrap(Math.atan2(mx,mz)-P.h)*Math.min(1,dt*12);P.walk+=dt*sp*1.6;P.ws=sp}else P.ws=0;pushOut(P,.5);
 
-  const bxT=P.x-Math.cos(P.h)*1.15-Math.sin(P.h)*.45,bzT=P.z+Math.sin(P.h)*1.15-Math.cos(P.h)*.45;
+  const bxT=P.x-Math.cos(P.h)*1.05-Math.sin(P.h)*.35,bzT=P.z+Math.sin(P.h)*1.05-Math.cos(P.h)*.35;
   const bdx=bxT-Bdy.x,bdz=bzT-Bdy.z,bd=Math.hypot(bdx,bdz);
   if(bd>28){Bdy.x=bxT;Bdy.z=bzT}
   else if(bd>.45){const bsp=bd>4?8.5:5;Bdy.x+=(bdx/bd)*bsp*dt;Bdy.z+=(bdz/bd)*bsp*dt;Bdy.h+=wrap(Math.atan2(bdx,bdz)-Bdy.h)*Math.min(1,dt*10);Bdy.walk+=dt*bsp*1.6;Bdy.ws=bsp}
@@ -945,10 +1033,10 @@ function update(dt){
 
  const tx=P.x,tz=P.z,sp=P.car?Math.abs(P.car.v):0;
  if(P.car&&!drag)camYaw+=wrap(P.car.h-camYaw)*Math.min(1,dt*2.5);
- const mode=(camMode===2&&!P.car)?0:camMode,dist=mode===0?(P.car?8.6:4.2):(mode===1?24:.3),hgt=mode===0?(P.car?3.3:2.05):(mode===1?20:1.45),sy=Math.sin(camYaw),cy=Math.cos(camYaw);
+ const mode=(camMode===2&&!P.car)?0:camMode,dist=mode===0?(P.car?8.4:3.2):(mode===1?24:.3),hgt=mode===0?(P.car?3.2:1.72):(mode===1?20:1.45),sy=Math.sin(camYaw),cy=Math.cos(camYaw);
  const want_=new THREE.Vector3(tx-sy*dist+(mode===2?sy*.9:0),hgt,tz-cy*dist+(mode===2?cy*.9:0));
  cam.position.lerp(want_,mode===2?1:Math.min(1,dt*8));
- cam.lookAt(tx+(mode===2?sy*20:0),mode===2?1.3:1.28,tz+(mode===2?cy*20:0));cam.fov=60+sp*.45;cam.updateProjectionMatrix();
+ cam.lookAt(tx+(mode===2?sy*20:0),mode===2?1.3:1.38,tz+(mode===2?cy*20:0));cam.fov=56+sp*.45;cam.updateProjectionMatrix();
 
  const el=Math.sin((tod-.25)*Math.PI*2),dayF=clamp(el*2+.5,0,1),dusk=clamp(1-Math.abs(el)*3.5,0,1);NIGHT=dayF<.5;const ei=(raining?1.05:.75)*(.55+.45*(1-dayF*.4));envMats.forEach(m=>m.envMapIntensity=ei);gm.roughness=raining?.28:.38;gm.envMapIntensity=raining?.6:.42;
  const sky=new THREE.Color(0x0d0c24).lerp(new THREE.Color(0xa6ccf0),dayF).lerp(new THREE.Color(0xff7594),dusk*.78);
@@ -959,7 +1047,7 @@ function update(dt){
  spot.intensity=P.car&&dayF<.65?3.5:0;if(P.car){const c=P.car;spot.position.set(c.x+Math.sin(c.h)*2,1,c.z+Math.cos(c.h)*2);spot.target.position.set(c.x+Math.sin(c.h)*30,0,c.z+Math.cos(c.h)*30)}
 
  if(eng){eng.frequency.value=45+sp*5;engG.gain.value=P.car?.025+sp*.0007:0}
- P.armor=clamp(P.armor,0,100);$('av').textContent=P.armor.toFixed(0);$('bi').style.width=P.armor+'%';
+ P.armor=clamp(P.armor,0,100);$('av').textContent=P.armor.toFixed(0);$('bi').style.width=P.armor+'%';$('si').style.width=G.st.toFixed(0)+'%';
  $('w').textContent='★'.repeat(P.wanted)+'☆'.repeat(5-P.wanted);$('ms').textContent='$'+G.cash;hud2();
  $('sp').textContent=P.car?(sp*2.237).toFixed(0)+' MPH':'ON FOOT';
  $('mode-tag').textContent=P.car?'DRIVING':(P.ws>6?'SPRINTING':P.ws?'WALKING':'ON FOOT');
@@ -968,14 +1056,14 @@ function update(dt){
 
 // GTA-Style Circular GPS Minimap
 const mm=$('mm').getContext('2d');
-function mini(){mm.save();mm.fillStyle='#0a0f1a';mm.fillRect(0,0,164,164);mm.translate(82,82);mm.rotate(camYaw-Math.PI);const sc=.52;
- mm.fillStyle='#1d2a40';for(let i=-N;i<N;i++)for(let j=-N;j<N;j++){const x=((i+.5)*B-P.x)*sc,z=((j+.5)*B-P.z)*sc;if(Math.abs(x)<135&&Math.abs(z)<135)mm.fillRect(x-(B-RW)*sc/2,z-(B-RW)*sc/2,(B-RW)*sc,(B-RW)*sc)}
+function mini(){mm.save();mm.fillStyle='#0a0f1a';mm.fillRect(0,0,138,138);mm.translate(69,69);mm.rotate(camYaw-Math.PI);const sc=.44;
+ mm.fillStyle='#1d2a40';for(let i=-N;i<N;i++)for(let j=-N;j<N;j++){const x=((i+.5)*B-P.x)*sc,z=((j+.5)*B-P.z)*sc;if(Math.abs(x)<115&&Math.abs(z)<115)mm.fillRect(x-(B-RW)*sc/2,z-(B-RW)*sc/2,(B-RW)*sc,(B-RW)*sc)}
  for(const c of cars){const x=(c.x-P.x)*sc,z=(c.z-P.z)*sc;if(c.type==='police'){mm.fillStyle=Math.floor(performance.now()/200)%2?'#ff2a2a':'#3a7bff';mm.fillRect(x-3,z-3,6,6)}else if(c.type!=='player'){mm.fillStyle='#7d8aa6';mm.fillRect(x-1.5,z-1.5,3,3)}}
  if(!P.car){mm.fillStyle='#ff5e7e';mm.beginPath();mm.arc((Bdy.x-P.x)*sc,(Bdy.z-P.z)*sc,3,0,7);mm.fill()}
- let bx_=(beacon.position.x-P.x)*sc,bz=(beacon.position.z-P.z)*sc;const bl=Math.hypot(bx_,bz);if(bl>72){bx_*=72/bl;bz*=72/bl}
- if(beacon.visible){mm.strokeStyle='#b56bff';mm.lineWidth=2.5;mm.beginPath();mm.moveTo(0,0);let c=[P.x,P.z];for(let k=0;k<5;k++){c=nav(c[0],c[1],beacon.position.x,beacon.position.z);mm.lineTo((c[0]-P.x)*sc,(c[1]-P.z)*sc)}mm.stroke();mm.fillStyle='#19e68c';mm.beginPath();mm.arc(bx_,bz,4.5,0,7);mm.fill()}
- mm.fillStyle='#ffd23c';for(const b of bags){let x=(b.position.x-P.x)*sc,z=(b.position.z-P.z)*sc;const l=Math.hypot(x,z);if(l>72){x*=72/l;z*=72/l}mm.fillRect(x-2,z-2,4,4)}mm.restore();
- mm.fillStyle='#19e6ff';mm.beginPath();mm.moveTo(82,74);mm.lineTo(87,88);mm.lineTo(77,88);mm.fill()}
+ let bx_=(beacon.position.x-P.x)*sc,bz=(beacon.position.z-P.z)*sc;const bl=Math.hypot(bx_,bz);if(bl>60){bx_*=60/bl;bz*=60/bl}
+ if(beacon.visible){mm.strokeStyle='#b56bff';mm.lineWidth=2.5;mm.beginPath();mm.moveTo(0,0);let c=[P.x,P.z];for(let k=0;k<5;k++){c=nav(c[0],c[1],beacon.position.x,beacon.position.z);mm.lineTo((c[0]-P.x)*sc,(c[1]-P.z)*sc)}mm.stroke();mm.fillStyle='#19e68c';mm.beginPath();mm.arc(bx_,bz,4,0,7);mm.fill()}
+ mm.fillStyle='#ffd23c';for(const b of bags){let x=(b.position.x-P.x)*sc,z=(b.position.z-P.z)*sc;const l=Math.hypot(x,z);if(l>60){x*=60/l;z*=60/l}mm.fillRect(x-2,z-2,4,4)}mm.restore();
+ mm.fillStyle='#19e6ff';mm.beginPath();mm.moveTo(69,62);mm.lineTo(74,75);mm.lineTo(64,75);mm.fill()}
 
 update(.001);let last=performance.now();
 (function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(G.run&&!G.paused)update(dt);if(!G.run){const a=now/7000;cam.position.set(Math.sin(a)*55,24,Math.cos(a)*55);cam.lookAt(0,6,14)}R.render(scene,cam);requestAnimationFrame(loop)})(last);
