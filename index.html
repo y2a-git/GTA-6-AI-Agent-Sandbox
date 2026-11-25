@@ -91,10 +91,52 @@ function spawnT(far){for(let k=0;k<12;k++){const ax=ri(0,1),i=ri(-N,N),t=rnd(-EX
 function spawnParked(){const ax=ri(0,1),i=ri(-N,N),j=ri(-N,N-1),t=j*B+rnd(14,66),x=ax?t:i*B+7.5,z=ax?i*B+7.5:t;
  addCar({x,z,type:'parked',tv:0,h:ax?Math.PI/2:0})}
 // ---------- player ----------
-const P={x:0,z:14,h:0,car:null,armor:100,wanted:0,missions:0},man=new THREE.Group();
-const skin=new THREE.MeshStandardMaterial({color:0xe8b48a}),sh=new THREE.MeshStandardMaterial({color:0x19c6d9,emissive:0x0a5560,roughness:.6}),pm=new THREE.MeshStandardMaterial({color:0x222a3a});
-bx(.62,.8,.36,sh,0,1.25,0,man);const hd=new THREE.Mesh(new THREE.SphereGeometry(.22,14,10),skin);hd.position.y=1.9;hd.castShadow=true;man.add(hd);
-const legs=[-1,1].map(s=>{const l=new THREE.Group();l.position.set(s*.16,.85,0);bx(.24,.85,.26,pm,0,-.42,0,l);man.add(l);return l});scene.add(man);
+const P={x:0,z:14,h:0,car:null,armor:100,wanted:0,missions:0,amp:0,ws:0,walk:0};
+// ---------- humans ----------
+function makeHuman(o){o=Object.assign({shirt:0x19c6d9,pants:0x222a3a,skin:0xe8b48a,hair:0x2a1a10,shoe:0x111111,sc:1},o);
+ const M=c=>new THREE.MeshStandardMaterial({color:c,roughness:.75}),mS=M(o.shirt),mP=M(o.pants),mK=M(o.skin),mH=M(o.hair),mO=M(o.shoe),mE=M(0x111111);
+ const part=(geo,m,x,y,z,p)=>{const q=new THREE.Mesh(geo,m);q.position.set(x,y,z);q.castShadow=true;p.add(q);return q};
+ const g=new THREE.Group(),hips=new THREE.Group(),torso=new THREE.Group(),head=new THREE.Group(),u={hips,torso,head,arms:[],legs:[]};
+ hips.position.y=.95;g.add(hips);hips.add(torso);
+ part(new THREE.CylinderGeometry(.2,.19,.22,12),mP,0,0,0,hips);
+ part(new THREE.CylinderGeometry(.25,.2,.62,14),mS,0,.34,0,torso);
+ part(new THREE.CylinderGeometry(.065,.075,.12,8),mK,0,.7,0,torso);
+ head.position.y=.84;torso.add(head);
+ const sk=part(new THREE.SphereGeometry(.15,14,10),mK,0,0,0,head);sk.scale.set(.92,1.12,1);
+ part(new THREE.SphereGeometry(.165,14,10,0,Math.PI*2,0,Math.PI*.55),mH,0,.015,-.01,head);
+ for(const e of[-1,1]){part(new THREE.SphereGeometry(.018,6,6),mE,e*.055,.02,.14,head);part(new THREE.SphereGeometry(.03,6,6),mK,e*.15,0,0,head)}
+ part(new THREE.ConeGeometry(.022,.05,6),mK,0,-.01,.16,head).rotation.x=Math.PI/2;
+ for(const s of[-1,1]){const sh=new THREE.Group(),el=new THREE.Group();sh.position.set(s*.31,.58,0);torso.add(sh);
+  part(new THREE.CylinderGeometry(.058,.05,.3,8),mS,0,-.15,0,sh);el.position.y=-.3;sh.add(el);
+  part(new THREE.CylinderGeometry(.045,.038,.28,8),mK,0,-.14,0,el);part(new THREE.SphereGeometry(.05,8,6),mK,0,-.3,0,el);u.arms.push({s:sh,e:el})}
+ for(const s of[-1,1]){const th=new THREE.Group(),kn=new THREE.Group();th.position.set(s*.1,0,0);hips.add(th);
+  part(new THREE.CylinderGeometry(.088,.07,.45,10),mP,0,-.225,0,th);kn.position.y=-.45;th.add(kn);
+  part(new THREE.CylinderGeometry(.066,.05,.42,10),mP,0,-.21,0,kn);part(new THREE.BoxGeometry(.11,.07,.26),mO,0,-.43,.06,kn);u.legs.push({t:th,k:kn})}
+ g.scale.setScalar(o.sc);g.userData=u;return g}
+function animHuman(g,ph,amp,t){const u=g.userData;
+ for(let i=0;i<2;i++){const p=ph+i*Math.PI,L=u.legs[i],A=u.arms[i];
+  L.t.rotation.x=-Math.sin(p)*.75*amp;L.k.rotation.x=Math.max(0,Math.cos(p))*1.05*amp;
+  A.s.rotation.x=Math.sin(p)*.65*amp;A.e.rotation.x=-.2-.35*amp}
+ u.hips.position.y=.95-Math.abs(Math.sin(ph))*.04*amp;u.torso.rotation.y=Math.sin(ph)*.14*amp;u.torso.rotation.x=.08*amp;
+ u.head.rotation.y=-Math.sin(ph)*.1*amp+Math.sin(t*.7)*.12*(1-Math.min(1,amp));
+ u.torso.scale.y=1+Math.sin(t*2)*.008;
+ if(amp<.05){u.arms[0].s.rotation.z=.06;u.arms[1].s.rotation.z=-.06}else{u.arms[0].s.rotation.z=0;u.arms[1].s.rotation.z=0}}
+const man=makeHuman({});scene.add(man);
+const peds=[],SK=[0xf1c9a5,0xe0ac86,0xc68642,0x8d5524,0x5c3a21],HR=[0x1a1109,0x3b2414,0x7a5230,0xb8893c,0x222222,0x777777],
+ SHC=[0xc0392b,0x2980b9,0xf1c40f,0x8e44ad,0x16a085,0xecf0f1,0xe67e22,0x2c3e50,0x27ae60],PNC=[0x1f2a44,0x2b2b2b,0x4a3b2a,0x5d6d7e,0x111111],pick=a=>a[ri(0,a.length-1)];
+function spawnPed(){const ax=ri(0,1),i=ri(-N,N),t=rnd(-EX+15,EX-15),s=Math.random()<.5?1:-1,off=i*B+(Math.random()<.5?1:-1)*10.9;
+ const m=makeHuman({shirt:pick(SHC),pants:pick(PNC),skin:pick(SK),hair:pick(HR),sc:rnd(.93,1.07)});scene.add(m);
+ peds.push({m,x:ax?t:off,z:ax?off:t,dir:ax?[s,0]:[0,s],sp:rnd(1.1,1.7),ph:rnd(0,6),down:0,fl:0,run:0})}
+for(let i=0;i<45;i++)spawnPed();
+function updPeds(dt){const tm=performance.now()/1000;
+ for(const p of peds){
+  if(p.down>0){p.down-=dt;p.fl=Math.min(1,p.fl+dt*6)}else if(p.fl>0)p.fl=Math.max(0,p.fl-dt*3);
+  else{const v=p.run>0?(p.run-=dt,3.6):p.sp;p.x+=p.dir[0]*v*dt;p.z+=p.dir[1]*v*dt;p.ph+=dt*v*3.4;
+   if(Math.abs(p.dir[0]?p.x:p.z)>EX-8)p.dir=[-p.dir[0],-p.dir[1]];
+   for(const c of cars){if(c.type==='parked'||Math.abs(c.v)<3.5)continue;if(Math.hypot(c.x-p.x,c.z-p.z)<1.9){p.down=3.5;p.run=5;if(c===P.car)wantedUp(1);c.v*=.9;break}}}
+  const d=Math.hypot(p.x-P.x,p.z-P.z);p.m.visible=d<220;if(d>220)continue;
+  animHuman(p.m,p.ph,p.fl>0?0:(p.run>0?1.5:.55*p.sp/1.4),tm+p.ph);
+  p.m.position.set(p.x,p.fl*.25,p.z);p.m.rotation.set(-p.fl*Math.PI/2,Math.atan2(p.dir[0],p.dir[1]),0,'YXZ')}}
 for(let i=0;i<30;i++)spawnT(false);for(let i=0;i<18;i++)spawnParked();
 const beacon=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,140,18,1,true),new THREE.MeshBasicMaterial({color:0x19e6ff,transparent:true,opacity:.28,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
 beacon.position.y=70;scene.add(beacon);
@@ -110,6 +152,7 @@ function driveCar(c,thr,str,hb,dt){c.v+=thr*(thr>0?18:(c.v>0?32:10))*dt;c.v-=c.v
  c.v=clamp(c.v,-12,40);if(hb)c.v*=1-2.5*dt;c.h+=str*1.9*dt*clamp(c.v/7,-1,1)*(1-Math.abs(c.v)/80);c.x+=Math.sin(c.h)*c.v*dt;c.z+=Math.cos(c.h)*c.v*dt}
 function trafficAI(c,dt){let[dx,dz]=c.dir,tv=c.tv;
  for(const o of cars){if(o===c)continue;const rx=o.x-c.x,rz=o.z-c.z,f=rx*dx+rz*dz,l=Math.abs(-rx*dz+rz*dx);if(f>0&&f<12&&l<2.6)tv=Math.min(tv,Math.max(0,(f-5)*1.2))}
+ for(const q of peds){const rx=q.x-c.x,rz=q.z-c.z,f=rx*dx+rz*dz,l=Math.abs(-rx*dz+rz*dx);if(f>0&&f<10&&l<2.4)tv=Math.min(tv,Math.max(0,(f-4)*1.2))}
  c.v+=clamp(tv-c.v,-18*dt,6*dt);const ao=dx?c.x:c.z;c.x+=dx*c.v*dt;c.z+=dz*c.v*dt;
  if(dx)c.z+=(c.ln*B+dx*3.2-c.z)*Math.min(1,dt*3);else c.x+=(c.ln*B-dz*3.2-c.x)*Math.min(1,dt*3);
  const an=dx?c.x:c.z;
@@ -156,6 +199,7 @@ function agent(dt){const px=P.car?P.car.x:P.x,pz=P.car?P.car.z:P.z,pol=near(px,p
   aim=Math.hypot(tx-px,tz-pz)<20?[tx,tz]:nav(px,pz,tx,tz);const df=wrap(Math.atan2(aim[0]-px,aim[1]-pz)-c.h);out.str=clamp(df*1.8,-1,1);
   let tv=clamp(tvm-Math.abs(df)*12,7,tvm);
   for(const o of cars){if(o===c)continue;const rx=o.x-px,rz=o.z-pz,f=rx*Math.sin(c.h)+rz*Math.cos(c.h),l=Math.abs(rx*Math.cos(c.h)-rz*Math.sin(c.h));if(f>0&&f<16&&l<3){tv=Math.min(tv,Math.max(0,(f-6)*1.6));lid='OBJECT '+f.toFixed(0)+'m'}}
+  for(const q of peds){const rx=q.x-px,rz=q.z-pz,f=rx*Math.sin(c.h)+rz*Math.cos(c.h),l=Math.abs(rx*Math.cos(c.h)-rz*Math.sin(c.h));if(f>0&&f<14&&l<2.5){tv=Math.min(tv,Math.max(0,(f-5)*1.4));lid='PEDESTRIAN '+f.toFixed(0)+'m'}}
   out.thr=clamp((tv-c.v)*.5,-1,1);
   if(Math.abs(c.v)<1.2&&out.thr>.4){AI.stuck+=dt;if(AI.stuck>1.4){AI.rev=1.1;AI.stuck=0}}else AI.stuck=0;
   if(AI.rev>0){AI.rev-=dt;out.thr=-1;out.str=-out.str||1;lid='REVERSING'}}
@@ -172,7 +216,7 @@ function update(dt){
  if(wantEnter){wantEnter=false;enterExit()}
  if(P.car){const c=P.car;let thr,str,hb;if(a){thr=a.thr;str=a.str;hb=a.hb}else{thr=(keys.w?1:0)-(keys.s?1:0);str=(keys.a?1:0)-(keys.d?1:0);hb=keys[' ']}driveCar(c,thr,str,hb,dt);P.x=c.x;P.z=c.z}
  else{let mx,mz,sp;if(a){mx=a.mx;mz=a.mz;sp=a.run?8.5:5}else{const fw=(keys.w?1:0)-(keys.s?1:0),st=(keys.d?1:0)-(keys.a?1:0);mx=Math.sin(camYaw)*fw-Math.cos(camYaw)*st;mz=Math.cos(camYaw)*fw+Math.sin(camYaw)*st;sp=keys.shift?8.5:5}
-  const l=Math.hypot(mx,mz);if(l>.01){mx/=l;mz/=l;P.x+=mx*sp*dt;P.z+=mz*sp*dt;P.h+=wrap(Math.atan2(mx,mz)-P.h)*Math.min(1,dt*12);P.walk=(P.walk||0)+dt*sp*1.6}else P.walk=0;pushOut(P,.5)}
+  const l=Math.hypot(mx,mz);if(l>.01){mx/=l;mz/=l;P.x+=mx*sp*dt;P.z+=mz*sp*dt;P.h+=wrap(Math.atan2(mx,mz)-P.h)*Math.min(1,dt*12);P.walk+=dt*sp*1.6;P.ws=sp}else P.ws=0;pushOut(P,.5)}
  for(const c of cars){if(c.type==='traffic')trafficAI(c,dt);else if(c.type==='police')policeAI(c,dt);else if(c.type==='parked'&&Math.abs(c.v)>.1){c.v*=1-dt*2;c.x+=Math.sin(c.h)*c.v*dt;c.z+=Math.cos(c.h)*c.v*dt}
   if(pushOut(c,2)){if(c===P.car&&Math.abs(c.v)>10&&hitCd<=0){P.armor-=Math.abs(c.v)*.45;hitCd=.5}c.v*=.6}}
  for(let i=0;i<cars.length;i++)for(let j=i+1;j<cars.length;j++){const p=cars[i],q=cars[j],dx=q.x-p.x,dz=q.z-p.z,d=Math.hypot(dx,dz);
@@ -192,7 +236,7 @@ function update(dt){
  if(P.armor<=0){deadT=2.5;$('msg').style.opacity=1}
  // meshes
  for(const c of cars){c.m.position.set(c.x,0,c.z);c.m.rotation.y=c.h;const b=c.m.userData.bar;if(b){const f=Math.floor(performance.now()/160)%2;b[0].visible=!f;b[1].visible=!!f}}
- man.visible=!P.car;man.position.set(P.x,0,P.z);man.rotation.y=P.h;legs[0].rotation.x=Math.sin(P.walk||0)*.8;legs[1].rotation.x=-Math.sin(P.walk||0)*.8;
+ man.visible=!P.car;man.position.set(P.x,0,P.z);man.rotation.y=P.h;P.amp+=(P.ws/5-P.amp)*Math.min(1,dt*10);animHuman(man,P.walk,P.amp,performance.now()/1000);updPeds(dt);
  beacon.material.opacity=.22+.08*Math.sin(performance.now()/300);
  // camera
  const tx=P.x,tz=P.z,sp=P.car?Math.abs(P.car.v):0;
