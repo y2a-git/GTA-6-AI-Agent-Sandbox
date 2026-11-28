@@ -1,65 +1,52 @@
-# 🤖 3D AI gaming Agent inspired version of GTA-6 Vice City   (Autonomous 3D Open-World Sandbox)
+# Neon Coast — Original Open-World Sandbox
 
-A **100% free, cross-platform 3D Autonomous AI Gaming Agent** set in a neon-lit Vice City inspired open-world sandbox powered by **Three.js (WebGL)**. Unlike a standard passive game or app, the AI Agent runs a continuous **Sense → Decide → Act** neural loop with 3D lidar obstacle avoidance—navigating 3D city streets, hijacking sports cars, evading police cruisers, and completing missions completely on its own.
+Neon Coast is an original neon-lit 3D open-world sandbox experience built with Three.js and a lightweight Python launcher.
 
-Zero coding, zero engine installs, and zero API keys required—just download the executable for your operating system and double-click to launch.
+## Originality and rebranding
 
----
+This project does not reproduce or depend on proprietary game assets or branding. It uses procedurally generated characters, original fictional locations, original presentation, and generic open-world systems. The title, HUD, locations, and character names have been changed to be distinct from third-party franchises.
 
-## 🚀 Download & Play (No Coding Required)
+## Character presentation
 
-1. Open the **(https://github.com/y2a-git/GTA-6-AI-Agent-Sandbox/releases/tag/v1.0.0)** page (or click **Releases** on the right-hand sidebar of this repository).
-2. Under **Assets**, download the executable for your operating system:
+The game includes a procedural anatomical character system with:
 
-| Operating System | File to Download | How to Launch |
-| :--- | :--- | :--- |
-| **💻 Windows** | `ViceCity_AI_Agent.exe` | Double-click the `.exe` file to launch in 3D immediately. |
-| **🍏 macOS** | `ViceCity_AI_Agent-macOS.zip` | Double-click the `.zip` to extract, then open `ViceCity_AI_Agent.app`. |
-| **🐧 Linux** | `ViceCity_AI_Agent-Linux` | Right-click → **Properties** → enable **Allow executing file as program**, then run it. |
+- sculpted facial geometry
+- skin-tone-matched procedural portrait textures
+- bump and roughness detail
+- anatomically placed eyes and brows
+- procedural hair shells and facial hair
+- blinking, speech, expressions, and interaction poses
 
-> **First-Launch Security Prompts:** Because open-source executables are unsigned, Windows SmartScreen may show *"Windows protected your PC"* (click **More info → Run anyway**), and macOS may show an *"unidentified developer"* alert (right-click the app → click **Open**).
+## New presentation module
 
----
+`neon-coast.js` provides copyright-safe runtime rebranding and presentation polish. `gta_agent.py` serves the enhancement module locally when launching the desktop application.
 
-## 🧠 Why It’s an AI Agent (Not Just an App)
-
-* **3D Lidar Environmental Perception:** Casts forward and peripheral obstacle feelers to detect skyscrapers, traffic, mission beacons, and pursuing police units in real time.
-* **Autonomous Tactical Decision Tree:** Evaluates distance-to-beacon vs. distance-to-vehicle to decide whether to sprint on foot, hijack the nearest sports car, or switch to high-speed evasion when Wanted stars rise.
-* **Natural Language Directive Bar:** Type commands directly into the 3D HUD (`steal car`, `evade`, `patrol`, `mission`, `night`, `day`) to steer the agent's high-level goals while it handles low-level 3D driving and navigation autonomously.
-* **Live Sense → Decide → Act HUD & Radar:** Displays real-time internal reasoning alongside a live 2D lidar minimap.
-
----
-
-## 🎮 Controls
+## Controls
 
 | Key | Action |
 | :--- | :--- |
-| **`W` `A` `S` `D`** or **Arrow Keys** | Walk on foot or steer, accelerate, and brake in Manual Mode |
-| **`SHIFT`** | sprint, which uses stamina |
-| **`F or E`** | Hijack / enter the nearest vehicle, or exit your current vehicle |
-| **`SPACE`** | handbrake |
-| **`H`** | horn |
-| **`C`** | Cycle 3D Camera Angles (Chase Cam / Wide Action Cam / Tactical Overhead) |
-| **`Mouse drag`** | look around |
-| **`R`** | restart the current stage |
-| **`ESC`** | pause |
+| `W` `A` `S` `D` / Arrow Keys | Move or steer |
+| `Shift` | Sprint |
+| `F` / `E` | Enter or exit vehicles |
+| `Space` | Handbrake |
+| `H` | Horn |
+| `C` | Change camera |
+| `Mouse drag` | Look around |
+| `R` | Restart stage |
+| `Esc` | Pause |
+| `X` | Interact |
+| `Q` | Melee action |
+| `Z` | Emote |
+| `B` | Sunglasses |
+| `U` | Character close-up |
 
+## Running locally
 
-## Game Features
-Start screen: a title screen with a controls list and a START button.
-7 stages with cash rewards:
-Walk to the marker.
-Hijack a car and drive to the marker.
-A timed courier run across town.
-A 6-checkpoint street race.
-Collect 8 cash bags on the sidewalks.
-Reach 3 wanted stars, then lose the police.
-A final getaway with police already chasing you.
-GPS route: the minimap draws a route along the roads to your objective. Cash bags show as yellow dots.
-HUD and recovery: the HUD shows cash, health, stamina, the stage objective and a countdown timer. Health slowly regenerates if you avoid damage for a few seconds.
-BUSTED: if police reach you while you're on foot or nearly stopped, you lose 10% of your cash and restart the stage.
-WASTED: dying costs 5% of your cash.
-Winning: finishing all stages shows "YOU BEAT VICE CITY!", and you can keep exploring afterward.
+```bash
+python3 -m pip install -r requirements.txt
+python3 gta_agent.py
+```
 
 ## Disclaimer
-This is not the original GTA vice city game. This is an inspired version of vice city which is an open source. 
+
+Neon Coast is an independently developed inspired sandbox and is not affiliated with, endorsed by, or a copy of any commercial game or franchise.
