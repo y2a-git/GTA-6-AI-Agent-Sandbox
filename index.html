@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#090b14">
-  <meta name="description" content="Vice City 3D — Enhanced Edition with detailed human faces and Vice City world interactions.">
+  <meta name="description" content="Vice City 3D - Enhanced Edition with sculpted human faces and Vice City world interactions.">
   <title>Vice City 3D — Enhanced Edition</title>
   <style>
     :root{color-scheme:dark;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#080a12;color:#f5f2f4}
@@ -91,7 +91,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 `;
 
     // Self-contained Three.js Face Sculpting + Vice City Human Object Interaction Engine.
-    // Serialized cleanly into the loaded game's main script scope right after scene.add(jasonMesh, luciaMesh).
+    // Serialized into the loaded game's main script scope right after scene.add(jasonMesh, luciaMesh).
     function vcEnhancementModule() {
       if (window.__VC_ENHANCED_ACTIVE__) return;
       window.__VC_ENHANCED_ACTIVE__ = true;
@@ -145,7 +145,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             osc.connect(gain); gain.connect(ctx.destination);
             osc.start(now); osc.stop(now + 0.17);
           } else if (type === 'soda' || type === 'eat') {
-            // Fizzy hiss + pleasant chime
             var bufLen = Math.floor(ctx.sampleRate * 0.24);
             var buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
             var data = buf.getChannelData(0);
@@ -224,7 +223,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       uiWrap.innerHTML =
         '<div id="vc-speech" aria-live="polite"></div>' +
         '<div id="vc-prompt"></div>' +
-        '<div id="vc-action-strip"><kbd>G</kbd>Interact &nbsp;·&nbsp; <kbd>Q</kbd>Punch/Kick &nbsp;·&nbsp; <kbd>T</kbd>Emote &nbsp;·&nbsp; <kbd>V</kbd>Shades</div>';
+        '<div id="vc-action-strip"><kbd>X</kbd>Interact &nbsp;|&nbsp; <kbd>Q</kbd>Punch/Kick &nbsp;|&nbsp; <kbd>Z</kbd>Emote &nbsp;|&nbsp; <kbd>B</kbd>Shades</div>';
       document.body.appendChild(uiWrap);
 
       var toastLayer = document.createElement('div');
@@ -259,16 +258,16 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             extra.style.marginTop = '4px';
             extra.style.borderTop = '1px solid rgba(255,255,255,.15)';
             extra.style.paddingTop = '4px';
-            extra.innerHTML = '<b>G</b> Interact / Sit / Talk &nbsp; <b>Q</b> Punch / Kick &nbsp; <b>T</b> Emote &nbsp; <b>V</b> Shades';
+            extra.innerHTML = '<b>X</b> Interact / Sit / Talk &nbsp; <b>Q</b> Punch / Kick &nbsp; <b>Z</b> Emote &nbsp; <b>B</b> Shades';
             help.appendChild(extra);
           }
           var tbl = document.querySelector('#menu table');
           if (tbl && !tbl.dataset.vcPatched) {
             tbl.dataset.vcPatched = '1';
             var rows = [
-              ['G', 'Interact with ATMs, vending machines, payphones, benches & NPCs'],
-              ['Q', 'Melee punch / kick combo (NPCs & street props)'],
-              ['T / V', 'Human emotes (T) & toggle Vice City Aviator shades (V)']
+              ['X', 'Interact with ATMs, vending machines, payphones, benches & NPCs'],
+              ['Q', '3-hit melee punch / kick combo (NPCs & street props)'],
+              ['Z / B', 'Human emotes (Z) & toggle Vice City Aviator shades (B)']
             ];
             rows.forEach(function (r) {
               var tr = document.createElement('tr');
@@ -282,7 +281,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       setTimeout(patchControlsUI, 1200);
 
       // Safe stat synchronizer (bridges base game stats if reachable + pulses HUD)
-      var vcWalletBonus = 0;
       function adjustStats(opts) {
         var cashDelta = opts.cash || 0;
         var hpDelta = opts.hp || 0;
@@ -308,12 +306,11 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
                 if (typeof o.money === 'number') { o.money = Math.max(0, o.money + cashDelta); syncedCash = true; break; }
               }
             }
-            vcWalletBonus += cashDelta;
             var msEl = document.getElementById('ms');
             if (msEl) {
               if (!syncedCash) {
                 var cur = parseInt((msEl.textContent || '0').replace(/[^0-9-]/g, ''), 10) || 0;
-                msEl.textContent = '$' + Math.max(0, cur + cashDelta).toLocaleString();
+                msEl.textContent = String.fromCharCode(36) + Math.max(0, cur + cashDelta).toLocaleString();
               }
               msEl.style.transform = 'scale(1.12)';
               setTimeout(function () { msEl.style.transform = ''; }, 220);
@@ -354,7 +351,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         else if ('encoding' in tex && THREE.sRGBEncoding) tex.encoding = THREE.sRGBEncoding;
       }
 
-      // Cached procedural skin micro-grain bump texture
       var skinBumpTex = (function () {
         var c = document.createElement('canvas');
         c.width = 128; c.height = 128;
@@ -372,7 +368,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         return t;
       })();
 
-      // Cached procedural radial iris textures
       var irisTexCache = {};
       function getIrisTexture(hexOuter, hexInner) {
         var key = hexOuter + '_' + hexInner;
@@ -381,13 +376,9 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         c.width = 128; c.height = 128;
         var g = c.getContext('2d');
         var cx = 64, cy = 64;
-        g.clearRect(0, 0, 128, 128);
-
-        // Soft sclera rim
         g.fillStyle = '#f4f0ea';
         g.fillRect(0, 0, 128, 128);
 
-        // Dark limbal ring
         var rad = g.createRadialGradient(cx, cy, 10, cx, cy, 56);
         rad.addColorStop(0.0, '#070709');
         rad.addColorStop(0.32, '#0b0b10');
@@ -400,7 +391,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         g.arc(cx, cy, 56, 0, Math.PI * 2);
         g.fill();
 
-        // Fibrous iris striations
         g.save();
         g.translate(cx, cy);
         for (var a = 0; a < 42; a++) {
@@ -414,13 +404,11 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         }
         g.restore();
 
-        // Pupil
         g.fillStyle = '#050608';
         g.beginPath();
         g.arc(cx, cy, 19, 0, Math.PI * 2);
         g.fill();
 
-        // Crisp twin catchlights (makes eyes feel alive)
         g.fillStyle = 'rgba(255,255,255,0.94)';
         g.beginPath();
         g.arc(cx - 12, cy - 13, 7.5, 0, Math.PI * 2);
@@ -460,7 +448,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         return false;
       }
 
-      // Compute local bounding box of a descendant mesh relative to charGroup
       function getMeshBoundsInGroup(mesh, group, invGroupMat) {
         if (!mesh.geometry) return null;
         if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
@@ -495,7 +482,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var H = totalSize.y;
         if (H < 0.9 || H > 3.0) return null;
 
-        // 1. Identify Head mesh
         var headItem = null;
         var bestScore = -999;
         for (var i = 0; i < meshes.length; i++) {
@@ -509,7 +495,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           if (relY > 0.72 && relY < 0.97) score += 20;
           if (Math.abs(it.center.x) < H * 0.14) score += 12;
           if (maxDim > H * 0.085 && maxDim < H * 0.30 && minDim > H * 0.06) score += 15;
-          // Penalize flat hair caps or tiny feature dots
           if (it.size.y < H * 0.065) score -= 35;
           if (score > bestScore) {
             bestScore = score;
@@ -518,7 +503,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         }
         if (!headItem || bestScore < 20) return null;
 
-        // 2. Detect existing hair color & forward direction (+Z or -Z) from primitive eyes/features
         var hairColor = new THREE.Color(0x2a1d15);
         var zVotes = 0;
         var oldFaceDots = [];
@@ -530,7 +514,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           if (dist < headR * 1.9) {
             var mMax = Math.max(m.size.x, m.size.y, m.size.z);
             var dz = m.center.z - headItem.center.z;
-            // Small dots positioned on front/back of head = old primitive eyes/nose/mouth
             if (mMax < headR * 0.56 && Math.abs(dz) > headR * 0.42 && m.center.y < headItem.center.y + headR * 0.55) {
               zVotes += dz > 0 ? 1 : -1;
               oldFaceDots.push(m.mesh);
@@ -541,7 +524,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         }
         var fwdZ = zVotes < 0 ? -1 : 1;
 
-        // 3. Identify limbs for procedural action animations (punch, wave, drink, sit, phone)
         var limbs = { leftArm: null, rightArm: null, leftLeg: null, rightLeg: null };
         for (var k = 0; k < meshes.length; k++) {
           var lm = meshes[k];
@@ -549,7 +531,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           var rY = (lm.center.y - totalBox.min.y) / H;
           var n = (lm.mesh.name || '').toLowerCase();
           var targetObj = (lm.mesh.parent && lm.mesh.parent !== charGroup && lm.mesh.parent.children.length <= 4) ? lm.mesh.parent : lm.mesh;
-          // Arms: mid-high, offset left/right
           if (rY > 0.40 && rY < 0.78 && Math.abs(lm.center.x) > H * 0.09) {
             var isRight = (lm.center.x * fwdZ) < 0;
             if (/right.*arm|r_arm|armr/i.test(n)) isRight = true;
@@ -557,7 +538,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             if (isRight && !limbs.rightArm) limbs.rightArm = targetObj;
             if (!isRight && !limbs.leftArm) limbs.leftArm = targetObj;
           }
-          // Legs: lower half, offset left/right
           if (rY < 0.46 && Math.abs(lm.center.x) > H * 0.04 && lm.size.y > H * 0.16) {
             var isRLeg = (lm.center.x * fwdZ) < 0;
             if (/right.*leg|r_leg|legr/i.test(n)) isRLeg = true;
@@ -590,10 +570,8 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var headMesh = anat.headMesh;
         var fwd = anat.fwdZ;
 
-        // Hide crude primitive dots on the old face so sculpted anatomy shines cleanly
         anat.oldFaceDots.forEach(function (dot) { dot.visible = false; });
 
-        // Upgrade head skin material with subtle natural skin micro-grain bump
         var baseMat = headMesh.material;
         var skinMat = baseMat && baseMat.clone ? baseMat.clone() : new THREE.MeshStandardMaterial({ color: 0xdca583 });
         skinMat.roughness = profile === 'lucia' ? 0.50 : 0.56;
@@ -627,7 +605,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         var mouthInteriorMat = new THREE.MeshBasicMaterial({ color: 0x260c10 });
 
-        // Measure head mesh in its own local geometry coordinates
         headMesh.geometry.computeBoundingBox();
         var bb = headMesh.geometry.boundingBox;
         var c = new THREE.Vector3();
@@ -636,7 +613,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var ry = Math.max(0.04, (bb.max.y - bb.min.y) * 0.5);
         var rz = Math.max(0.04, (bb.max.z - bb.min.z) * 0.5);
 
-        // Counter non-uniform scale on headMesh if present so eyes stay round
         var hs = headMesh.scale;
         var avgS = (Math.abs(hs.x) + Math.abs(hs.y) + Math.abs(hs.z)) / 3 || 1;
         var faceRig = new THREE.Group();
@@ -652,14 +628,13 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           return obj;
         }
 
-        // --- Sculpted Chin & Jawline Contour ---
-        var chinGeo = new THREE.SphereGeometry(rx * 0.46, 12, 10);
-        var chin = markAdded(new THREE.Mesh(chinGeo, skinMat));
+        // Sculpted Chin & Jawline
+        var chin = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.46, 12, 10), skinMat));
         chin.scale.set(profile === 'jason' ? 1.15 : 0.92, 0.72, 0.85);
         chin.position.set(0, -ry * 0.70, fwd * rz * 0.52);
         faceRig.add(chin);
 
-        // --- Cheekbones ---
+        // Cheekbones
         [-1, 1].forEach(function (side) {
           var cheek = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.30, 10, 8), cheekMat));
           cheek.scale.set(1.05, 0.78, 0.75);
@@ -667,7 +642,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           faceRig.add(cheek);
         });
 
-        // --- Jason's Signature Light Stubble / 5-o'clock Shadow ---
+        // Jason's Light Jaw Stubble
         if (profile === 'jason') {
           var stubbleMat = new THREE.MeshStandardMaterial({
             color: 0x3b2c22,
@@ -686,7 +661,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           faceRig.add(stache);
         }
 
-        // --- Sculpted Multi-Part Nose (Bridge + Tip + Nostril Wings) ---
+        // Multi-Part Sculpted Nose
         var noseGroup = new THREE.Group();
         noseGroup.userData.__vcAdded = true;
         var bridge = markAdded(new THREE.Mesh(new THREE.CylinderGeometry(rx * 0.085, rx * 0.14, ry * 0.44, 8), skinMat));
@@ -712,7 +687,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         });
         faceRig.add(noseGroup);
 
-        // --- Recessed Orbital Shadows + Glossy Detailed Eyes + Eyelids + Brows ---
+        // Eyes, Eyelids & Expressive Brows
         var eyePalette = profile === 'jason'
           ? ['#3f708d', '#86bfd0']
           : (profile === 'lucia'
@@ -741,13 +716,11 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           var ey = ry * 0.14;
           var ez = fwd * rz * 0.84;
 
-          // Subtle eye socket depth
           var sock = markAdded(new THREE.Mesh(new THREE.SphereGeometry(eyeR * 1.38, 10, 8), socketMat));
           sock.scale.set(1.18, 0.86, 0.55);
           sock.position.set(ex, ey, ez - fwd * rx * 0.04);
           faceRig.add(sock);
 
-          // Eye pivot for gaze tracking
           var eyePivot = new THREE.Group();
           eyePivot.userData.__vcAdded = true;
           eyePivot.position.set(ex, ey, ez);
@@ -767,7 +740,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           faceRig.add(eyePivot);
           eyes.push(eyePivot);
 
-          // Upper Eyelid (rotates closed for natural blinking)
           var lidPivot = new THREE.Group();
           lidPivot.userData.__vcAdded = true;
           lidPivot.position.set(ex, ey, ez);
@@ -780,7 +752,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           upperLid.rotation.x = fwd * -0.45;
           lidPivot.add(upperLid);
 
-          // Lash rim
           var lash = markAdded(new THREE.Mesh(
             new THREE.TorusGeometry(eyeR * 0.98, eyeR * (profile === 'lucia' ? 0.13 : 0.08), 6, 12, Math.PI),
             lashMat
@@ -792,14 +763,12 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           faceRig.add(lidPivot);
           lids.push({ pivot: lidPivot, baseRotX: 0 });
 
-          // Lower eyelid rim
           var lowerLid = markAdded(new THREE.Mesh(new THREE.TorusGeometry(eyeR * 0.95, eyeR * 0.09, 6, 10, Math.PI), skinShadowMat));
           lowerLid.rotation.z = Math.PI;
           lowerLid.position.set(ex, ey - eyeR * 0.24, ez + fwd * eyeR * 0.55);
           if (fwd < 0) lowerLid.rotation.y = Math.PI;
           faceRig.add(lowerLid);
 
-          // Sculpted Eyebrow (animated for emotion)
           var browPivot = new THREE.Group();
           browPivot.userData.__vcAdded = true;
           browPivot.position.set(ex, ey + ry * 0.22, ez + fwd * rx * 0.12);
@@ -814,7 +783,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           brows.push({ pivot: browPivot, side: side, baseY: browPivot.position.y, baseRotZ: 0 });
         });
 
-        // --- Sculpted Lips & Expressive Mouth ---
+        // Sculpted Lips & Expressive Mouth
         var mouthPivot = new THREE.Group();
         mouthPivot.userData.__vcAdded = true;
         mouthPivot.position.set(0, -ry * 0.42, fwd * rz * 0.87);
@@ -824,13 +793,11 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         mouthCav.position.set(0, 0, -fwd * rx * 0.02);
         mouthPivot.add(mouthCav);
 
-        // Upper Cupid's Bow Lip
         var upperLip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.21, 10, 8), lipMat));
         upperLip.scale.set(1.22, profile === 'lucia' ? 0.36 : 0.28, 0.52);
         upperLip.position.set(0, ry * 0.036, fwd * rx * 0.03);
         mouthPivot.add(upperLip);
 
-        // Lower Lip (moves down when speaking/shouting)
         var lowerLip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.19, 10, 8), lipMat));
         lowerLip.scale.set(1.14, profile === 'lucia' ? 0.40 : 0.32, 0.55);
         lowerLip.position.set(0, -ry * 0.038, fwd * rx * 0.03);
@@ -838,7 +805,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         faceRig.add(mouthPivot);
 
-        // --- Sculpted Ears (+ Gold Hoop Earrings for Lucia) ---
+        // Sculpted Ears (+ Gold Hoop Earrings for Lucia)
         var goldMat = profile === 'lucia'
           ? new THREE.MeshStandardMaterial({ color: 0xf4c96b, metalness: 0.92, roughness: 0.18 })
           : null;
@@ -861,7 +828,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           }
         });
 
-        // --- 80s Vice City Aviator Sunglasses Rig (Toggleable via V key) ---
+        // 80s Vice City Aviator Sunglasses (Toggleable via B key)
         var shadesRig = new THREE.Group();
         shadesRig.userData.__vcAdded = true;
         var frameMat = new THREE.MeshStandardMaterial({ color: 0xf2cb72, metalness: 0.9, roughness: 0.2 });
@@ -892,7 +859,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         shadeBridge.position.set(0, ry * 0.22, fwd * rz * 1.06);
         shadesRig.add(shadeBridge);
 
-        // NPCs get a 28% chance of rocking Vice shades by default; Jason/Lucia toggle with V
         shadesRig.visible = (profile === 'npc') ? (Math.random() < 0.28) : false;
         faceRig.add(shadesRig);
 
@@ -923,11 +889,9 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         return entry;
       }
 
-      // Immediately enhance Jason & Lucia
       var jasonEntry = enhanceHumanFace(jasonMesh, 'jason');
       var luciaEntry = enhanceHumanFace(luciaMesh, 'lucia');
 
-      // Periodically discover & upgrade street NPCs in the scene
       function scanForNewHumans() {
         var candidates = [];
         scene.children.forEach(function (child) {
@@ -935,7 +899,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           if (child.userData && (child.userData.__vcProp || child.userData.__vcFaceEnhanced)) return;
           if (child.isGroup || (child.children && child.children.length >= 3)) {
             candidates.push(child);
-            // Also check one level down in case NPCs live inside a container group
             if (child.children && child.children.length > 0 && child.children.length < 80) {
               child.children.forEach(function (sub) {
                 if (sub !== jasonMesh && sub !== luciaMesh && sub.children && sub.children.length >= 3 && (!sub.userData || !sub.userData.__vcFaceEnhanced)) {
@@ -948,7 +911,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         for (var i = 0; i < candidates.length; i++) {
           var g = candidates[i];
           if (g.userData && g.userData.__vcFaceEnhanced) continue;
-          // Quick bounding box filter for human-sized entities
           var box = new THREE.Box3().setFromObject(g);
           if (box.isEmpty()) continue;
           var sz = new THREE.Vector3();
@@ -986,7 +948,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             if (b.isEmpty()) return;
             var sz = new THREE.Vector3();
             b.getSize(sz);
-            // Large solid structures (ignore giant ground/sky planes)
             if (sz.y > 3.2 && sz.x > 2.5 && sz.z > 2.5 && sz.x < 95 && sz.z < 95) {
               b.expandByScalar(1.3);
               boxes.push(b);
@@ -1061,7 +1022,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         interactables.push({
           type: 'atm',
-          label: 'Use Vice Bank ATM (+$250)',
+          label: 'Use Vice Bank ATM (+250 Cash)',
           group: g,
           led: led,
           ring: ring,
@@ -1110,7 +1071,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         interactables.push({
           type: 'vending',
-          label: 'Buy Sprunk Soda ($5 · +25 HP)',
+          label: 'Buy Sprunk Soda (+25 HP)',
           group: g,
           ring: ring,
           radius: 2.6,
@@ -1243,7 +1204,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         interactables.push({
           type: 'food',
-          label: 'Eat Vice Burger ($10 · Full HP)',
+          label: 'Eat Vice Burger (Full HP)',
           group: g,
           ring: ring,
           radius: 2.8,
@@ -1319,7 +1280,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           g.add(base, cone, stripe);
           radius = 0.32;
         } else {
-          // Neon Vice Beach Ball
           var ball = new THREE.Mesh(
             new THREE.SphereGeometry(0.34, 14, 12),
             new THREE.MeshStandardMaterial({ color: 0xff5ca8, emissive: 0x4a1030, emissiveIntensity: 0.25, roughness: 0.22 })
@@ -1367,7 +1327,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           return null;
         }
 
-        // Near-spawn Ocean Drive interactive showcase (immediately visible & playable)
         var s;
         if ((s = pickClearSpot(5.5, 13, 3.6))) createVendingMachine(s.x, s.z, s.rotY);
         if ((s = pickClearSpot(6.0, 14, 3.6))) createATM(s.x, s.z, s.rotY);
@@ -1378,12 +1337,10 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         if ((s = pickClearSpot(5.0, 14, 2.6))) spawnPickup('health', s.x, s.z, 45);
         if ((s = pickClearSpot(7.0, 16, 2.6))) spawnPickup('armor', s.x, s.z, 50);
 
-        // Kickable physical props nearby
         for (var c = 0; c < 3; c++) if ((s = pickClearSpot(4.5, 14, 2.2))) spawnPhysicsProp('trashcan', s.x, s.z);
         for (var k = 0; k < 4; k++) if ((s = pickClearSpot(4.0, 13, 1.8))) spawnPhysicsProp('cone', s.x, s.z);
         for (var b = 0; b < 2; b++) if ((s = pickClearSpot(4.0, 12, 2.0))) spawnPhysicsProp('ball', s.x, s.z);
 
-        // Second city-wide wave so exploring keeps rewarding you
         for (var w = 0; w < 3; w++) {
           if ((s = pickClearSpot(24, 78, 8.0))) createATM(s.x, s.z, Math.random() * Math.PI * 2);
           if ((s = pickClearSpot(24, 78, 8.0))) createVendingMachine(s.x, s.z, Math.random() * Math.PI * 2);
@@ -1400,40 +1357,40 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       // -----------------------------------------------------------------------
       var NPC_GREETINGS = [
         'Ocean Drive is electric tonight. Stay sharp out there.',
-        'Love the Vice look — you heading down to Washington Beach?',
+        'Love the Vice look - you heading down to Washington Beach?',
         'Heard the cops are running speed traps two blocks north.',
         'Nice evening for a cruise. Just keep it off the sidewalk, pal.',
         'You look like somebody who knows how to handle this city.'
       ];
       var PARTNER_LINES = [
-        'Stay close — Vice City never plays fair after sunset.',
-        'Ready when you are. Let’s grab a fast ride and hit the next marker.',
-        'Look at these neon lights… feels like the whole city is ours tonight.',
+        'Stay close - Vice City never plays fair after sunset.',
+        'Ready when you are. Let us grab a fast ride and hit the next marker.',
+        'Look at these neon lights... feels like the whole city is ours tonight.',
         'Got your back. Just say the word and we move.'
       ];
       var PAYPHONE_TIPS = [
         'Tip from the docks: Check the side streets for unguarded cash stacks.',
         'Ocean Beach wire: Fast getaway? Keep a sports car parked facing the avenue.',
-        'Anonymous caller: "Nice work out there. Wired a little hustle bonus to your account."',
-        'Malibu informant: "Heat rising? Break line-of-sight down an alley to drop wanted stars."'
+        'Anonymous caller: Nice work out there. Wired a little hustle bonus to your account.',
+        'Malibu informant: Heat rising? Break line-of-sight down an alley to drop wanted stars.'
       ];
       var NPC_BUMP_LINES = [
         'Hey! Watch the suit!',
-        'Whoa — easy there!',
+        'Whoa - easy there!',
         'Eyes on the sidewalk, pal!',
         'Are you crazy?!'
       ];
       var NPC_HIT_LINES = [
         'Hey! Back off!',
         'Somebody call the cops!',
-        'Whoa, take it easy — keep the cash!',
+        'Whoa, take it easy - keep the cash!',
         'You picked the wrong street!'
       ];
 
       var playerState = {
         activeEntry: jasonEntry || luciaEntry,
         onFoot: true,
-        action: null,      // 'punch1' | 'punch2' | 'kick' | 'drink' | 'eat' | 'atm' | 'phone' | 'wave' | 'watch' | 'celebrate' | 'flex' | 'sit'
+        action: null,
         actionTimer: 0,
         actionDur: 0.45,
         comboStep: 0,
@@ -1453,7 +1410,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         playerState.onFoot = true;
         if (jVis && !lVis) return jasonEntry;
         if (lVis && !jVis) return luciaEntry;
-        // Both visible: pick whichever is closer to the camera's focus point
         if (cam) {
           var dir = new THREE.Vector3();
           cam.getWorldDirection(dir);
@@ -1503,7 +1459,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var best = null;
         var bestDist = Infinity;
 
-        // Check world interactables
         for (var i = 0; i < interactables.length; i++) {
           var item = interactables[i];
           var d = pPos.distanceTo(item.group.position);
@@ -1513,7 +1468,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           }
         }
 
-        // Check NPCs & Partner
         for (var j = 0; j < humanRegistry.length; j++) {
           var h = humanRegistry[j];
           if (h === playerState.activeEntry || !h.group.visible) continue;
@@ -1530,7 +1484,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var active = playerState.activeEntry;
         if (!active || !playerState.onFoot) return;
 
-        // If already seated, stand up
         if (playerState.sittingBench) {
           playerState.sittingBench = null;
           playerState.action = null;
@@ -1540,7 +1493,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         var target = findNearestTarget(active.group.position);
         if (!target) {
-          // Friendly ambient wave if nothing nearby
           startAction('wave', 1.1, 'happy');
           playSfx('talk');
           showToast('VICE WAVE', 'cyan');
@@ -1549,7 +1501,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         if (target.kind === 'human') {
           var npc = target.data;
-          // Face each other smoothly
           var toNpc = Math.atan2(npc.group.position.x - active.group.position.x, npc.group.position.z - active.group.position.z);
           active.group.rotation.y = active.fwd > 0 ? toNpc : toNpc + Math.PI;
           var toPlayer = Math.atan2(active.group.position.x - npc.group.position.x, active.group.position.z - npc.group.position.z);
@@ -1579,11 +1530,11 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           startAction('atm', 1.3, 'happy');
           playSfx('cash');
           adjustStats({ cash: 250 });
-          showToast('+$250 VICE BANK ATM', 'gold');
+          showToast('+250 VICE BANK ATM', 'gold');
           showSpeech('Vice Bank ATM', 'Cash withdrawal approved. Have a Vice day!', 2.6);
         } else if (prop.type === 'vending') {
           if (prop.cooldown > 0) {
-            showToast('DISPENSER COOLING…', 'pink');
+            showToast('DISPENSER COOLING...', 'pink');
             return;
           }
           prop.cooldown = 5;
@@ -1591,7 +1542,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           attachHandProp(active, 0x4df57a, 'can');
           playSfx('soda');
           adjustStats({ cash: -5, hp: 25, stamina: 40 });
-          showToast('SPRUNK! +25 HP · +40 STAMINA', 'cyan');
+          showToast('SPRUNK! +25 HP | +40 STAMINA', 'cyan');
         } else if (prop.type === 'payphone') {
           if (prop.cooldown > 0) {
             showToast('NO NEW CALLS YET', 'cyan');
@@ -1604,17 +1555,17 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           adjustStats({ cash: 200 });
           var tip = PAYPHONE_TIPS[Math.floor(Math.random() * PAYPHONE_TIPS.length)];
           showSpeech('Vice Payphone', tip, 4.4);
-          showToast('+$200 STREET HUSTLE', 'gold');
+          showToast('+200 STREET HUSTLE', 'gold');
         } else if (prop.type === 'bench') {
           playerState.sittingBench = prop;
           playerState.action = 'sit';
           playerState.actionTimer = 9999;
           setEmotion(active, 'happy', 3.0);
-          showToast('RELAXING · REGENERATING HP', 'cyan');
-          showSpeech(active.name, 'Catching the Ocean Drive breeze… (Press G or move to stand)', 2.8);
+          showToast('RELAXING - REGENERATING HP', 'cyan');
+          showSpeech(active.name, 'Catching the Ocean Drive breeze... (Press X or move to stand)', 2.8);
         } else if (prop.type === 'food') {
           if (prop.cooldown > 0) {
-            showToast('GRILL HEATING UP…', 'pink');
+            showToast('GRILL HEATING UP...', 'pink');
             return;
           }
           prop.cooldown = 10;
@@ -1622,7 +1573,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           attachHandProp(active, 0xf2a24b, 'burger');
           playSfx('eat');
           adjustStats({ cash: -10, hp: 100, stamina: 50 });
-          showToast('VICE BURGER · FULL HEALTH!', 'pink');
+          showToast('VICE BURGER - FULL HEALTH!', 'pink');
         }
       }
 
@@ -1643,7 +1594,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var fwdDir = new THREE.Vector3(Math.sin(active.group.rotation.y), 0, Math.cos(active.group.rotation.y)).multiplyScalar(active.fwd);
         var hitSomething = false;
 
-        // Hit nearby NPCs
         for (var i = 0; i < humanRegistry.length; i++) {
           var npc = humanRegistry[i];
           if (npc === active || !npc.group.visible || npc.hitCooldown > 0) continue;
@@ -1660,7 +1610,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             npc.talkTimer = 1.6;
             playSfx('hit');
             showSpeech(npc.name, NPC_HIT_LINES[Math.floor(Math.random() * NPC_HIT_LINES.length)], 2.5);
-            // Drop Vice City cash pickup on hit (55% chance)
             if (Math.random() < 0.55 && npc !== jasonEntry && npc !== luciaEntry) {
               var cashAmt = 50 + Math.floor(Math.random() * 100);
               spawnPickup('cash', npc.group.position.x + (Math.random() - 0.5), npc.group.position.z + (Math.random() - 0.5), cashAmt);
@@ -1669,7 +1618,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           }
         }
 
-        // Kick / punch physics props
         for (var j = 0; j < physicsProps.length; j++) {
           var pp = physicsProps[j];
           var dProp = pp.group.position.clone().sub(pPos);
@@ -1683,7 +1631,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           }
         }
 
-        // Bang a vending machine for a cheeky free soda!
         for (var v = 0; v < interactables.length; v++) {
           var it = interactables[v];
           if (it.type === 'vending' && pPos.distanceTo(it.group.position) < 2.5) {
@@ -1727,17 +1674,17 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         showToast(active.shadesRig.visible ? 'VICE AVIATORS ON' : 'VICE AVIATORS OFF', 'gold');
       }
 
-      // Bind Vice City interaction keys (avoiding text inputs & key auto-repeat)
+      // Bind Vice City interaction keys (conflict-free with WASD/F/E/G/T/V/C/H/R)
       window.addEventListener('keydown', function (e) {
         if (e.repeat) return;
         var tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '';
         if (tag === 'input' || tag === 'textarea' || (e.target && e.target.isContentEditable)) return;
         var k = (e.key || '').toLowerCase();
-        if (k === 'g') triggerInteract();
+        if (k === 'x') triggerInteract();
         else if (k === 'q') triggerMelee();
-        else if (k === 't') triggerEmote();
-        else if (k === 'v') toggleShades();
-        else if (playerState.sittingBench && (k === 'w' || k === 'a' || k === 's' || k === 'd' || k === 'f' || k === 'e' || k === ' ' || k.indexOf('arrow') === 0)) {
+        else if (k === 'z') triggerEmote();
+        else if (k === 'b') toggleShades();
+        else if (playerState.sittingBench && (k === 'w' || k === 'a' || k === 's' || k === 'd' || k === 'f' || k === 'e' || k === 'g' || k === ' ' || k.indexOf('arrow') === 0)) {
           playerState.sittingBench = null;
           playerState.action = null;
         }
@@ -1747,7 +1694,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       // 6. PER-FRAME ANIMATION LOOP (Hooked cleanly into R.render)
       // -----------------------------------------------------------------------
       function updateFaceAnimation(entry, dt, nowSec, focusPoint) {
-        // 1. Natural blinking
         entry.blinkTimer -= dt;
         if (entry.blinkTimer <= 0) {
           entry.blinkState = 1.0;
@@ -1761,7 +1707,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           entry.lids[i].pivot.rotation.x = entry.fwd * (blinkClose * 0.95);
         }
 
-        // 2. Emotional eyebrows
         if (entry.emotionTimer > 0) {
           entry.emotionTimer -= dt;
           if (entry.emotionTimer <= 0) entry.emotion = 'neutral';
@@ -1787,7 +1732,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           br.pivot.rotation.z += (targetZ - br.pivot.rotation.z) * Math.min(1, dt * 10);
         }
 
-        // 3. Talking / reacting mouth animation
         var mouthOpen = 0;
         if (entry.talkTimer > 0) {
           entry.talkTimer -= dt;
@@ -1800,7 +1744,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         entry.mouthCav.scale.y = 0.18 + mouthOpen * 0.78;
         entry.lowerLip.position.y = -0.012 - mouthOpen * 0.024;
 
-        // 4. Subtle eye saccades / gaze
         var gazeX = Math.sin(nowSec * 0.9 + entry.blinkTimer) * 0.08;
         var gazeY = Math.cos(nowSec * 0.65) * 0.04;
         if (focusPoint && entry.group.visible) {
@@ -1835,7 +1778,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           if (limbs.rightLeg) limbs.rightLeg.rotation.x = -1.25 * f;
           if (limbs.leftArm) limbs.leftArm.rotation.x = -0.35 * f;
           if (limbs.rightArm) limbs.rightArm.rotation.x = -0.35 * f;
-          // Gentle regen while seated
           if (Math.random() < dt * 2.5) adjustStats({ hp: 2, stamina: 5 });
           return;
         }
@@ -1894,7 +1836,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           lastTime = nowMs;
           var nowSec = nowMs * 0.001;
 
-          // Speech subtitle timeout
           if (speechTimer > 0) {
             speechTimer -= dt;
             if (speechTimer <= 0) elSpeech.classList.remove('show');
@@ -1902,7 +1843,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
           if (playerState.comboWindow > 0) playerState.comboWindow -= dt;
 
-          // Discover active player & spawn Vice City world around spawn point
           var active = getActivePlayer(cam);
           playerState.activeEntry = active;
 
@@ -1912,14 +1852,12 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             populateViceCityWorld(active.group.position);
           }
 
-          // Periodic NPC discovery for face sculpting & interactions
           scanTimer -= dt;
           if (scanTimer <= 0) {
             scanTimer = 1.6;
             scanForNewHumans();
           }
 
-          // Update interactable cooldowns, glow rings & vending shake
           for (var i = 0; i < interactables.length; i++) {
             var it = interactables[i];
             if (it.cooldown > 0) {
@@ -1941,7 +1879,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             }
           }
 
-          // Update spinning pickups & walk-over auto-collection
           for (var p = 0; p < pickups.length; p++) {
             var pk = pickups[p];
             if (pk.collected) {
@@ -1969,16 +1906,15 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
                   showToast('+' + pk.value + ' HEALTH PICKUP', 'pink');
                 } else if (pk.type === 'armor') {
                   adjustStats({ hp: 35, stamina: 100 });
-                  showToast('VICE ARMOR · MAX STAMINA', 'cyan');
+                  showToast('VICE ARMOR | MAX STAMINA', 'cyan');
                 } else {
                   adjustStats({ cash: pk.value });
-                  showToast('+$' + pk.value + ' CASH', 'gold');
+                  showToast('+' + pk.value + ' CASH', 'gold');
                 }
               }
             }
           }
 
-          // Update dynamic physics props (kick, bump, tumble, bounce)
           for (var k = 0; k < physicsProps.length; k++) {
             var pr = physicsProps[k];
             if (active && playerState.onFoot) {
@@ -2013,7 +1949,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             }
           }
 
-          // Update all human faces, NPC knockbacks & shoulder bumps
           var focusPt = active ? active.group.position : (cam ? cam.position : null);
           for (var h = 0; h < humanRegistry.length; h++) {
             var hum = humanRegistry[h];
@@ -2021,14 +1956,12 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             if (hum.hitCooldown > 0) hum.hitCooldown -= dt;
             if (hum.bumpCooldown > 0) hum.bumpCooldown -= dt;
 
-            // Knockback physics for hit NPCs
             if (hum.stumbleTimer > 0) {
               hum.stumbleTimer -= dt;
               hum.group.position.addScaledVector(hum.knockVel, dt);
               hum.knockVel.multiplyScalar(Math.pow(0.05, dt));
             }
 
-            // Shoulder-bump detection when player runs into an NPC
             if (active && playerState.onFoot && hum !== active && hum.group.visible && hum.bumpCooldown <= 0 && hum.stumbleTimer <= 0) {
               var bdx = hum.group.position.x - active.group.position.x;
               var bdz = hum.group.position.z - active.group.position.z;
@@ -2048,16 +1981,14 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             updateFaceAnimation(hum, dt, nowSec, hum === active ? (cam ? cam.position : null) : focusPt);
           }
 
-          // Apply active player's procedural action pose (punch, kick, drink, phone, sit, emote)
           if (active && playerState.onFoot) {
             applyPlayerActionPose(active, dt, nowSec);
           }
 
-          // Update bottom-center Vice City context prompt
           if (active && playerState.onFoot) {
             elStrip.classList.remove('hidden');
             if (playerState.sittingBench) {
-              elPrompt.innerHTML = '<kbd>G</kbd> Stand Up from Bench';
+              elPrompt.innerHTML = '<kbd>X</kbd> Stand Up from Bench';
               elPrompt.classList.add('show');
             } else {
               var near = findNearestTarget(active.group.position);
@@ -2065,7 +1996,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
                 var txt = near.kind === 'human'
                   ? 'Talk to ' + near.data.name
                   : near.data.label;
-                elPrompt.innerHTML = '<kbd>G</kbd> ' + txt;
+                elPrompt.innerHTML = '<kbd>X</kbd> ' + txt;
                 elPrompt.classList.add('show');
               } else {
                 elPrompt.classList.remove('show');
@@ -2104,8 +2035,10 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         // Show script/CDN failures directly in the page instead of silently appearing frozen.
         const diagnostics=`<script>(function(){function report(message){if(document.getElementById('vc-runtime-error'))return;var box=document.createElement('div');box.id='vc-runtime-error';box.setAttribute('role','alert');box.innerHTML='<b>Game runtime error</b><br>';box.appendChild(document.createTextNode(String(message||'Unknown error')));document.body.appendChild(box)}window.addEventListener('error',function(e){if(e.message)report(e.message);else if(e.target&&e.target.src)report('Could not load dependency: '+e.target.src)},{capture:true});window.addEventListener('unhandledrejection',function(e){report(e.reason&&e.reason.message||e.reason)});setTimeout(function(){if(!document.querySelector('canvas.main'))report('The renderer did not initialize. Check WebGL and the Three.js CDN connection.')},12000)})();<\/script>`;
-        html=html.replace('</head>',diagnostics+'\n</head>');
-        html=html.replace('</style>',polish+'\n</style>');
+
+        // Use function replacers (() => ...) so '$' characters in injected code are NEVER interpreted as special replacement tokens.
+        html=html.replace('</head>',()=>diagnostics+'\n</head>');
+        html=html.replace('</style>',()=>polish+'\n</style>');
 
         // Lighting polish + Sculpted Faces & Vice City Human Interaction Engine
         const visualTune=`\n/* Enhanced natural-light/material response; keep stylized meshes and gameplay intact. */\nR.toneMappingExposure=1.08;\nhemi.color.setHex(0xffd5c4);hemi.groundColor.setHex(0x38333a);hemi.intensity=.82;\nsun.color.setHex(0xffe1c2);sun.intensity=2.0;sun.shadow.bias=-.00025;sun.shadow.normalBias=.025;\nscene.fog.color.setHex(0xc78d91);scene.fog.density=.0028;\nfor(const material of skinCache.values()){material.roughness=.56;material.metalness=0;material.envMapIntensity=.22;material.needsUpdate=true}\n`;
@@ -2113,7 +2046,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
         const sceneReady='scene.add(jasonMesh,luciaMesh);';
         if(!html.includes(sceneReady))throw new Error('Could not find the character setup point to apply the visual treatment.');
-        html=html.replace(sceneReady,sceneReady+visualTune+enhancementScript);
+        html=html.replace(sceneReady,()=>sceneReady+visualTune+enhancementScript);
 
         // Ignore keyboard auto-repeat on one-shot actions, not held movement keys.
         const keydown=/addEventListener\(['"]keydown['"]\s*,\s*e\s*=>\s*\{\s*const\s+k\s*=\s*e\.key\.toLowerCase\(\)\s*;\s*keys\[k\]\s*=\s*true\s*;/;
