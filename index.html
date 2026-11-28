@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#090b14">
-  <meta name="description" content="Vice City 3D — a fan-made, neon-soaked open-world prototype.">
+  <meta name="description" content="Vice City 3D — Enhanced Edition with detailed human faces and Vice City world interactions.">
   <title>Vice City 3D — Enhanced Edition</title>
   <style>
     :root{color-scheme:dark;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#080a12;color:#f5f2f4}
@@ -25,8 +25,8 @@
 <body>
   <main id="boot" role="status" aria-live="polite">
     <h1>Vice City</h1>
-    <p>Loading the city and preparing your HUD…</p>
-    <small>Enhanced interface · Responsive display · Input stability fixes</small>
+    <p>Loading the city, sculpted characters, and street interactions…</p>
+    <small>Enhanced Faces · Vice City World Interactions · Responsive HUD</small>
     <div class="pulse" aria-hidden="true"></div>
     <div id="error" role="alert"></div>
   </main>
@@ -34,19 +34,19 @@
     'use strict';
     // Pin the original game revision; the wrapper must never fetch itself.
     const sourceURL='https://raw.githubusercontent.com/y2a-git/GTA-6-AI-Agent-Sandbox/98c5676f7acdd2324aa0f0f66cb95eb598015957/index.html';
+
     const polish=String.raw`
-/* Vice City: cinematic HUD and restrained filmic framing. */
+/* Vice City: cinematic HUD, restrained filmic framing, and human interaction overlays. */
 :root{--vc-cyan:#8de4e4;--vc-pink:#ed9bb7;--vc-gold:#e9cf9c;--vc-line:#ffffff24}
 html,body{font-family:Inter,"Segoe UI",system-ui,sans-serif;letter-spacing:.012em}
-canvas.main{filter:saturate(.91) contrast(1.055) brightness(.98)}
-/* Soft lens vignette; the overlay remains transparent to mouse/touch input. */
-body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 48%,rgba(5,6,12,.28) 100%),linear-gradient(180deg,rgba(5,7,14,.12),transparent 16%,transparent 82%,rgba(5,7,14,.16));box-shadow:inset 0 0 10vmin #03040a44}
+canvas.main{filter:saturate(.93) contrast(1.05) brightness(.99)}
+body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 48%,rgba(5,6,12,.26) 100%),linear-gradient(180deg,rgba(5,7,14,.12),transparent 16%,transparent 82%,rgba(5,7,14,.16));box-shadow:inset 0 0 10vmin #03040a44}
 #hud-layer{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 .box,#tele-pill{border:1px solid var(--vc-line);border-radius:12px;background:linear-gradient(145deg,rgba(18,20,28,.84),rgba(8,10,16,.76));backdrop-filter:blur(12px) saturate(115%);-webkit-backdrop-filter:blur(12px) saturate(115%);box-shadow:0 10px 32px #0006,inset 0 1px #ffffff0a}
 #gta-hud{width:min(350px,calc(100vw - 32px));padding:13px 16px 14px;border:1px solid #ed9bb744;border-top:2px solid #ed9bb799;text-shadow:0 1px 10px #0009}
 #gta-hud:before{content:"VICE CITY  /  FIELD REPORT";display:block;margin:0 0 6px;color:#c7c1cc;font-size:9px;font-weight:800;letter-spacing:.2em;opacity:.86}
 #w{font-size:19px;letter-spacing:5px;color:var(--vc-gold)}
-#ms{font-size:29px;letter-spacing:.035em;color:#a6e9b0}
+#ms{font-size:29px;letter-spacing:.035em;color:#a6e9b0;transition:transform .2s,color .2s}
 .hud-row{font-size:11px;color:#d2ced6}
 .bars{gap:8px;margin:8px 0}.bar{height:6px;border:0;background:#ffffff20}
 #bi,#si{border-radius:8px;box-shadow:0 0 8px currentColor}
@@ -67,15 +67,2030 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 #go:hover{filter:brightness(1.12);transform:translateY(-2px)}#go:focus-visible{outline:2px solid #fff;outline-offset:4px}
 #menu table{width:min(520px,100%);border-collapse:separate;border-spacing:0;font-size:11px;text-align:left}#menu td{padding:6px 10px;border-bottom:1px solid #ffffff16}#menu td:first-child{width:38%;color:#9be2e4;text-align:right;font-size:10px;letter-spacing:.035em}#menu tr:first-child td{border-top:1px solid #ffffff16}
 #vc-runtime-error{position:fixed;z-index:9999;left:50%;top:12px;transform:translateX(-50%);width:min(680px,calc(100vw - 24px));padding:12px 16px;border:1px solid #ff657788;border-radius:12px;background:#190d16f2;color:#fff;box-shadow:0 12px 40px #000b;font:13px/1.5 system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}#vc-runtime-error b{color:#ff9daf}
-@media(max-width:860px){#help{display:none}#gta-hud{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:min(320px,calc(100vw - 20px));padding:10px 12px}#radar-wrap{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))}#mmw{width:124px;height:124px}#mm{width:108px;height:108px}}
-@media(max-width:520px){#gta-hud{width:min(292px,calc(100vw - 20px))}#ms{font-size:25px}#gta-hud:before{font-size:8px}#radar-wrap{gap:8px}#mmw{width:104px;height:104px;padding:4px}#mm{width:90px;height:90px}#tele-pill{font-size:9px;padding:7px 9px}#menu table{font-size:10px}#menu td{padding:5px 7px}#menu td:first-child{font-size:9px}}
+
+/* Vice City Human Interaction HUD */
+#vc-interact-wrap{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:25;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:min(540px,calc(100vw - 28px))}
+#vc-speech{opacity:0;transform:translateY(8px);transition:opacity .22s ease,transform .22s ease;padding:9px 16px;border-radius:11px;border:1px solid #f79ac055;background:linear-gradient(135deg,rgba(22,15,28,.92),rgba(10,13,22,.88));color:#f9f4f7;font-size:13px;line-height:1.4;text-align:center;box-shadow:0 12px 32px #0009;backdrop-filter:blur(10px)}
+#vc-speech.show{opacity:1;transform:translateY(0)}
+#vc-speech b{color:#78f0f0;letter-spacing:.05em;text-transform:uppercase;font-size:11px;margin-right:6px}
+#vc-prompt{opacity:0;transform:translateY(6px);transition:opacity .18s ease,transform .18s ease;padding:8px 16px;border-radius:999px;border:1px solid #6fe6ec66;background:linear-gradient(90deg,rgba(12,18,29,.9),rgba(28,14,30,.9));color:#f5f4f8;font-size:12px;font-weight:600;letter-spacing:.03em;box-shadow:0 10px 28px #0009,0 0 18px #4ce2ed22;backdrop-filter:blur(10px);white-space:nowrap}
+#vc-prompt.show{opacity:1;transform:translateY(0)}
+#vc-prompt kbd,#vc-action-strip kbd{display:inline-block;padding:1px 6px;margin-right:4px;border-radius:5px;border:1px solid #8de4e488;background:#8de4e424;color:#8de4e4;font-family:inherit;font-size:11px;font-weight:800}
+#vc-action-strip{opacity:.88;padding:5px 12px;border-radius:999px;border:1px solid #ffffff1c;background:rgba(9,11,18,.68);color:#c9c5d3;font-size:10px;letter-spacing:.03em;backdrop-filter:blur(8px);white-space:nowrap}
+#vc-action-strip.hidden{display:none}
+#vc-toast-layer{position:fixed;left:50%;top:24%;transform:translateX(-50%);z-index:26;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+.vc-toast{padding:6px 14px;border-radius:999px;border:1px solid #ffffff33;background:rgba(12,15,24,.88);color:#a6f5b9;font-weight:800;font-size:13px;letter-spacing:.06em;box-shadow:0 8px 24px #0008;animation:vcToastUp 1.7s ease forwards}
+.vc-toast.pink{color:#ff9ac5;border-color:#ff9ac555}
+.vc-toast.cyan{color:#80eef2;border-color:#80eef255}
+.vc-toast.gold{color:#ffd98a;border-color:#ffd98a55}
+@keyframes vcToastUp{0%{opacity:0;transform:translateY(10px) scale(.94)}15%{opacity:1;transform:translateY(0) scale(1)}80%{opacity:1;transform:translateY(-14px)}100%{opacity:0;transform:translateY(-28px)}}
+
+@media(max-width:860px){#help{display:none}#gta-hud{top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));width:min(320px,calc(100vw - 20px));padding:10px 12px}#radar-wrap{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))}#mmw{width:124px;height:124px}#mm{width:108px;height:108px}#vc-action-strip{font-size:9px}}
+@media(max-width:520px){#gta-hud{width:min(292px,calc(100vw - 20px))}#ms{font-size:25px}#gta-hud:before{font-size:8px}#radar-wrap{gap:8px}#mmw{width:104px;height:104px;padding:4px}#mm{width:90px;height:90px}#tele-pill{font-size:9px;padding:7px 9px}#menu table{font-size:10px}#menu td{padding:5px 7px}#menu td:first-child{font-size:9px}#vc-action-strip{display:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 `;
+
+    // Self-contained Three.js Face Sculpting + Vice City Human Object Interaction Engine.
+    // Serialized cleanly into the loaded game's main script scope right after scene.add(jasonMesh, luciaMesh).
+    function vcEnhancementModule() {
+      if (window.__VC_ENHANCED_ACTIVE__) return;
+      window.__VC_ENHANCED_ACTIVE__ = true;
+
+      // Localhost heartbeat support for gta_agent.py watchdog
+      if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') {
+        setInterval(function () { fetch('/ping').catch(function () {}); }, 2500);
+      }
+
+      // -----------------------------------------------------------------------
+      // 1. PROCEDURAL RETRO VICE CITY AUDIO (Web Audio API, zero external files)
+      // -----------------------------------------------------------------------
+      var audioCtx = null;
+      function getAudio() {
+        try {
+          if (!audioCtx) {
+            var AC = window.AudioContext || window.webkitAudioContext;
+            if (AC) audioCtx = new AC();
+          }
+          if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+          return audioCtx;
+        } catch (e) { return null; }
+      }
+
+      function playSfx(type) {
+        var ctx = getAudio();
+        if (!ctx) return;
+        try {
+          var now = ctx.currentTime;
+          var osc, gain, osc2;
+          if (type === 'cash' || type === 'pickup') {
+            [880, 1174.66, 1567.98].forEach(function (freq, idx) {
+              osc = ctx.createOscillator();
+              gain = ctx.createGain();
+              osc.type = type === 'cash' ? 'triangle' : 'sine';
+              osc.frequency.setValueAtTime(freq, now + idx * 0.055);
+              gain.gain.setValueAtTime(0.0001, now + idx * 0.055);
+              gain.gain.exponentialRampToValueAtTime(0.11, now + idx * 0.055 + 0.015);
+              gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.055 + 0.22);
+              osc.connect(gain); gain.connect(ctx.destination);
+              osc.start(now + idx * 0.055); osc.stop(now + idx * 0.055 + 0.24);
+            });
+          } else if (type === 'punch' || type === 'hit') {
+            osc = ctx.createOscillator();
+            gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(type === 'hit' ? 190 : 140, now);
+            osc.frequency.exponentialRampToValueAtTime(38, now + 0.14);
+            gain.gain.setValueAtTime(type === 'hit' ? 0.18 : 0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc.stop(now + 0.17);
+          } else if (type === 'soda' || type === 'eat') {
+            // Fizzy hiss + pleasant chime
+            var bufLen = Math.floor(ctx.sampleRate * 0.24);
+            var buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+            var data = buf.getChannelData(0);
+            for (var i = 0; i < bufLen; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufLen);
+            var noise = ctx.createBufferSource();
+            noise.buffer = buf;
+            var filter = ctx.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.value = type === 'soda' ? 2800 : 1100;
+            gain = ctx.createGain();
+            gain.gain.setValueAtTime(0.09, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+            noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+            noise.start(now);
+            osc = ctx.createOscillator();
+            var g2 = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(520, now + 0.14);
+            osc.frequency.exponentialRampToValueAtTime(780, now + 0.3);
+            g2.gain.setValueAtTime(0.08, now + 0.14);
+            g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.34);
+            osc.connect(g2); g2.connect(ctx.destination);
+            osc.start(now + 0.14); osc.stop(now + 0.35);
+          } else if (type === 'phone') {
+            [440, 480].forEach(function (f) {
+              osc = ctx.createOscillator();
+              gain = ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.value = f;
+              gain.gain.setValueAtTime(0.06, now);
+              gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+              osc.connect(gain); gain.connect(ctx.destination);
+              osc.start(now); osc.stop(now + 0.34);
+            });
+          } else if (type === 'clatter') {
+            osc = ctx.createOscillator();
+            osc2 = ctx.createOscillator();
+            gain = ctx.createGain();
+            osc.type = 'square'; osc.frequency.setValueAtTime(220 + Math.random() * 140, now);
+            osc.frequency.exponentialRampToValueAtTime(70, now + 0.12);
+            osc2.type = 'triangle'; osc2.frequency.setValueAtTime(340, now);
+            gain.gain.setValueAtTime(0.07, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+            osc.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc2.start(now); osc.stop(now + 0.15); osc2.stop(now + 0.15);
+          } else if (type === 'talk') {
+            osc = ctx.createOscillator();
+            gain = ctx.createGain();
+            osc.type = 'sine';
+            var baseF = 240 + Math.random() * 120;
+            osc.frequency.setValueAtTime(baseF, now);
+            osc.frequency.linearRampToValueAtTime(baseF * 1.18, now + 0.08);
+            gain.gain.setValueAtTime(0.05, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc.stop(now + 0.12);
+          } else if (type === 'shades') {
+            osc = ctx.createOscillator();
+            gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(620, now);
+            osc.frequency.exponentialRampToValueAtTime(980, now + 0.09);
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc.stop(now + 0.12);
+          }
+        } catch (e) {}
+      }
+
+      // -----------------------------------------------------------------------
+      // 2. HUD OVERLAYS, SUBTITLES, TOASTS & CONTROLS TABLE INJECTION
+      // -----------------------------------------------------------------------
+      var uiWrap = document.createElement('div');
+      uiWrap.id = 'vc-interact-wrap';
+      uiWrap.innerHTML =
+        '<div id="vc-speech" aria-live="polite"></div>' +
+        '<div id="vc-prompt"></div>' +
+        '<div id="vc-action-strip"><kbd>G</kbd>Interact &nbsp;·&nbsp; <kbd>Q</kbd>Punch/Kick &nbsp;·&nbsp; <kbd>T</kbd>Emote &nbsp;·&nbsp; <kbd>V</kbd>Shades</div>';
+      document.body.appendChild(uiWrap);
+
+      var toastLayer = document.createElement('div');
+      toastLayer.id = 'vc-toast-layer';
+      document.body.appendChild(toastLayer);
+
+      var elSpeech = document.getElementById('vc-speech');
+      var elPrompt = document.getElementById('vc-prompt');
+      var elStrip = document.getElementById('vc-action-strip');
+      var speechTimer = 0;
+
+      function showSpeech(speaker, text, duration) {
+        elSpeech.innerHTML = '<b>' + speaker + '</b>' + text;
+        elSpeech.classList.add('show');
+        speechTimer = duration || 3.4;
+      }
+
+      function showToast(text, theme) {
+        var d = document.createElement('div');
+        d.className = 'vc-toast' + (theme ? ' ' + theme : '');
+        d.textContent = text;
+        toastLayer.appendChild(d);
+        setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, 1750);
+      }
+
+      function patchControlsUI() {
+        try {
+          var help = document.getElementById('help');
+          if (help && !help.dataset.vcPatched) {
+            help.dataset.vcPatched = '1';
+            var extra = document.createElement('div');
+            extra.style.marginTop = '4px';
+            extra.style.borderTop = '1px solid rgba(255,255,255,.15)';
+            extra.style.paddingTop = '4px';
+            extra.innerHTML = '<b>G</b> Interact / Sit / Talk &nbsp; <b>Q</b> Punch / Kick &nbsp; <b>T</b> Emote &nbsp; <b>V</b> Shades';
+            help.appendChild(extra);
+          }
+          var tbl = document.querySelector('#menu table');
+          if (tbl && !tbl.dataset.vcPatched) {
+            tbl.dataset.vcPatched = '1';
+            var rows = [
+              ['G', 'Interact with ATMs, vending machines, payphones, benches & NPCs'],
+              ['Q', 'Melee punch / kick combo (NPCs & street props)'],
+              ['T / V', 'Human emotes (T) & toggle Vice City Aviator shades (V)']
+            ];
+            rows.forEach(function (r) {
+              var tr = document.createElement('tr');
+              tr.innerHTML = '<td>' + r[0] + '</td><td>' + r[1] + '</td>';
+              tbl.appendChild(tr);
+            });
+          }
+        } catch (e) {}
+      }
+      patchControlsUI();
+      setTimeout(patchControlsUI, 1200);
+
+      // Safe stat synchronizer (bridges base game stats if reachable + pulses HUD)
+      var vcWalletBonus = 0;
+      function adjustStats(opts) {
+        var cashDelta = opts.cash || 0;
+        var hpDelta = opts.hp || 0;
+        var stamDelta = opts.stamina || 0;
+        var syncedCash = false;
+
+        try {
+          if (cashDelta) {
+            if (typeof cash === 'number') { cash = Math.max(0, cash + cashDelta); syncedCash = true; }
+            else if (typeof money === 'number') { money = Math.max(0, money + cashDelta); syncedCash = true; }
+            else if (typeof score === 'number') { score = Math.max(0, score + cashDelta); syncedCash = true; }
+            else {
+              var objs = [
+                typeof P !== 'undefined' ? P : null,
+                typeof player !== 'undefined' ? player : null,
+                typeof state !== 'undefined' ? state : null,
+                typeof G !== 'undefined' ? G : null
+              ];
+              for (var i = 0; i < objs.length; i++) {
+                var o = objs[i];
+                if (!o || typeof o !== 'object') continue;
+                if (typeof o.cash === 'number') { o.cash = Math.max(0, o.cash + cashDelta); syncedCash = true; break; }
+                if (typeof o.money === 'number') { o.money = Math.max(0, o.money + cashDelta); syncedCash = true; break; }
+              }
+            }
+            vcWalletBonus += cashDelta;
+            var msEl = document.getElementById('ms');
+            if (msEl) {
+              if (!syncedCash) {
+                var cur = parseInt((msEl.textContent || '0').replace(/[^0-9-]/g, ''), 10) || 0;
+                msEl.textContent = '$' + Math.max(0, cur + cashDelta).toLocaleString();
+              }
+              msEl.style.transform = 'scale(1.12)';
+              setTimeout(function () { msEl.style.transform = ''; }, 220);
+            }
+          }
+          if (hpDelta) {
+            var syncedHp = false;
+            if (typeof hp === 'number') { hp = Math.min(100, Math.max(1, hp + hpDelta)); syncedHp = true; }
+            else if (typeof health === 'number') { health = Math.min(100, Math.max(1, health + hpDelta)); syncedHp = true; }
+            else if (typeof P !== 'undefined' && P && typeof P.hp === 'number') { P.hp = Math.min(100, Math.max(1, P.hp + hpDelta)); syncedHp = true; }
+            else if (typeof player !== 'undefined' && player && typeof player.hp === 'number') { player.hp = Math.min(100, Math.max(1, player.hp + hpDelta)); syncedHp = true; }
+            var bi = document.getElementById('bi');
+            if (bi && !syncedHp) {
+              var curW = parseFloat(bi.style.width) || 80;
+              bi.style.width = Math.min(100, Math.max(5, curW + hpDelta)) + '%';
+            }
+          }
+          if (stamDelta) {
+            var syncedSt = false;
+            if (typeof stamina === 'number') { stamina = Math.min(100, Math.max(0, stamina + stamDelta)); syncedSt = true; }
+            else if (typeof stam === 'number') { stam = Math.min(100, Math.max(0, stam + stamDelta)); syncedSt = true; }
+            else if (typeof P !== 'undefined' && P && typeof P.stamina === 'number') { P.stamina = Math.min(100, Math.max(0, P.stamina + stamDelta)); syncedSt = true; }
+            var si = document.getElementById('si');
+            if (si && !syncedSt) {
+              var curS = parseFloat(si.style.width) || 70;
+              si.style.width = Math.min(100, Math.max(5, curS + stamDelta)) + '%';
+            }
+          }
+        } catch (e) {}
+      }
+
+      // -----------------------------------------------------------------------
+      // 3. ENHANCED 3D HUMAN FACE ENGINE (Sculpted Anatomy, Irises, Blinking, Expressions)
+      // -----------------------------------------------------------------------
+      function setTexSRGB(tex) {
+        if (!tex) return;
+        if ('colorSpace' in tex && THREE.SRGBColorSpace) tex.colorSpace = THREE.SRGBColorSpace;
+        else if ('encoding' in tex && THREE.sRGBEncoding) tex.encoding = THREE.sRGBEncoding;
+      }
+
+      // Cached procedural skin micro-grain bump texture
+      var skinBumpTex = (function () {
+        var c = document.createElement('canvas');
+        c.width = 128; c.height = 128;
+        var g = c.getContext('2d');
+        var img = g.createImageData(128, 128);
+        for (var i = 0; i < img.data.length; i += 4) {
+          var v = 120 + Math.floor(Math.random() * 24);
+          img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+          img.data[i + 3] = 255;
+        }
+        g.putImageData(img, 0, 0);
+        var t = new THREE.CanvasTexture(c);
+        t.wrapS = t.wrapT = THREE.RepeatWrapping;
+        t.repeat.set(3, 3);
+        return t;
+      })();
+
+      // Cached procedural radial iris textures
+      var irisTexCache = {};
+      function getIrisTexture(hexOuter, hexInner) {
+        var key = hexOuter + '_' + hexInner;
+        if (irisTexCache[key]) return irisTexCache[key];
+        var c = document.createElement('canvas');
+        c.width = 128; c.height = 128;
+        var g = c.getContext('2d');
+        var cx = 64, cy = 64;
+        g.clearRect(0, 0, 128, 128);
+
+        // Soft sclera rim
+        g.fillStyle = '#f4f0ea';
+        g.fillRect(0, 0, 128, 128);
+
+        // Dark limbal ring
+        var rad = g.createRadialGradient(cx, cy, 10, cx, cy, 56);
+        rad.addColorStop(0.0, '#070709');
+        rad.addColorStop(0.32, '#0b0b10');
+        rad.addColorStop(0.38, hexInner);
+        rad.addColorStop(0.76, hexOuter);
+        rad.addColorStop(0.92, '#1d1c22');
+        rad.addColorStop(1.0, '#e5dfd7');
+        g.fillStyle = rad;
+        g.beginPath();
+        g.arc(cx, cy, 56, 0, Math.PI * 2);
+        g.fill();
+
+        // Fibrous iris striations
+        g.save();
+        g.translate(cx, cy);
+        for (var a = 0; a < 42; a++) {
+          g.rotate((Math.PI * 2) / 42);
+          g.strokeStyle = a % 2 === 0 ? 'rgba(255,255,255,0.16)' : 'rgba(0,0,0,0.22)';
+          g.lineWidth = 1.6;
+          g.beginPath();
+          g.moveTo(21, 0);
+          g.lineTo(48, 0);
+          g.stroke();
+        }
+        g.restore();
+
+        // Pupil
+        g.fillStyle = '#050608';
+        g.beginPath();
+        g.arc(cx, cy, 19, 0, Math.PI * 2);
+        g.fill();
+
+        // Crisp twin catchlights (makes eyes feel alive)
+        g.fillStyle = 'rgba(255,255,255,0.94)';
+        g.beginPath();
+        g.arc(cx - 12, cy - 13, 7.5, 0, Math.PI * 2);
+        g.fill();
+        g.fillStyle = 'rgba(255,255,255,0.55)';
+        g.beginPath();
+        g.arc(cx + 10, cy + 9, 3.2, 0, Math.PI * 2);
+        g.fill();
+
+        var tex = new THREE.CanvasTexture(c);
+        setTexSRGB(tex);
+        irisTexCache[key] = tex;
+        return tex;
+      }
+
+      var NPC_EYE_PALETTES = [
+        ['#3c6e8c', '#82b6c7'],
+        ['#5c3d28', '#9c6e44'],
+        ['#3d6847', '#7fa872'],
+        ['#4b3b2c', '#7d5a3b'],
+        ['#455873', '#7d98b5']
+      ];
+
+      function isSkinMaterial(mat) {
+        if (!mat) return false;
+        if (typeof skinCache !== 'undefined' && skinCache && skinCache.values) {
+          for (var m of skinCache.values()) {
+            if (m === mat) return true;
+          }
+        }
+        if (mat.color) {
+          var r = mat.color.r, g = mat.color.g, b = mat.color.b;
+          if (r > 0.34 && r > g * 0.96 && g > b * 0.90 && (r - b) > 0.06 && (r - b) < 0.62) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      // Compute local bounding box of a descendant mesh relative to charGroup
+      function getMeshBoundsInGroup(mesh, group, invGroupMat) {
+        if (!mesh.geometry) return null;
+        if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+        var bb = mesh.geometry.boundingBox;
+        if (!bb || bb.isEmpty()) return null;
+        var box = bb.clone();
+        var rel = new THREE.Matrix4().multiplyMatrices(invGroupMat, mesh.matrixWorld);
+        box.applyMatrix4(rel);
+        return box;
+      }
+
+      function findHumanAnatomy(charGroup) {
+        charGroup.updateMatrixWorld(true);
+        var invGroup = new THREE.Matrix4().copy(charGroup.matrixWorld).invert();
+        var meshes = [];
+        var totalBox = new THREE.Box3();
+        charGroup.traverse(function (obj) {
+          if (obj.isMesh && !obj.userData.__vcAdded) {
+            var b = getMeshBoundsInGroup(obj, charGroup, invGroup);
+            if (b) {
+              var sz = new THREE.Vector3();
+              var ct = new THREE.Vector3();
+              b.getSize(sz); b.getCenter(ct);
+              meshes.push({ mesh: obj, box: b, size: sz, center: ct });
+              totalBox.union(b);
+            }
+          }
+        });
+        if (meshes.length < 2 || totalBox.isEmpty()) return null;
+        var totalSize = new THREE.Vector3();
+        totalBox.getSize(totalSize);
+        var H = totalSize.y;
+        if (H < 0.9 || H > 3.0) return null;
+
+        // 1. Identify Head mesh
+        var headItem = null;
+        var bestScore = -999;
+        for (var i = 0; i < meshes.length; i++) {
+          var it = meshes[i];
+          var relY = (it.center.y - totalBox.min.y) / H;
+          var maxDim = Math.max(it.size.x, it.size.y, it.size.z);
+          var minDim = Math.min(it.size.x, it.size.y, it.size.z);
+          var score = 0;
+          if (/head|face|skull/i.test(it.mesh.name || '')) score += 50;
+          if (isSkinMaterial(it.mesh.material)) score += 25;
+          if (relY > 0.72 && relY < 0.97) score += 20;
+          if (Math.abs(it.center.x) < H * 0.14) score += 12;
+          if (maxDim > H * 0.085 && maxDim < H * 0.30 && minDim > H * 0.06) score += 15;
+          // Penalize flat hair caps or tiny feature dots
+          if (it.size.y < H * 0.065) score -= 35;
+          if (score > bestScore) {
+            bestScore = score;
+            headItem = it;
+          }
+        }
+        if (!headItem || bestScore < 20) return null;
+
+        // 2. Detect existing hair color & forward direction (+Z or -Z) from primitive eyes/features
+        var hairColor = new THREE.Color(0x2a1d15);
+        var zVotes = 0;
+        var oldFaceDots = [];
+        var headR = Math.max(headItem.size.x, headItem.size.y, headItem.size.z) * 0.5;
+        for (var j = 0; j < meshes.length; j++) {
+          var m = meshes[j];
+          if (m.mesh === headItem.mesh) continue;
+          var dist = m.center.distanceTo(headItem.center);
+          if (dist < headR * 1.9) {
+            var mMax = Math.max(m.size.x, m.size.y, m.size.z);
+            var dz = m.center.z - headItem.center.z;
+            // Small dots positioned on front/back of head = old primitive eyes/nose/mouth
+            if (mMax < headR * 0.56 && Math.abs(dz) > headR * 0.42 && m.center.y < headItem.center.y + headR * 0.55) {
+              zVotes += dz > 0 ? 1 : -1;
+              oldFaceDots.push(m.mesh);
+            } else if (m.center.y >= headItem.center.y + headR * 0.15 && m.mesh.material && m.mesh.material.color && !isSkinMaterial(m.mesh.material)) {
+              hairColor.copy(m.mesh.material.color);
+            }
+          }
+        }
+        var fwdZ = zVotes < 0 ? -1 : 1;
+
+        // 3. Identify limbs for procedural action animations (punch, wave, drink, sit, phone)
+        var limbs = { leftArm: null, rightArm: null, leftLeg: null, rightLeg: null };
+        for (var k = 0; k < meshes.length; k++) {
+          var lm = meshes[k];
+          if (lm.mesh === headItem.mesh) continue;
+          var rY = (lm.center.y - totalBox.min.y) / H;
+          var n = (lm.mesh.name || '').toLowerCase();
+          var targetObj = (lm.mesh.parent && lm.mesh.parent !== charGroup && lm.mesh.parent.children.length <= 4) ? lm.mesh.parent : lm.mesh;
+          // Arms: mid-high, offset left/right
+          if (rY > 0.40 && rY < 0.78 && Math.abs(lm.center.x) > H * 0.09) {
+            var isRight = (lm.center.x * fwdZ) < 0;
+            if (/right.*arm|r_arm|armr/i.test(n)) isRight = true;
+            if (/left.*arm|l_arm|arml/i.test(n)) isRight = false;
+            if (isRight && !limbs.rightArm) limbs.rightArm = targetObj;
+            if (!isRight && !limbs.leftArm) limbs.leftArm = targetObj;
+          }
+          // Legs: lower half, offset left/right
+          if (rY < 0.46 && Math.abs(lm.center.x) > H * 0.04 && lm.size.y > H * 0.16) {
+            var isRLeg = (lm.center.x * fwdZ) < 0;
+            if (/right.*leg|r_leg|legr/i.test(n)) isRLeg = true;
+            if (/left.*leg|l_leg|legl/i.test(n)) isRLeg = false;
+            if (isRLeg && !limbs.rightLeg) limbs.rightLeg = targetObj;
+            if (!isRLeg && !limbs.leftLeg) limbs.leftLeg = targetObj;
+          }
+        }
+
+        return {
+          headMesh: headItem.mesh,
+          headSize: headItem.size,
+          totalBox: totalBox,
+          height: H,
+          fwdZ: fwdZ,
+          hairColor: hairColor,
+          oldFaceDots: oldFaceDots,
+          limbs: limbs
+        };
+      }
+
+      var humanRegistry = [];
+
+      function enhanceHumanFace(charGroup, profile) {
+        if (!charGroup || charGroup.userData.__vcFaceEnhanced) return null;
+        var anat = findHumanAnatomy(charGroup);
+        if (!anat) return null;
+
+        charGroup.userData.__vcFaceEnhanced = true;
+        var headMesh = anat.headMesh;
+        var fwd = anat.fwdZ;
+
+        // Hide crude primitive dots on the old face so sculpted anatomy shines cleanly
+        anat.oldFaceDots.forEach(function (dot) { dot.visible = false; });
+
+        // Upgrade head skin material with subtle natural skin micro-grain bump
+        var baseMat = headMesh.material;
+        var skinMat = baseMat && baseMat.clone ? baseMat.clone() : new THREE.MeshStandardMaterial({ color: 0xdca583 });
+        skinMat.roughness = profile === 'lucia' ? 0.50 : 0.56;
+        skinMat.metalness = 0.0;
+        skinMat.bumpMap = skinBumpTex;
+        skinMat.bumpScale = 0.004;
+        if ('envMapIntensity' in skinMat) skinMat.envMapIntensity = 0.25;
+        headMesh.material = skinMat;
+
+        var skinShadowMat = skinMat.clone();
+        skinShadowMat.color = skinMat.color.clone().multiplyScalar(0.84);
+        skinShadowMat.roughness = 0.65;
+
+        var cheekMat = skinMat.clone();
+        cheekMat.color = skinMat.color.clone().lerp(new THREE.Color(0xd96b6b), profile === 'lucia' ? 0.16 : 0.07);
+
+        var browColor = anat.hairColor.clone();
+        if (profile === 'jason') browColor.setHex(0x3a281c);
+        else if (profile === 'lucia') browColor.setHex(0x231610);
+        var browMat = new THREE.MeshStandardMaterial({ color: browColor, roughness: 0.78, metalness: 0.02 });
+
+        var lipColor = skinMat.color.clone();
+        if (profile === 'lucia') lipColor.lerp(new THREE.Color(0xb84a5e), 0.58);
+        else if (profile === 'jason') lipColor.lerp(new THREE.Color(0x9b554e), 0.38);
+        else lipColor.lerp(new THREE.Color(0x9e5456), 0.42);
+        var lipMat = new THREE.MeshStandardMaterial({
+          color: lipColor,
+          roughness: profile === 'lucia' ? 0.32 : 0.48,
+          metalness: 0.04
+        });
+
+        var mouthInteriorMat = new THREE.MeshBasicMaterial({ color: 0x260c10 });
+
+        // Measure head mesh in its own local geometry coordinates
+        headMesh.geometry.computeBoundingBox();
+        var bb = headMesh.geometry.boundingBox;
+        var c = new THREE.Vector3();
+        bb.getCenter(c);
+        var rx = Math.max(0.04, (bb.max.x - bb.min.x) * 0.5);
+        var ry = Math.max(0.04, (bb.max.y - bb.min.y) * 0.5);
+        var rz = Math.max(0.04, (bb.max.z - bb.min.z) * 0.5);
+
+        // Counter non-uniform scale on headMesh if present so eyes stay round
+        var hs = headMesh.scale;
+        var avgS = (Math.abs(hs.x) + Math.abs(hs.y) + Math.abs(hs.z)) / 3 || 1;
+        var faceRig = new THREE.Group();
+        faceRig.name = 'VC_SculptedFace';
+        faceRig.userData.__vcAdded = true;
+        faceRig.position.copy(c);
+        headMesh.add(faceRig);
+
+        function markAdded(obj) {
+          obj.userData.__vcAdded = true;
+          obj.castShadow = false;
+          obj.receiveShadow = true;
+          return obj;
+        }
+
+        // --- Sculpted Chin & Jawline Contour ---
+        var chinGeo = new THREE.SphereGeometry(rx * 0.46, 12, 10);
+        var chin = markAdded(new THREE.Mesh(chinGeo, skinMat));
+        chin.scale.set(profile === 'jason' ? 1.15 : 0.92, 0.72, 0.85);
+        chin.position.set(0, -ry * 0.70, fwd * rz * 0.52);
+        faceRig.add(chin);
+
+        // --- Cheekbones ---
+        [-1, 1].forEach(function (side) {
+          var cheek = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.30, 10, 8), cheekMat));
+          cheek.scale.set(1.05, 0.78, 0.75);
+          cheek.position.set(side * rx * 0.48, -ry * 0.14, fwd * rz * 0.68);
+          faceRig.add(cheek);
+        });
+
+        // --- Jason's Signature Light Stubble / 5-o'clock Shadow ---
+        if (profile === 'jason') {
+          var stubbleMat = new THREE.MeshStandardMaterial({
+            color: 0x3b2c22,
+            transparent: true,
+            opacity: 0.28,
+            roughness: 0.92,
+            depthWrite: false
+          });
+          var jawStubble = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.52, 12, 8, 0, Math.PI * 2, Math.PI * 0.45, Math.PI * 0.42), stubbleMat));
+          jawStubble.scale.set(1.25, 0.92, 0.92);
+          jawStubble.position.set(0, -ry * 0.36, fwd * rz * 0.48);
+          faceRig.add(jawStubble);
+
+          var stache = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.56, ry * 0.10, rz * 0.10), stubbleMat));
+          stache.position.set(0, -ry * 0.25, fwd * rz * 0.92);
+          faceRig.add(stache);
+        }
+
+        // --- Sculpted Multi-Part Nose (Bridge + Tip + Nostril Wings) ---
+        var noseGroup = new THREE.Group();
+        noseGroup.userData.__vcAdded = true;
+        var bridge = markAdded(new THREE.Mesh(new THREE.CylinderGeometry(rx * 0.085, rx * 0.14, ry * 0.44, 8), skinMat));
+        bridge.rotation.x = fwd * -0.26;
+        bridge.position.set(0, ry * 0.02, fwd * rz * 0.94);
+        noseGroup.add(bridge);
+
+        var noseTip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.155, 10, 8), skinMat));
+        noseTip.scale.set(profile === 'lucia' ? 0.88 : 1.05, 0.86, 1.05);
+        noseTip.position.set(0, -ry * 0.14, fwd * rz * 1.06);
+        noseGroup.add(noseTip);
+
+        var nostrilMat = new THREE.MeshBasicMaterial({ color: 0x3a1c17 });
+        [-1, 1].forEach(function (s) {
+          var wing = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.095, 8, 6), skinShadowMat));
+          wing.position.set(s * rx * 0.12, -ry * 0.16, fwd * rz * 0.96);
+          noseGroup.add(wing);
+
+          var hole = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.042, 6, 6), nostrilMat));
+          hole.scale.set(1.1, 0.55, 0.9);
+          hole.position.set(s * rx * 0.085, -ry * 0.21, fwd * rz * 0.99);
+          noseGroup.add(hole);
+        });
+        faceRig.add(noseGroup);
+
+        // --- Recessed Orbital Shadows + Glossy Detailed Eyes + Eyelids + Brows ---
+        var eyePalette = profile === 'jason'
+          ? ['#3f708d', '#86bfd0']
+          : (profile === 'lucia'
+            ? ['#52331f', '#a66d3f']
+            : NPC_EYE_PALETTES[Math.floor(Math.random() * NPC_EYE_PALETTES.length)]);
+
+        var irisTex = getIrisTexture(eyePalette[0], eyePalette[1]);
+        var scleraMat = new THREE.MeshStandardMaterial({ color: 0xf7f4ee, roughness: 0.10, metalness: 0.05 });
+        var irisMat = new THREE.MeshStandardMaterial({ map: irisTex, roughness: 0.08, metalness: 0.12 });
+        var lashMat = new THREE.MeshStandardMaterial({ color: 0x161214, roughness: 0.6 });
+        var socketMat = new THREE.MeshStandardMaterial({
+          color: skinShadowMat.color,
+          transparent: true,
+          opacity: 0.42,
+          roughness: 0.78,
+          depthWrite: false
+        });
+
+        var eyeR = rx * 0.175;
+        var eyes = [];
+        var lids = [];
+        var brows = [];
+
+        [-1, 1].forEach(function (side) {
+          var ex = side * rx * 0.36;
+          var ey = ry * 0.14;
+          var ez = fwd * rz * 0.84;
+
+          // Subtle eye socket depth
+          var sock = markAdded(new THREE.Mesh(new THREE.SphereGeometry(eyeR * 1.38, 10, 8), socketMat));
+          sock.scale.set(1.18, 0.86, 0.55);
+          sock.position.set(ex, ey, ez - fwd * rx * 0.04);
+          faceRig.add(sock);
+
+          // Eye pivot for gaze tracking
+          var eyePivot = new THREE.Group();
+          eyePivot.userData.__vcAdded = true;
+          eyePivot.position.set(ex, ey, ez);
+          if (Math.abs(hs.x) > 0.01 && Math.abs(hs.y) > 0.01 && Math.abs(hs.z) > 0.01) {
+            eyePivot.scale.set(avgS / Math.abs(hs.x), avgS / Math.abs(hs.y), avgS / Math.abs(hs.z));
+          }
+
+          var eyeball = markAdded(new THREE.Mesh(new THREE.SphereGeometry(eyeR, 12, 10), scleraMat));
+          eyeball.scale.set(1.0, 0.92, 0.78);
+          eyePivot.add(eyeball);
+
+          var irisDisc = markAdded(new THREE.Mesh(new THREE.CircleGeometry(eyeR * 0.72, 16), irisMat));
+          irisDisc.position.set(0, 0, fwd * eyeR * 0.79);
+          if (fwd < 0) irisDisc.rotation.y = Math.PI;
+          eyePivot.add(irisDisc);
+
+          faceRig.add(eyePivot);
+          eyes.push(eyePivot);
+
+          // Upper Eyelid (rotates closed for natural blinking)
+          var lidPivot = new THREE.Group();
+          lidPivot.userData.__vcAdded = true;
+          lidPivot.position.set(ex, ey, ez);
+
+          var upperLid = markAdded(new THREE.Mesh(
+            new THREE.SphereGeometry(eyeR * 1.12, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.52),
+            skinMat
+          ));
+          upperLid.scale.set(1.06, 0.96, 0.88);
+          upperLid.rotation.x = fwd * -0.45;
+          lidPivot.add(upperLid);
+
+          // Lash rim
+          var lash = markAdded(new THREE.Mesh(
+            new THREE.TorusGeometry(eyeR * 0.98, eyeR * (profile === 'lucia' ? 0.13 : 0.08), 6, 12, Math.PI),
+            lashMat
+          ));
+          lash.position.set(0, eyeR * 0.16, fwd * eyeR * 0.65);
+          if (fwd < 0) lash.rotation.y = Math.PI;
+          lidPivot.add(lash);
+
+          faceRig.add(lidPivot);
+          lids.push({ pivot: lidPivot, baseRotX: 0 });
+
+          // Lower eyelid rim
+          var lowerLid = markAdded(new THREE.Mesh(new THREE.TorusGeometry(eyeR * 0.95, eyeR * 0.09, 6, 10, Math.PI), skinShadowMat));
+          lowerLid.rotation.z = Math.PI;
+          lowerLid.position.set(ex, ey - eyeR * 0.24, ez + fwd * eyeR * 0.55);
+          if (fwd < 0) lowerLid.rotation.y = Math.PI;
+          faceRig.add(lowerLid);
+
+          // Sculpted Eyebrow (animated for emotion)
+          var browPivot = new THREE.Group();
+          browPivot.userData.__vcAdded = true;
+          browPivot.position.set(ex, ey + ry * 0.22, ez + fwd * rx * 0.12);
+
+          var browMesh = markAdded(new THREE.Mesh(
+            new THREE.BoxGeometry(rx * 0.40, ry * (profile === 'lucia' ? 0.068 : 0.095), rz * 0.10),
+            browMat
+          ));
+          browMesh.rotation.z = side * (profile === 'lucia' ? -0.10 : -0.05);
+          browPivot.add(browMesh);
+          faceRig.add(browPivot);
+          brows.push({ pivot: browPivot, side: side, baseY: browPivot.position.y, baseRotZ: 0 });
+        });
+
+        // --- Sculpted Lips & Expressive Mouth ---
+        var mouthPivot = new THREE.Group();
+        mouthPivot.userData.__vcAdded = true;
+        mouthPivot.position.set(0, -ry * 0.42, fwd * rz * 0.87);
+
+        var mouthCav = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.22, 10, 8), mouthInteriorMat));
+        mouthCav.scale.set(1.15, 0.22, 0.35);
+        mouthCav.position.set(0, 0, -fwd * rx * 0.02);
+        mouthPivot.add(mouthCav);
+
+        // Upper Cupid's Bow Lip
+        var upperLip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.21, 10, 8), lipMat));
+        upperLip.scale.set(1.22, profile === 'lucia' ? 0.36 : 0.28, 0.52);
+        upperLip.position.set(0, ry * 0.036, fwd * rx * 0.03);
+        mouthPivot.add(upperLip);
+
+        // Lower Lip (moves down when speaking/shouting)
+        var lowerLip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.19, 10, 8), lipMat));
+        lowerLip.scale.set(1.14, profile === 'lucia' ? 0.40 : 0.32, 0.55);
+        lowerLip.position.set(0, -ry * 0.038, fwd * rx * 0.03);
+        mouthPivot.add(lowerLip);
+
+        faceRig.add(mouthPivot);
+
+        // --- Sculpted Ears (+ Gold Hoop Earrings for Lucia) ---
+        var goldMat = profile === 'lucia'
+          ? new THREE.MeshStandardMaterial({ color: 0xf4c96b, metalness: 0.92, roughness: 0.18 })
+          : null;
+        [-1, 1].forEach(function (side) {
+          var ear = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.17, 8, 8), skinMat));
+          ear.scale.set(0.45, 1.32, 0.80);
+          ear.position.set(side * rx * 0.96, -ry * 0.03, 0);
+          faceRig.add(ear);
+
+          var innerEar = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.10, 6, 6), skinShadowMat));
+          innerEar.scale.set(0.38, 1.0, 0.65);
+          innerEar.position.set(side * rx * 0.99, -ry * 0.03, fwd * rx * 0.02);
+          faceRig.add(innerEar);
+
+          if (goldMat) {
+            var hoop = markAdded(new THREE.Mesh(new THREE.TorusGeometry(rx * 0.11, rx * 0.018, 6, 14), goldMat));
+            hoop.rotation.y = Math.PI * 0.5;
+            hoop.position.set(side * rx * 0.99, -ry * 0.25, fwd * rx * 0.02);
+            faceRig.add(hoop);
+          }
+        });
+
+        // --- 80s Vice City Aviator Sunglasses Rig (Toggleable via V key) ---
+        var shadesRig = new THREE.Group();
+        shadesRig.userData.__vcAdded = true;
+        var frameMat = new THREE.MeshStandardMaterial({ color: 0xf2cb72, metalness: 0.9, roughness: 0.2 });
+        var lensMat = new THREE.MeshStandardMaterial({
+          color: profile === 'lucia' ? 0x3b1838 : 0x162436,
+          emissive: profile === 'lucia' ? 0x260822 : 0x071b24,
+          emissiveIntensity: 0.35,
+          metalness: 0.72,
+          roughness: 0.08,
+          transparent: true,
+          opacity: 0.86
+        });
+
+        [-1, 1].forEach(function (side) {
+          var lens = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.44, ry * 0.28, rz * 0.045), lensMat));
+          lens.position.set(side * rx * 0.36, ry * 0.13, fwd * rz * 1.05);
+          shadesRig.add(lens);
+
+          var rim = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.47, ry * 0.03, rz * 0.055), frameMat));
+          rim.position.set(side * rx * 0.36, ry * 0.27, fwd * rz * 1.05);
+          shadesRig.add(rim);
+
+          var temple = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.04, ry * 0.035, rz * 1.08), frameMat));
+          temple.position.set(side * rx * 0.88, ry * 0.17, fwd * rz * 0.52);
+          shadesRig.add(temple);
+        });
+        var shadeBridge = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.26, ry * 0.035, rz * 0.05), frameMat));
+        shadeBridge.position.set(0, ry * 0.22, fwd * rz * 1.06);
+        shadesRig.add(shadeBridge);
+
+        // NPCs get a 28% chance of rocking Vice shades by default; Jason/Lucia toggle with V
+        shadesRig.visible = (profile === 'npc') ? (Math.random() < 0.28) : false;
+        faceRig.add(shadesRig);
+
+        var entry = {
+          group: charGroup,
+          profile: profile,
+          name: profile === 'jason' ? 'Jason' : (profile === 'lucia' ? 'Lucia' : 'Vice Local'),
+          anat: anat,
+          faceRig: faceRig,
+          eyes: eyes,
+          lids: lids,
+          brows: brows,
+          mouthCav: mouthCav,
+          lowerLip: lowerLip,
+          shadesRig: shadesRig,
+          fwd: fwd,
+          blinkTimer: 1.5 + Math.random() * 3.5,
+          blinkState: 0,
+          talkTimer: 0,
+          emotion: 'neutral',
+          emotionTimer: 0,
+          knockVel: new THREE.Vector3(),
+          stumbleTimer: 0,
+          hitCooldown: 0,
+          bumpCooldown: 0
+        };
+        humanRegistry.push(entry);
+        return entry;
+      }
+
+      // Immediately enhance Jason & Lucia
+      var jasonEntry = enhanceHumanFace(jasonMesh, 'jason');
+      var luciaEntry = enhanceHumanFace(luciaMesh, 'lucia');
+
+      // Periodically discover & upgrade street NPCs in the scene
+      function scanForNewHumans() {
+        var candidates = [];
+        scene.children.forEach(function (child) {
+          if (child === jasonMesh || child === luciaMesh) return;
+          if (child.userData && (child.userData.__vcProp || child.userData.__vcFaceEnhanced)) return;
+          if (child.isGroup || (child.children && child.children.length >= 3)) {
+            candidates.push(child);
+            // Also check one level down in case NPCs live inside a container group
+            if (child.children && child.children.length > 0 && child.children.length < 80) {
+              child.children.forEach(function (sub) {
+                if (sub !== jasonMesh && sub !== luciaMesh && sub.children && sub.children.length >= 3 && (!sub.userData || !sub.userData.__vcFaceEnhanced)) {
+                  candidates.push(sub);
+                }
+              });
+            }
+          }
+        });
+        for (var i = 0; i < candidates.length; i++) {
+          var g = candidates[i];
+          if (g.userData && g.userData.__vcFaceEnhanced) continue;
+          // Quick bounding box filter for human-sized entities
+          var box = new THREE.Box3().setFromObject(g);
+          if (box.isEmpty()) continue;
+          var sz = new THREE.Vector3();
+          box.getSize(sz);
+          if (sz.y >= 1.15 && sz.y <= 2.45 && sz.x <= 1.65 && sz.z <= 1.65) {
+            var hasSkin = false;
+            g.traverse(function (m) { if (m.isMesh && isSkinMaterial(m.material)) hasSkin = true; });
+            if (hasSkin) enhanceHumanFace(g, 'npc');
+          }
+        }
+      }
+
+      // -----------------------------------------------------------------------
+      // 4. VICE CITY INTERACTIVE WORLD PROPS & PHYSICS OBJECTS
+      // -----------------------------------------------------------------------
+      var worldGroup = new THREE.Group();
+      worldGroup.name = 'VC_InteractiveWorld';
+      worldGroup.userData.__vcProp = true;
+      scene.add(worldGroup);
+
+      var interactables = [];
+      var physicsProps = [];
+      var pickups = [];
+      var worldSpawned = false;
+      var groundY = 0;
+
+      function getBuildingBoxes() {
+        var boxes = [];
+        scene.children.forEach(function (obj) {
+          if (obj === worldGroup || obj === jasonMesh || obj === luciaMesh) return;
+          if (obj.isLight || obj.isCamera) return;
+          obj.traverse(function (m) {
+            if (!m.isMesh || (m.userData && m.userData.__vcProp)) return;
+            var b = new THREE.Box3().setFromObject(m);
+            if (b.isEmpty()) return;
+            var sz = new THREE.Vector3();
+            b.getSize(sz);
+            // Large solid structures (ignore giant ground/sky planes)
+            if (sz.y > 3.2 && sz.x > 2.5 && sz.z > 2.5 && sz.x < 95 && sz.z < 95) {
+              b.expandByScalar(1.3);
+              boxes.push(b);
+            }
+          });
+        });
+        return boxes;
+      }
+
+      function isSpotClear(x, z, buildingBoxes, existingPts, minSpacing) {
+        var pt = new THREE.Vector3(x, groundY + 1.2, z);
+        for (var i = 0; i < buildingBoxes.length; i++) {
+          if (buildingBoxes[i].containsPoint(pt)) return false;
+        }
+        for (var j = 0; j < existingPts.length; j++) {
+          var dx = existingPts[j].x - x;
+          var dz = existingPts[j].z - z;
+          if (dx * dx + dz * dz < minSpacing * minSpacing) return false;
+        }
+        return true;
+      }
+
+      function makeRing(colorHex, radius) {
+        var ring = new THREE.Mesh(
+          new THREE.RingGeometry(radius * 0.72, radius, 24),
+          new THREE.MeshBasicMaterial({
+            color: colorHex,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.62
+          })
+        );
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = 0.04;
+        return ring;
+      }
+
+      function createATM(x, z, rotY) {
+        var g = new THREE.Group();
+        g.position.set(x, groundY, z);
+        g.rotation.y = rotY;
+        g.userData.__vcProp = true;
+
+        var bodyMat = new THREE.MeshStandardMaterial({ color: 0x1a2233, roughness: 0.35, metalness: 0.65 });
+        var trimMat = new THREE.MeshStandardMaterial({ color: 0x58e8ec, emissive: 0x24a5b5, emissiveIntensity: 0.7, roughness: 0.2 });
+        var scrMat = new THREE.MeshStandardMaterial({ color: 0x62f2c8, emissive: 0x2ad9a5, emissiveIntensity: 1.0, roughness: 0.15 });
+
+        var body = new THREE.Mesh(new THREE.BoxGeometry(0.95, 2.05, 0.72), bodyMat);
+        body.position.y = 1.025; body.castShadow = true; body.receiveShadow = true;
+        g.add(body);
+
+        var header = new THREE.Mesh(new THREE.BoxGeometry(0.98, 0.24, 0.76), trimMat);
+        header.position.y = 1.96;
+        g.add(header);
+
+        var screen = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.42, 0.05), scrMat);
+        screen.position.set(0, 1.44, 0.35);
+        g.add(screen);
+
+        var keypad = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.16, 0.18), new THREE.MeshStandardMaterial({ color: 0x9aa4b4, metalness: 0.8, roughness: 0.25 }));
+        keypad.position.set(0, 1.04, 0.38);
+        keypad.rotation.x = 0.35;
+        g.add(keypad);
+
+        var led = new THREE.Mesh(new THREE.SphereGeometry(0.055, 8, 8), new THREE.MeshBasicMaterial({ color: 0x4dff9b }));
+        led.position.set(0.34, 1.66, 0.37);
+        g.add(led);
+
+        var ring = makeRing(0x4dff9b, 1.25);
+        g.add(ring);
+        worldGroup.add(g);
+
+        interactables.push({
+          type: 'atm',
+          label: 'Use Vice Bank ATM (+$250)',
+          group: g,
+          led: led,
+          ring: ring,
+          radius: 2.5,
+          cooldown: 0
+        });
+      }
+
+      function createVendingMachine(x, z, rotY) {
+        var g = new THREE.Group();
+        g.position.set(x, groundY, z);
+        g.rotation.y = rotY;
+        g.userData.__vcProp = true;
+
+        var shell = new THREE.Mesh(
+          new THREE.BoxGeometry(1.18, 2.25, 0.85),
+          new THREE.MeshStandardMaterial({ color: 0x165e39, roughness: 0.32, metalness: 0.42 })
+        );
+        shell.position.y = 1.125; shell.castShadow = true; shell.receiveShadow = true;
+        g.add(shell);
+
+        var front = new THREE.Mesh(
+          new THREE.BoxGeometry(0.86, 1.45, 0.06),
+          new THREE.MeshStandardMaterial({ color: 0x6dff8c, emissive: 0x26c758, emissiveIntensity: 0.85, roughness: 0.18 })
+        );
+        front.position.set(-0.08, 1.32, 0.42);
+        g.add(front);
+
+        var neonStripe = new THREE.Mesh(
+          new THREE.BoxGeometry(1.20, 0.14, 0.88),
+          new THREE.MeshStandardMaterial({ color: 0xff6fb5, emissive: 0xff4fa0, emissiveIntensity: 0.9 })
+        );
+        neonStripe.position.y = 2.18;
+        g.add(neonStripe);
+
+        var slot = new THREE.Mesh(
+          new THREE.BoxGeometry(0.70, 0.32, 0.10),
+          new THREE.MeshStandardMaterial({ color: 0x0b0d12, roughness: 0.8 })
+        );
+        slot.position.set(-0.08, 0.38, 0.41);
+        g.add(slot);
+
+        var ring = makeRing(0x6dff8c, 1.3);
+        g.add(ring);
+        worldGroup.add(g);
+
+        interactables.push({
+          type: 'vending',
+          label: 'Buy Sprunk Soda ($5 · +25 HP)',
+          group: g,
+          ring: ring,
+          radius: 2.6,
+          cooldown: 0,
+          shakeTimer: 0,
+          basePos: new THREE.Vector3(x, groundY, z)
+        });
+      }
+
+      function createPayphone(x, z, rotY) {
+        var g = new THREE.Group();
+        g.position.set(x, groundY, z);
+        g.rotation.y = rotY;
+        g.userData.__vcProp = true;
+
+        var metal = new THREE.MeshStandardMaterial({ color: 0x9aa9bc, metalness: 0.78, roughness: 0.25 });
+        var post = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.10, 2.25, 10), metal);
+        post.position.set(0, 1.125, -0.20); post.castShadow = true;
+        g.add(post);
+
+        var hood = new THREE.Mesh(
+          new THREE.BoxGeometry(0.92, 0.96, 0.72),
+          new THREE.MeshStandardMaterial({ color: 0x1a2844, roughness: 0.25, metalness: 0.3, transparent: true, opacity: 0.78 })
+        );
+        hood.position.set(0, 1.80, 0.08);
+        g.add(hood);
+
+        var neonTop = new THREE.Mesh(
+          new THREE.BoxGeometry(0.96, 0.16, 0.76),
+          new THREE.MeshStandardMaterial({ color: 0x5beff5, emissive: 0x35d6ea, emissiveIntensity: 1.0 })
+        );
+        neonTop.position.set(0, 2.30, 0.08);
+        g.add(neonTop);
+
+        var unit = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.50, 0.22), new THREE.MeshStandardMaterial({ color: 0x20242e, metalness: 0.6, roughness: 0.3 }));
+        unit.position.set(0, 1.48, 0.02);
+        g.add(unit);
+
+        var handset = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.34, 8), new THREE.MeshStandardMaterial({ color: 0x121318 }));
+        handset.position.set(-0.22, 1.50, 0.08);
+        g.add(handset);
+
+        var ring = makeRing(0x5beff5, 1.25);
+        g.add(ring);
+        worldGroup.add(g);
+
+        interactables.push({
+          type: 'payphone',
+          label: 'Answer Ringing Vice Payphone',
+          group: g,
+          handset: handset,
+          neonTop: neonTop,
+          ring: ring,
+          radius: 2.5,
+          cooldown: 0
+        });
+      }
+
+      function createBench(x, z, rotY) {
+        var g = new THREE.Group();
+        g.position.set(x, groundY, z);
+        g.rotation.y = rotY;
+        g.userData.__vcProp = true;
+
+        var woodMat = new THREE.MeshStandardMaterial({ color: 0x8f5633, roughness: 0.72 });
+        var frameMat = new THREE.MeshStandardMaterial({ color: 0x2bb8c2, metalness: 0.55, roughness: 0.35 });
+
+        var seat = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.11, 0.62), woodMat);
+        seat.position.set(0, 0.52, 0); seat.castShadow = true; seat.receiveShadow = true;
+        g.add(seat);
+
+        var back = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.52, 0.10), woodMat);
+        back.position.set(0, 0.86, -0.28); back.rotation.x = -0.18; back.castShadow = true;
+        g.add(back);
+
+        [-0.86, 0.86].forEach(function (lx) {
+          var leg = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.52, 0.58), frameMat);
+          leg.position.set(lx, 0.26, 0);
+          g.add(leg);
+        });
+
+        var ring = makeRing(0xffc978, 1.55);
+        g.add(ring);
+        worldGroup.add(g);
+
+        interactables.push({
+          type: 'bench',
+          label: 'Sit on Ocean Drive Bench (Rest & Heal)',
+          group: g,
+          ring: ring,
+          radius: 2.6,
+          cooldown: 0
+        });
+      }
+
+      function createFoodCart(x, z, rotY) {
+        var g = new THREE.Group();
+        g.position.set(x, groundY, z);
+        g.rotation.y = rotY;
+        g.userData.__vcProp = true;
+
+        var cart = new THREE.Mesh(
+          new THREE.BoxGeometry(1.75, 1.05, 0.92),
+          new THREE.MeshStandardMaterial({ color: 0xd93860, roughness: 0.35, metalness: 0.25 })
+        );
+        cart.position.y = 0.65; cart.castShadow = true; cart.receiveShadow = true;
+        g.add(cart);
+
+        var counter = new THREE.Mesh(
+          new THREE.BoxGeometry(1.84, 0.10, 1.02),
+          new THREE.MeshStandardMaterial({ color: 0xe6ecf5, metalness: 0.7, roughness: 0.22 })
+        );
+        counter.position.y = 1.20;
+        g.add(counter);
+
+        var pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.35, 8), new THREE.MeshStandardMaterial({ color: 0xd8dce4, metalness: 0.8 }));
+        pole.position.y = 1.35;
+        g.add(pole);
+
+        var umbrella = new THREE.Mesh(
+          new THREE.ConeGeometry(1.35, 0.55, 8),
+          new THREE.MeshStandardMaterial({ color: 0xff7fb6, emissive: 0x6b1840, emissiveIntensity: 0.35, roughness: 0.5 })
+        );
+        umbrella.position.y = 2.62; umbrella.castShadow = true;
+        g.add(umbrella);
+
+        var ring = makeRing(0xff84ba, 1.45);
+        g.add(ring);
+        worldGroup.add(g);
+
+        interactables.push({
+          type: 'food',
+          label: 'Eat Vice Burger ($10 · Full HP)',
+          group: g,
+          ring: ring,
+          radius: 2.8,
+          cooldown: 0
+        });
+      }
+
+      function spawnPickup(type, x, z, value) {
+        var g = new THREE.Group();
+        g.position.set(x, groundY + 0.85, z);
+        g.userData.__vcProp = true;
+
+        var color = type === 'health' ? 0xff5a9d : (type === 'armor' ? 0x52e9f2 : 0x63f589);
+        if (type === 'health') {
+          var matH = new THREE.MeshStandardMaterial({ color: color, emissive: color, emissiveIntensity: 0.75, roughness: 0.2 });
+          var b1 = new THREE.Mesh(new THREE.SphereGeometry(0.20, 10, 8), matH); b1.position.set(-0.13, 0.12, 0);
+          var b2 = new THREE.Mesh(new THREE.SphereGeometry(0.20, 10, 8), matH); b2.position.set(0.13, 0.12, 0);
+          var tip = new THREE.Mesh(new THREE.ConeGeometry(0.31, 0.42, 8), matH); tip.rotation.x = Math.PI; tip.position.set(0, -0.10, 0);
+          g.add(b1, b2, tip);
+        } else if (type === 'armor') {
+          var matA = new THREE.MeshStandardMaterial({ color: color, emissive: color, emissiveIntensity: 0.7, roughness: 0.25, metalness: 0.5 });
+          var vest = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.52, 0.24), matA);
+          g.add(vest);
+        } else {
+          var matC = new THREE.MeshStandardMaterial({ color: color, emissive: 0x22a84a, emissiveIntensity: 0.75, roughness: 0.3 });
+          var stack = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.16, 0.24), matC);
+          g.add(stack);
+        }
+
+        var glow = new THREE.Mesh(
+          new THREE.RingGeometry(0.42, 0.62, 18),
+          new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide, transparent: true, opacity: 0.6 })
+        );
+        glow.rotation.x = -Math.PI / 2;
+        glow.position.y = -0.80;
+        g.add(glow);
+
+        worldGroup.add(g);
+        pickups.push({
+          type: type,
+          value: value || (type === 'cash' ? 90 : 50),
+          group: g,
+          baseY: groundY + 0.85,
+          phase: Math.random() * Math.PI * 2,
+          collected: false,
+          respawnTimer: 0
+        });
+      }
+
+      function spawnPhysicsProp(kind, x, z) {
+        var g = new THREE.Group();
+        var radius = 0.35;
+        if (kind === 'trashcan') {
+          var can = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.32, 0.26, 0.84, 12),
+            new THREE.MeshStandardMaterial({ color: 0x6f7c8c, metalness: 0.68, roughness: 0.38 })
+          );
+          can.position.y = 0.42; can.castShadow = true;
+          var lid = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.35, 0.35, 0.08, 12),
+            new THREE.MeshStandardMaterial({ color: 0x4b5563, metalness: 0.7, roughness: 0.35 })
+          );
+          lid.position.y = 0.86;
+          g.add(can, lid);
+          radius = 0.42;
+        } else if (kind === 'cone') {
+          var base = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.06, 0.44), new THREE.MeshStandardMaterial({ color: 0x1b1e24 }));
+          base.position.y = 0.03;
+          var cone = new THREE.Mesh(new THREE.ConeGeometry(0.18, 0.66, 10), new THREE.MeshStandardMaterial({ color: 0xff621a, roughness: 0.4 }));
+          cone.position.y = 0.36; cone.castShadow = true;
+          var stripe = new THREE.Mesh(new THREE.CylinderGeometry(0.095, 0.13, 0.14, 10), new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x444444 }));
+          stripe.position.y = 0.40;
+          g.add(base, cone, stripe);
+          radius = 0.32;
+        } else {
+          // Neon Vice Beach Ball
+          var ball = new THREE.Mesh(
+            new THREE.SphereGeometry(0.34, 14, 12),
+            new THREE.MeshStandardMaterial({ color: 0xff5ca8, emissive: 0x4a1030, emissiveIntensity: 0.25, roughness: 0.22 })
+          );
+          ball.position.y = 0.34; ball.castShadow = true;
+          var band = new THREE.Mesh(
+            new THREE.TorusGeometry(0.34, 0.045, 8, 18),
+            new THREE.MeshStandardMaterial({ color: 0x4ceef5, roughness: 0.2 })
+          );
+          band.position.y = 0.34;
+          g.add(ball, band);
+          radius = 0.36;
+        }
+        g.position.set(x, groundY, z);
+        g.userData.__vcProp = true;
+        worldGroup.add(g);
+
+        physicsProps.push({
+          kind: kind,
+          group: g,
+          vel: new THREE.Vector3(),
+          angVel: new THREE.Vector3(),
+          radius: radius,
+          bounciness: kind === 'ball' ? 0.68 : 0.35
+        });
+      }
+
+      function populateViceCityWorld(origin) {
+        if (worldSpawned) return;
+        worldSpawned = true;
+        var bBoxes = getBuildingBoxes();
+        var used = [new THREE.Vector3(origin.x, 0, origin.z)];
+
+        function pickClearSpot(minR, maxR, spacing) {
+          for (var tries = 0; tries < 60; tries++) {
+            var ang = Math.random() * Math.PI * 2;
+            var dist = minR + Math.random() * (maxR - minR);
+            var px = origin.x + Math.cos(ang) * dist;
+            var pz = origin.z + Math.sin(ang) * dist;
+            if (isSpotClear(px, pz, bBoxes, used, spacing)) {
+              used.push(new THREE.Vector3(px, 0, pz));
+              return { x: px, z: pz, rotY: Math.atan2(origin.x - px, origin.z - pz) };
+            }
+          }
+          return null;
+        }
+
+        // Near-spawn Ocean Drive interactive showcase (immediately visible & playable)
+        var s;
+        if ((s = pickClearSpot(5.5, 13, 3.6))) createVendingMachine(s.x, s.z, s.rotY);
+        if ((s = pickClearSpot(6.0, 14, 3.6))) createATM(s.x, s.z, s.rotY);
+        if ((s = pickClearSpot(6.5, 15, 3.6))) createPayphone(s.x, s.z, s.rotY);
+        if ((s = pickClearSpot(5.5, 13, 3.8))) createBench(s.x, s.z, s.rotY);
+        if ((s = pickClearSpot(8.0, 17, 4.0))) createFoodCart(s.x, s.z, s.rotY);
+
+        if ((s = pickClearSpot(5.0, 14, 2.6))) spawnPickup('health', s.x, s.z, 45);
+        if ((s = pickClearSpot(7.0, 16, 2.6))) spawnPickup('armor', s.x, s.z, 50);
+
+        // Kickable physical props nearby
+        for (var c = 0; c < 3; c++) if ((s = pickClearSpot(4.5, 14, 2.2))) spawnPhysicsProp('trashcan', s.x, s.z);
+        for (var k = 0; k < 4; k++) if ((s = pickClearSpot(4.0, 13, 1.8))) spawnPhysicsProp('cone', s.x, s.z);
+        for (var b = 0; b < 2; b++) if ((s = pickClearSpot(4.0, 12, 2.0))) spawnPhysicsProp('ball', s.x, s.z);
+
+        // Second city-wide wave so exploring keeps rewarding you
+        for (var w = 0; w < 3; w++) {
+          if ((s = pickClearSpot(24, 78, 8.0))) createATM(s.x, s.z, Math.random() * Math.PI * 2);
+          if ((s = pickClearSpot(24, 78, 8.0))) createVendingMachine(s.x, s.z, Math.random() * Math.PI * 2);
+          if ((s = pickClearSpot(24, 78, 8.0))) createPayphone(s.x, s.z, Math.random() * Math.PI * 2);
+          if ((s = pickClearSpot(22, 74, 8.0))) createBench(s.x, s.z, Math.random() * Math.PI * 2);
+          if ((s = pickClearSpot(26, 82, 8.0))) createFoodCart(s.x, s.z, Math.random() * Math.PI * 2);
+          if ((s = pickClearSpot(20, 75, 6.0))) spawnPickup('health', s.x, s.z, 45);
+          if ((s = pickClearSpot(18, 65, 4.0))) spawnPhysicsProp(w % 2 === 0 ? 'trashcan' : 'ball', s.x, s.z);
+        }
+      }
+
+      // -----------------------------------------------------------------------
+      // 5. VICE CITY DIALOGUE, HUMAN ACTIONS, MELEE & EMOTES
+      // -----------------------------------------------------------------------
+      var NPC_GREETINGS = [
+        'Ocean Drive is electric tonight. Stay sharp out there.',
+        'Love the Vice look — you heading down to Washington Beach?',
+        'Heard the cops are running speed traps two blocks north.',
+        'Nice evening for a cruise. Just keep it off the sidewalk, pal.',
+        'You look like somebody who knows how to handle this city.'
+      ];
+      var PARTNER_LINES = [
+        'Stay close — Vice City never plays fair after sunset.',
+        'Ready when you are. Let’s grab a fast ride and hit the next marker.',
+        'Look at these neon lights… feels like the whole city is ours tonight.',
+        'Got your back. Just say the word and we move.'
+      ];
+      var PAYPHONE_TIPS = [
+        'Tip from the docks: Check the side streets for unguarded cash stacks.',
+        'Ocean Beach wire: Fast getaway? Keep a sports car parked facing the avenue.',
+        'Anonymous caller: "Nice work out there. Wired a little hustle bonus to your account."',
+        'Malibu informant: "Heat rising? Break line-of-sight down an alley to drop wanted stars."'
+      ];
+      var NPC_BUMP_LINES = [
+        'Hey! Watch the suit!',
+        'Whoa — easy there!',
+        'Eyes on the sidewalk, pal!',
+        'Are you crazy?!'
+      ];
+      var NPC_HIT_LINES = [
+        'Hey! Back off!',
+        'Somebody call the cops!',
+        'Whoa, take it easy — keep the cash!',
+        'You picked the wrong street!'
+      ];
+
+      var playerState = {
+        activeEntry: jasonEntry || luciaEntry,
+        onFoot: true,
+        action: null,      // 'punch1' | 'punch2' | 'kick' | 'drink' | 'eat' | 'atm' | 'phone' | 'wave' | 'watch' | 'celebrate' | 'flex' | 'sit'
+        actionTimer: 0,
+        actionDur: 0.45,
+        comboStep: 0,
+        comboWindow: 0,
+        emoteIdx: 0,
+        sittingBench: null,
+        handProp: null
+      };
+
+      function getActivePlayer(cam) {
+        var jVis = jasonMesh && jasonMesh.visible;
+        var lVis = luciaMesh && luciaMesh.visible;
+        if (!jVis && !lVis) {
+          playerState.onFoot = false;
+          return null;
+        }
+        playerState.onFoot = true;
+        if (jVis && !lVis) return jasonEntry;
+        if (lVis && !jVis) return luciaEntry;
+        // Both visible: pick whichever is closer to the camera's focus point
+        if (cam) {
+          var dir = new THREE.Vector3();
+          cam.getWorldDirection(dir);
+          var focus = cam.position.clone().addScaledVector(dir, 5.5);
+          var dj = jasonMesh.position.distanceToSquared(focus);
+          var dl = luciaMesh.position.distanceToSquared(focus);
+          return dj <= dl ? jasonEntry : luciaEntry;
+        }
+        return jasonEntry || luciaEntry;
+      }
+
+      function setEmotion(entry, emotion, dur) {
+        if (!entry) return;
+        entry.emotion = emotion;
+        entry.emotionTimer = dur || 2.0;
+      }
+
+      function attachHandProp(entry, colorHex, kind) {
+        clearHandProp();
+        if (!entry || !entry.anat || !entry.anat.limbs.rightArm) return;
+        var geom = kind === 'can'
+          ? new THREE.CylinderGeometry(0.045, 0.045, 0.14, 10)
+          : new THREE.BoxGeometry(0.14, 0.09, 0.14);
+        var mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.3, roughness: 0.25 }));
+        mesh.userData.__vcAdded = true;
+        mesh.position.set(0, -0.34, 0.08 * entry.fwd);
+        entry.anat.limbs.rightArm.add(mesh);
+        playerState.handProp = mesh;
+      }
+
+      function clearHandProp() {
+        if (playerState.handProp && playerState.handProp.parent) {
+          playerState.handProp.parent.remove(playerState.handProp);
+        }
+        playerState.handProp = null;
+      }
+
+      function startAction(name, dur, emotion) {
+        playerState.action = name;
+        playerState.actionTimer = dur;
+        playerState.actionDur = dur;
+        if (name !== 'sit') playerState.sittingBench = null;
+        if (emotion && playerState.activeEntry) setEmotion(playerState.activeEntry, emotion, dur + 0.5);
+      }
+
+      function findNearestTarget(pPos) {
+        var best = null;
+        var bestDist = Infinity;
+
+        // Check world interactables
+        for (var i = 0; i < interactables.length; i++) {
+          var item = interactables[i];
+          var d = pPos.distanceTo(item.group.position);
+          if (d < item.radius && d < bestDist) {
+            bestDist = d;
+            best = { kind: 'prop', data: item, dist: d };
+          }
+        }
+
+        // Check NPCs & Partner
+        for (var j = 0; j < humanRegistry.length; j++) {
+          var h = humanRegistry[j];
+          if (h === playerState.activeEntry || !h.group.visible) continue;
+          var dh = pPos.distanceTo(h.group.position);
+          if (dh < 2.9 && dh < bestDist) {
+            bestDist = dh;
+            best = { kind: 'human', data: h, dist: dh };
+          }
+        }
+        return best;
+      }
+
+      function triggerInteract() {
+        var active = playerState.activeEntry;
+        if (!active || !playerState.onFoot) return;
+
+        // If already seated, stand up
+        if (playerState.sittingBench) {
+          playerState.sittingBench = null;
+          playerState.action = null;
+          showToast('STOOD UP', 'cyan');
+          return;
+        }
+
+        var target = findNearestTarget(active.group.position);
+        if (!target) {
+          // Friendly ambient wave if nothing nearby
+          startAction('wave', 1.1, 'happy');
+          playSfx('talk');
+          showToast('VICE WAVE', 'cyan');
+          return;
+        }
+
+        if (target.kind === 'human') {
+          var npc = target.data;
+          // Face each other smoothly
+          var toNpc = Math.atan2(npc.group.position.x - active.group.position.x, npc.group.position.z - active.group.position.z);
+          active.group.rotation.y = active.fwd > 0 ? toNpc : toNpc + Math.PI;
+          var toPlayer = Math.atan2(active.group.position.x - npc.group.position.x, active.group.position.z - npc.group.position.z);
+          npc.group.rotation.y = npc.fwd > 0 ? toPlayer : toPlayer + Math.PI;
+
+          startAction('wave', 1.35, 'happy');
+          setEmotion(npc, 'happy', 2.8);
+          active.talkTimer = 1.6;
+          npc.talkTimer = 2.6;
+          playSfx('talk');
+
+          var isPartner = (npc === jasonEntry || npc === luciaEntry);
+          var pool = isPartner ? PARTNER_LINES : NPC_GREETINGS;
+          var line = pool[Math.floor(Math.random() * pool.length)];
+          showSpeech(npc.name, line, 3.6);
+          return;
+        }
+
+        var prop = target.data;
+        if (prop.type === 'atm') {
+          if (prop.cooldown > 0) {
+            showToast('ATM COOLDOWN (' + Math.ceil(prop.cooldown) + 's)', 'pink');
+            return;
+          }
+          prop.cooldown = 25;
+          if (prop.led) prop.led.material.color.setHex(0xffb84d);
+          startAction('atm', 1.3, 'happy');
+          playSfx('cash');
+          adjustStats({ cash: 250 });
+          showToast('+$250 VICE BANK ATM', 'gold');
+          showSpeech('Vice Bank ATM', 'Cash withdrawal approved. Have a Vice day!', 2.6);
+        } else if (prop.type === 'vending') {
+          if (prop.cooldown > 0) {
+            showToast('DISPENSER COOLING…', 'pink');
+            return;
+          }
+          prop.cooldown = 5;
+          startAction('drink', 1.6, 'happy');
+          attachHandProp(active, 0x4df57a, 'can');
+          playSfx('soda');
+          adjustStats({ cash: -5, hp: 25, stamina: 40 });
+          showToast('SPRUNK! +25 HP · +40 STAMINA', 'cyan');
+        } else if (prop.type === 'payphone') {
+          if (prop.cooldown > 0) {
+            showToast('NO NEW CALLS YET', 'cyan');
+            return;
+          }
+          prop.cooldown = 30;
+          startAction('phone', 2.4, 'focused');
+          active.talkTimer = 2.1;
+          playSfx('phone');
+          adjustStats({ cash: 200 });
+          var tip = PAYPHONE_TIPS[Math.floor(Math.random() * PAYPHONE_TIPS.length)];
+          showSpeech('Vice Payphone', tip, 4.4);
+          showToast('+$200 STREET HUSTLE', 'gold');
+        } else if (prop.type === 'bench') {
+          playerState.sittingBench = prop;
+          playerState.action = 'sit';
+          playerState.actionTimer = 9999;
+          setEmotion(active, 'happy', 3.0);
+          showToast('RELAXING · REGENERATING HP', 'cyan');
+          showSpeech(active.name, 'Catching the Ocean Drive breeze… (Press G or move to stand)', 2.8);
+        } else if (prop.type === 'food') {
+          if (prop.cooldown > 0) {
+            showToast('GRILL HEATING UP…', 'pink');
+            return;
+          }
+          prop.cooldown = 10;
+          startAction('eat', 1.7, 'happy');
+          attachHandProp(active, 0xf2a24b, 'burger');
+          playSfx('eat');
+          adjustStats({ cash: -10, hp: 100, stamina: 50 });
+          showToast('VICE BURGER · FULL HEALTH!', 'pink');
+        }
+      }
+
+      function triggerMelee() {
+        var active = playerState.activeEntry;
+        if (!active || !playerState.onFoot) return;
+        if (playerState.sittingBench) playerState.sittingBench = null;
+
+        if (playerState.comboWindow > 0) playerState.comboStep = (playerState.comboStep + 1) % 3;
+        else playerState.comboStep = 0;
+        playerState.comboWindow = 0.95;
+
+        var moveName = playerState.comboStep === 0 ? 'punch1' : (playerState.comboStep === 1 ? 'punch2' : 'kick');
+        startAction(moveName, 0.42, 'angry');
+        playSfx('punch');
+
+        var pPos = active.group.position;
+        var fwdDir = new THREE.Vector3(Math.sin(active.group.rotation.y), 0, Math.cos(active.group.rotation.y)).multiplyScalar(active.fwd);
+        var hitSomething = false;
+
+        // Hit nearby NPCs
+        for (var i = 0; i < humanRegistry.length; i++) {
+          var npc = humanRegistry[i];
+          if (npc === active || !npc.group.visible || npc.hitCooldown > 0) continue;
+          var diff = npc.group.position.clone().sub(pPos);
+          diff.y = 0;
+          var dist = diff.length();
+          if (dist < 2.45) {
+            hitSomething = true;
+            npc.hitCooldown = 0.55;
+            npc.stumbleTimer = 0.85;
+            var push = dist > 0.05 ? diff.normalize() : fwdDir.clone();
+            npc.knockVel.copy(push.multiplyScalar(moveName === 'kick' ? 8.5 : 5.5));
+            setEmotion(npc, 'surprised', 2.6);
+            npc.talkTimer = 1.6;
+            playSfx('hit');
+            showSpeech(npc.name, NPC_HIT_LINES[Math.floor(Math.random() * NPC_HIT_LINES.length)], 2.5);
+            // Drop Vice City cash pickup on hit (55% chance)
+            if (Math.random() < 0.55 && npc !== jasonEntry && npc !== luciaEntry) {
+              var cashAmt = 50 + Math.floor(Math.random() * 100);
+              spawnPickup('cash', npc.group.position.x + (Math.random() - 0.5), npc.group.position.z + (Math.random() - 0.5), cashAmt);
+              showToast('CASH DROPPED!', 'gold');
+            }
+          }
+        }
+
+        // Kick / punch physics props
+        for (var j = 0; j < physicsProps.length; j++) {
+          var pp = physicsProps[j];
+          var dProp = pp.group.position.clone().sub(pPos);
+          dProp.y = 0;
+          if (dProp.length() < 2.6) {
+            hitSomething = true;
+            var dirP = dProp.length() > 0.05 ? dProp.normalize() : fwdDir.clone();
+            pp.vel.set(dirP.x * 10.5, 4.8 + Math.random() * 2.2, dirP.z * 10.5);
+            pp.angVel.set((Math.random() - 0.5) * 14, (Math.random() - 0.5) * 10, (Math.random() - 0.5) * 14);
+            playSfx('clatter');
+          }
+        }
+
+        // Bang a vending machine for a cheeky free soda!
+        for (var v = 0; v < interactables.length; v++) {
+          var it = interactables[v];
+          if (it.type === 'vending' && pPos.distanceTo(it.group.position) < 2.5) {
+            hitSomething = true;
+            it.shakeTimer = 0.45;
+            playSfx('clatter');
+            if (it.cooldown <= 0) {
+              it.cooldown = 8;
+              adjustStats({ hp: 15, stamina: 20 });
+              showToast('FREE SPRUNK SHAKEN LOOSE! +15 HP', 'cyan');
+            }
+          }
+        }
+
+        if (hitSomething) {
+          showToast(moveName === 'kick' ? 'ROUNDHOUSE KICK!' : (moveName === 'punch2' ? 'RIGHT CROSS!' : 'LEFT JAB!'), 'pink');
+        }
+      }
+
+      function triggerEmote() {
+        var active = playerState.activeEntry;
+        if (!active || !playerState.onFoot) return;
+        var emotes = [
+          { id: 'wave', label: 'WAVE HELLO', dur: 1.5, emo: 'happy' },
+          { id: 'watch', label: 'CHECK WATCH', dur: 1.8, emo: 'focused' },
+          { id: 'celebrate', label: 'VICE CELEBRATION', dur: 1.9, emo: 'happy' },
+          { id: 'flex', label: 'STREET STANCE', dur: 1.6, emo: 'angry' }
+        ];
+        var em = emotes[playerState.emoteIdx % emotes.length];
+        playerState.emoteIdx++;
+        startAction(em.id, em.dur, em.emo);
+        playSfx('talk');
+        showToast(em.label, 'cyan');
+      }
+
+      function toggleShades() {
+        var active = playerState.activeEntry;
+        if (!active || !active.shadesRig) return;
+        active.shadesRig.visible = !active.shadesRig.visible;
+        playSfx('shades');
+        showToast(active.shadesRig.visible ? 'VICE AVIATORS ON' : 'VICE AVIATORS OFF', 'gold');
+      }
+
+      // Bind Vice City interaction keys (avoiding text inputs & key auto-repeat)
+      window.addEventListener('keydown', function (e) {
+        if (e.repeat) return;
+        var tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea' || (e.target && e.target.isContentEditable)) return;
+        var k = (e.key || '').toLowerCase();
+        if (k === 'g') triggerInteract();
+        else if (k === 'q') triggerMelee();
+        else if (k === 't') triggerEmote();
+        else if (k === 'v') toggleShades();
+        else if (playerState.sittingBench && (k === 'w' || k === 'a' || k === 's' || k === 'd' || k === 'f' || k === 'e' || k === ' ' || k.indexOf('arrow') === 0)) {
+          playerState.sittingBench = null;
+          playerState.action = null;
+        }
+      });
+
+      // -----------------------------------------------------------------------
+      // 6. PER-FRAME ANIMATION LOOP (Hooked cleanly into R.render)
+      // -----------------------------------------------------------------------
+      function updateFaceAnimation(entry, dt, nowSec, focusPoint) {
+        // 1. Natural blinking
+        entry.blinkTimer -= dt;
+        if (entry.blinkTimer <= 0) {
+          entry.blinkState = 1.0;
+          entry.blinkTimer = 2.4 + Math.random() * 3.8;
+        }
+        if (entry.blinkState > 0) {
+          entry.blinkState = Math.max(0, entry.blinkState - dt * 6.5);
+        }
+        var blinkClose = Math.sin(entry.blinkState * Math.PI);
+        for (var i = 0; i < entry.lids.length; i++) {
+          entry.lids[i].pivot.rotation.x = entry.fwd * (blinkClose * 0.95);
+        }
+
+        // 2. Emotional eyebrows
+        if (entry.emotionTimer > 0) {
+          entry.emotionTimer -= dt;
+          if (entry.emotionTimer <= 0) entry.emotion = 'neutral';
+        }
+        for (var b = 0; b < entry.brows.length; b++) {
+          var br = entry.brows[b];
+          var targetY = br.baseY;
+          var targetZ = 0;
+          if (entry.emotion === 'angry') {
+            targetY = br.baseY - 0.015;
+            targetZ = br.side * 0.28;
+          } else if (entry.emotion === 'surprised') {
+            targetY = br.baseY + 0.025;
+            targetZ = -br.side * 0.14;
+          } else if (entry.emotion === 'happy') {
+            targetY = br.baseY + 0.012;
+            targetZ = -br.side * 0.08;
+          } else if (entry.emotion === 'focused') {
+            targetY = br.baseY - 0.008;
+            targetZ = br.side * 0.10;
+          }
+          br.pivot.position.y += (targetY - br.pivot.position.y) * Math.min(1, dt * 10);
+          br.pivot.rotation.z += (targetZ - br.pivot.rotation.z) * Math.min(1, dt * 10);
+        }
+
+        // 3. Talking / reacting mouth animation
+        var mouthOpen = 0;
+        if (entry.talkTimer > 0) {
+          entry.talkTimer -= dt;
+          mouthOpen = 0.45 + 0.55 * Math.abs(Math.sin(nowSec * 15 + entry.blinkTimer));
+        } else if (entry.emotion === 'surprised') {
+          mouthOpen = 0.72;
+        } else if (entry.emotion === 'angry') {
+          mouthOpen = 0.22;
+        }
+        entry.mouthCav.scale.y = 0.18 + mouthOpen * 0.78;
+        entry.lowerLip.position.y = -0.012 - mouthOpen * 0.024;
+
+        // 4. Subtle eye saccades / gaze
+        var gazeX = Math.sin(nowSec * 0.9 + entry.blinkTimer) * 0.08;
+        var gazeY = Math.cos(nowSec * 0.65) * 0.04;
+        if (focusPoint && entry.group.visible) {
+          var dist = entry.group.position.distanceTo(focusPoint);
+          if (dist > 0.5 && dist < 8) {
+            var toF = Math.atan2(focusPoint.x - entry.group.position.x, focusPoint.z - entry.group.position.z);
+            var relAng = toF - entry.group.rotation.y - (entry.fwd < 0 ? Math.PI : 0);
+            while (relAng > Math.PI) relAng -= Math.PI * 2;
+            while (relAng < -Math.PI) relAng += Math.PI * 2;
+            gazeX = Math.max(-0.22, Math.min(0.22, relAng * 0.35));
+          }
+        }
+        for (var e = 0; e < entry.eyes.length; e++) {
+          entry.eyes[e].rotation.y = gazeX;
+          entry.eyes[e].rotation.x = gazeY;
+        }
+      }
+
+      function applyPlayerActionPose(active, dt, nowSec) {
+        if (!active || !playerState.action) return;
+        var limbs = active.anat.limbs;
+        var f = active.fwd;
+
+        if (playerState.action === 'sit' && playerState.sittingBench) {
+          var bench = playerState.sittingBench.group;
+          var benchFwd = new THREE.Vector3(Math.sin(bench.rotation.y), 0, Math.cos(bench.rotation.y));
+          active.group.position.x = bench.position.x + benchFwd.x * 0.18;
+          active.group.position.z = bench.position.z + benchFwd.z * 0.18;
+          active.group.position.y = groundY - 0.18;
+          active.group.rotation.y = f > 0 ? bench.rotation.y : bench.rotation.y + Math.PI;
+          if (limbs.leftLeg) limbs.leftLeg.rotation.x = -1.25 * f;
+          if (limbs.rightLeg) limbs.rightLeg.rotation.x = -1.25 * f;
+          if (limbs.leftArm) limbs.leftArm.rotation.x = -0.35 * f;
+          if (limbs.rightArm) limbs.rightArm.rotation.x = -0.35 * f;
+          // Gentle regen while seated
+          if (Math.random() < dt * 2.5) adjustStats({ hp: 2, stamina: 5 });
+          return;
+        }
+
+        playerState.actionTimer -= dt;
+        if (playerState.actionTimer <= 0) {
+          playerState.action = null;
+          clearHandProp();
+          return;
+        }
+
+        var t = 1 - (playerState.actionTimer / Math.max(0.05, playerState.actionDur));
+        var arc = Math.sin(t * Math.PI);
+
+        if (playerState.action === 'punch1' && limbs.leftArm) {
+          limbs.leftArm.rotation.x = -1.65 * arc * f;
+          limbs.leftArm.rotation.z = 0.25 * arc;
+        } else if (playerState.action === 'punch2' && limbs.rightArm) {
+          limbs.rightArm.rotation.x = -1.75 * arc * f;
+          limbs.rightArm.rotation.z = -0.35 * arc;
+        } else if (playerState.action === 'kick' && limbs.rightLeg) {
+          limbs.rightLeg.rotation.x = -1.45 * arc * f;
+          if (limbs.leftArm) limbs.leftArm.rotation.x = 0.55 * arc * f;
+        } else if (playerState.action === 'wave' && limbs.rightArm) {
+          limbs.rightArm.rotation.x = -2.45 * f;
+          limbs.rightArm.rotation.z = -0.35 + Math.sin(nowSec * 14) * 0.32;
+        } else if ((playerState.action === 'drink' || playerState.action === 'eat') && limbs.rightArm) {
+          limbs.rightArm.rotation.x = (-1.95 - Math.sin(nowSec * 8) * 0.15) * f;
+          limbs.rightArm.rotation.z = 0.25;
+        } else if (playerState.action === 'phone' && limbs.rightArm) {
+          limbs.rightArm.rotation.x = -2.25 * f;
+          limbs.rightArm.rotation.z = 0.45;
+        } else if (playerState.action === 'atm' && limbs.rightArm) {
+          limbs.rightArm.rotation.x = (-1.15 + Math.sin(nowSec * 18) * 0.14) * f;
+        } else if (playerState.action === 'watch' && limbs.leftArm) {
+          limbs.leftArm.rotation.x = -1.35 * f;
+          limbs.leftArm.rotation.z = -0.45;
+        } else if (playerState.action === 'celebrate') {
+          if (limbs.leftArm) { limbs.leftArm.rotation.x = -2.85 * f; limbs.leftArm.rotation.z = 0.28 + Math.sin(nowSec * 12) * 0.18; }
+          if (limbs.rightArm) { limbs.rightArm.rotation.x = -2.85 * f; limbs.rightArm.rotation.z = -0.28 - Math.sin(nowSec * 12) * 0.18; }
+        } else if (playerState.action === 'flex') {
+          if (limbs.leftArm) { limbs.leftArm.rotation.x = -1.45 * f; limbs.leftArm.rotation.z = 0.85; }
+          if (limbs.rightArm) { limbs.rightArm.rotation.x = -1.45 * f; limbs.rightArm.rotation.z = -0.85; }
+        }
+      }
+
+      var lastTime = performance.now();
+      var scanTimer = 0.5;
+      var loggedErr = false;
+
+      var _origRender = R.render.bind(R);
+      R.render = function (sc, cam) {
+        try {
+          var nowMs = performance.now();
+          var dt = Math.min(0.05, Math.max(0.001, (nowMs - lastTime) / 1000));
+          lastTime = nowMs;
+          var nowSec = nowMs * 0.001;
+
+          // Speech subtitle timeout
+          if (speechTimer > 0) {
+            speechTimer -= dt;
+            if (speechTimer <= 0) elSpeech.classList.remove('show');
+          }
+
+          if (playerState.comboWindow > 0) playerState.comboWindow -= dt;
+
+          // Discover active player & spawn Vice City world around spawn point
+          var active = getActivePlayer(cam);
+          playerState.activeEntry = active;
+
+          if (active && !worldSpawned) {
+            var pBox = new THREE.Box3().setFromObject(active.group);
+            if (!pBox.isEmpty()) groundY = Math.abs(pBox.min.y) < 1.5 ? pBox.min.y : 0;
+            populateViceCityWorld(active.group.position);
+          }
+
+          // Periodic NPC discovery for face sculpting & interactions
+          scanTimer -= dt;
+          if (scanTimer <= 0) {
+            scanTimer = 1.6;
+            scanForNewHumans();
+          }
+
+          // Update interactable cooldowns, glow rings & vending shake
+          for (var i = 0; i < interactables.length; i++) {
+            var it = interactables[i];
+            if (it.cooldown > 0) {
+              it.cooldown = Math.max(0, it.cooldown - dt);
+              if (it.cooldown === 0 && it.led) it.led.material.color.setHex(0x4dff9b);
+            }
+            if (it.ring) {
+              var pulse = 1 + Math.sin(nowSec * 3.2 + i) * 0.07;
+              it.ring.scale.set(pulse, pulse, 1);
+            }
+            if (it.type === 'payphone' && it.neonTop && it.cooldown <= 0) {
+              it.neonTop.material.emissiveIntensity = 0.65 + 0.55 * Math.abs(Math.sin(nowSec * 5));
+            }
+            if (it.shakeTimer && it.shakeTimer > 0) {
+              it.shakeTimer -= dt;
+              it.group.position.x = it.basePos.x + (Math.random() - 0.5) * 0.14;
+              it.group.position.z = it.basePos.z + (Math.random() - 0.5) * 0.14;
+              if (it.shakeTimer <= 0) it.group.position.copy(it.basePos);
+            }
+          }
+
+          // Update spinning pickups & walk-over auto-collection
+          for (var p = 0; p < pickups.length; p++) {
+            var pk = pickups[p];
+            if (pk.collected) {
+              if (pk.type !== 'cash') {
+                pk.respawnTimer -= dt;
+                if (pk.respawnTimer <= 0) {
+                  pk.collected = false;
+                  pk.group.visible = true;
+                }
+              }
+              continue;
+            }
+            pk.group.rotation.y += dt * 2.2;
+            pk.group.position.y = pk.baseY + Math.sin(nowSec * 3.0 + pk.phase) * 0.14;
+
+            if (active && playerState.onFoot) {
+              var dPk = active.group.position.distanceTo(pk.group.position);
+              if (dPk < 1.65) {
+                pk.collected = true;
+                pk.group.visible = false;
+                pk.respawnTimer = 28;
+                playSfx(pk.type === 'cash' ? 'cash' : 'pickup');
+                if (pk.type === 'health') {
+                  adjustStats({ hp: pk.value });
+                  showToast('+' + pk.value + ' HEALTH PICKUP', 'pink');
+                } else if (pk.type === 'armor') {
+                  adjustStats({ hp: 35, stamina: 100 });
+                  showToast('VICE ARMOR · MAX STAMINA', 'cyan');
+                } else {
+                  adjustStats({ cash: pk.value });
+                  showToast('+$' + pk.value + ' CASH', 'gold');
+                }
+              }
+            }
+          }
+
+          // Update dynamic physics props (kick, bump, tumble, bounce)
+          for (var k = 0; k < physicsProps.length; k++) {
+            var pr = physicsProps[k];
+            if (active && playerState.onFoot) {
+              var dx = pr.group.position.x - active.group.position.x;
+              var dz = pr.group.position.z - active.group.position.z;
+              var distSq = dx * dx + dz * dz;
+              var minD = pr.radius + 0.55;
+              if (distSq < minD * minD && distSq > 0.0001) {
+                var dLen = Math.sqrt(distSq);
+                var nx = dx / dLen, nz = dz / dLen;
+                pr.vel.x += nx * (pr.kind === 'ball' ? 6.5 : 4.2);
+                pr.vel.z += nz * (pr.kind === 'ball' ? 6.5 : 4.2);
+                pr.vel.y = Math.max(pr.vel.y, pr.kind === 'ball' ? 3.2 : 1.6);
+                pr.angVel.set(nz * 7, (Math.random() - 0.5) * 6, -nx * 7);
+                playSfx('clatter');
+              }
+            }
+            if (pr.vel.lengthSq() > 0.002 || pr.group.position.y > groundY + 0.01) {
+              pr.vel.y -= 15.5 * dt;
+              pr.group.position.addScaledVector(pr.vel, dt);
+              pr.group.rotation.x += pr.angVel.x * dt;
+              pr.group.rotation.y += pr.angVel.y * dt;
+              pr.group.rotation.z += pr.angVel.z * dt;
+              if (pr.group.position.y < groundY) {
+                pr.group.position.y = groundY;
+                if (Math.abs(pr.vel.y) > 1.2) pr.vel.y = -pr.vel.y * pr.bounciness;
+                else pr.vel.y = 0;
+                pr.vel.x *= Math.pow(0.18, dt);
+                pr.vel.z *= Math.pow(0.18, dt);
+                pr.angVel.multiplyScalar(Math.pow(0.12, dt));
+              }
+            }
+          }
+
+          // Update all human faces, NPC knockbacks & shoulder bumps
+          var focusPt = active ? active.group.position : (cam ? cam.position : null);
+          for (var h = 0; h < humanRegistry.length; h++) {
+            var hum = humanRegistry[h];
+            if (!hum.group || !hum.group.parent) continue;
+            if (hum.hitCooldown > 0) hum.hitCooldown -= dt;
+            if (hum.bumpCooldown > 0) hum.bumpCooldown -= dt;
+
+            // Knockback physics for hit NPCs
+            if (hum.stumbleTimer > 0) {
+              hum.stumbleTimer -= dt;
+              hum.group.position.addScaledVector(hum.knockVel, dt);
+              hum.knockVel.multiplyScalar(Math.pow(0.05, dt));
+            }
+
+            // Shoulder-bump detection when player runs into an NPC
+            if (active && playerState.onFoot && hum !== active && hum.group.visible && hum.bumpCooldown <= 0 && hum.stumbleTimer <= 0) {
+              var bdx = hum.group.position.x - active.group.position.x;
+              var bdz = hum.group.position.z - active.group.position.z;
+              var bd2 = bdx * bdx + bdz * bdz;
+              if (bd2 < 0.72 && bd2 > 0.001) {
+                hum.bumpCooldown = 2.6;
+                var bLen = Math.sqrt(bd2);
+                hum.knockVel.set((bdx / bLen) * 3.0, 0, (bdz / bLen) * 3.0);
+                hum.stumbleTimer = 0.35;
+                setEmotion(hum, 'surprised', 1.8);
+                hum.talkTimer = 1.3;
+                playSfx('talk');
+                showSpeech(hum.name, NPC_BUMP_LINES[Math.floor(Math.random() * NPC_BUMP_LINES.length)], 2.2);
+              }
+            }
+
+            updateFaceAnimation(hum, dt, nowSec, hum === active ? (cam ? cam.position : null) : focusPt);
+          }
+
+          // Apply active player's procedural action pose (punch, kick, drink, phone, sit, emote)
+          if (active && playerState.onFoot) {
+            applyPlayerActionPose(active, dt, nowSec);
+          }
+
+          // Update bottom-center Vice City context prompt
+          if (active && playerState.onFoot) {
+            elStrip.classList.remove('hidden');
+            if (playerState.sittingBench) {
+              elPrompt.innerHTML = '<kbd>G</kbd> Stand Up from Bench';
+              elPrompt.classList.add('show');
+            } else {
+              var near = findNearestTarget(active.group.position);
+              if (near) {
+                var txt = near.kind === 'human'
+                  ? 'Talk to ' + near.data.name
+                  : near.data.label;
+                elPrompt.innerHTML = '<kbd>G</kbd> ' + txt;
+                elPrompt.classList.add('show');
+              } else {
+                elPrompt.classList.remove('show');
+              }
+            }
+          } else {
+            elStrip.classList.add('hidden');
+            elPrompt.classList.remove('show');
+          }
+        } catch (err) {
+          if (!loggedErr) {
+            loggedErr = true;
+            console.warn('VC enhancement warning:', err);
+          }
+        }
+        return _origRender.apply(this, arguments);
+      };
+    }
+
     const showBootError=(message)=>{
       document.querySelector('#boot p').textContent='The game could not start.';
       document.querySelector('#boot .pulse').style.display='none';
       const error=document.getElementById('error');error.style.display='block';error.textContent=message;
     };
+
     async function boot(){
       try{
         const controller=new AbortController();
@@ -92,17 +2107,19 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         html=html.replace('</head>',diagnostics+'\n</head>');
         html=html.replace('</style>',polish+'\n</style>');
 
-        // Improve material response and lighting after the character materials exist.
-        // This is a subtle render treatment, not a replacement for high-detail character assets.
+        // Lighting polish + Sculpted Faces & Vice City Human Interaction Engine
         const visualTune=`\n/* Enhanced natural-light/material response; keep stylized meshes and gameplay intact. */\nR.toneMappingExposure=1.08;\nhemi.color.setHex(0xffd5c4);hemi.groundColor.setHex(0x38333a);hemi.intensity=.82;\nsun.color.setHex(0xffe1c2);sun.intensity=2.0;sun.shadow.bias=-.00025;sun.shadow.normalBias=.025;\nscene.fog.color.setHex(0xc78d91);scene.fog.density=.0028;\nfor(const material of skinCache.values()){material.roughness=.56;material.metalness=0;material.envMapIntensity=.22;material.needsUpdate=true}\n`;
+        const enhancementScript='\n;('+vcEnhancementModule.toString()+')();\n';
+
         const sceneReady='scene.add(jasonMesh,luciaMesh);';
         if(!html.includes(sceneReady))throw new Error('Could not find the character setup point to apply the visual treatment.');
-        html=html.replace(sceneReady,sceneReady+visualTune);
+        html=html.replace(sceneReady,sceneReady+visualTune+enhancementScript);
 
         // Ignore keyboard auto-repeat on one-shot actions, not held movement keys.
         const keydown=/addEventListener\(['"]keydown['"]\s*,\s*e\s*=>\s*\{\s*const\s+k\s*=\s*e\.key\.toLowerCase\(\)\s*;\s*keys\[k\]\s*=\s*true\s*;/;
         if(!keydown.test(html))throw new Error('Could not locate the keyboard handler; refusing to apply an incomplete input fix.');
         html=html.replace(keydown,match=>match+'if(e.repeat)return;');
+
         document.open();document.write(html);document.close();
       }catch(err){
         const reason=err&&err.name==='AbortError'?'Loading timed out. Check your connection and reload.':String(err&&err.message||err);
