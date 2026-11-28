@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#090b14">
-  <meta name="description" content="Vice City 3D - Enhanced Edition with sculpted human faces and Vice City world interactions.">
+  <meta name="description" content="Vice City 3D - Enhanced Edition with realistic Vice City human faces and world interactions.">
   <title>Vice City 3D — Enhanced Edition</title>
   <style>
     :root{color-scheme:dark;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#080a12;color:#f5f2f4}
@@ -25,8 +25,8 @@
 <body>
   <main id="boot" role="status" aria-live="polite">
     <h1>Vice City</h1>
-    <p>Loading the city, sculpted characters, and street interactions…</p>
-    <small>Enhanced Faces · Vice City World Interactions · Responsive HUD</small>
+    <p>Sculpting realistic characters and loading Vice City interactions…</p>
+    <small>Realistic Human Faces · Vice City Street Interactions · Responsive HUD</small>
     <div class="pulse" aria-hidden="true"></div>
     <div id="error" role="alert"></div>
   </main>
@@ -39,8 +39,8 @@
 /* Vice City: cinematic HUD, restrained filmic framing, and human interaction overlays. */
 :root{--vc-cyan:#8de4e4;--vc-pink:#ed9bb7;--vc-gold:#e9cf9c;--vc-line:#ffffff24}
 html,body{font-family:Inter,"Segoe UI",system-ui,sans-serif;letter-spacing:.012em}
-canvas.main{filter:saturate(.93) contrast(1.05) brightness(.99)}
-body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 48%,rgba(5,6,12,.26) 100%),linear-gradient(180deg,rgba(5,7,14,.12),transparent 16%,transparent 82%,rgba(5,7,14,.16));box-shadow:inset 0 0 10vmin #03040a44}
+canvas.main{filter:saturate(.94) contrast(1.04) brightness(1.01)}
+body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,transparent 48%,rgba(5,6,12,.25) 100%),linear-gradient(180deg,rgba(5,7,14,.11),transparent 16%,transparent 82%,rgba(5,7,14,.15));box-shadow:inset 0 0 10vmin #03040a40}
 #hud-layer{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 .box,#tele-pill{border:1px solid var(--vc-line);border-radius:12px;background:linear-gradient(145deg,rgba(18,20,28,.84),rgba(8,10,16,.76));backdrop-filter:blur(12px) saturate(115%);-webkit-backdrop-filter:blur(12px) saturate(115%);box-shadow:0 10px 32px #0006,inset 0 1px #ffffff0a}
 #gta-hud{width:min(350px,calc(100vw - 32px));padding:13px 16px 14px;border:1px solid #ed9bb744;border-top:2px solid #ed9bb799;text-shadow:0 1px 10px #0009}
@@ -69,14 +69,14 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 #vc-runtime-error{position:fixed;z-index:9999;left:50%;top:12px;transform:translateX(-50%);width:min(680px,calc(100vw - 24px));padding:12px 16px;border:1px solid #ff657788;border-radius:12px;background:#190d16f2;color:#fff;box-shadow:0 12px 40px #000b;font:13px/1.5 system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere}#vc-runtime-error b{color:#ff9daf}
 
 /* Vice City Human Interaction HUD */
-#vc-interact-wrap{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:25;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:min(540px,calc(100vw - 28px))}
+#vc-interact-wrap{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:25;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:min(600px,calc(100vw - 28px))}
 #vc-speech{opacity:0;transform:translateY(8px);transition:opacity .22s ease,transform .22s ease;padding:9px 16px;border-radius:11px;border:1px solid #f79ac055;background:linear-gradient(135deg,rgba(22,15,28,.92),rgba(10,13,22,.88));color:#f9f4f7;font-size:13px;line-height:1.4;text-align:center;box-shadow:0 12px 32px #0009;backdrop-filter:blur(10px)}
 #vc-speech.show{opacity:1;transform:translateY(0)}
 #vc-speech b{color:#78f0f0;letter-spacing:.05em;text-transform:uppercase;font-size:11px;margin-right:6px}
 #vc-prompt{opacity:0;transform:translateY(6px);transition:opacity .18s ease,transform .18s ease;padding:8px 16px;border-radius:999px;border:1px solid #6fe6ec66;background:linear-gradient(90deg,rgba(12,18,29,.9),rgba(28,14,30,.9));color:#f5f4f8;font-size:12px;font-weight:600;letter-spacing:.03em;box-shadow:0 10px 28px #0009,0 0 18px #4ce2ed22;backdrop-filter:blur(10px);white-space:nowrap}
 #vc-prompt.show{opacity:1;transform:translateY(0)}
 #vc-prompt kbd,#vc-action-strip kbd{display:inline-block;padding:1px 6px;margin-right:4px;border-radius:5px;border:1px solid #8de4e488;background:#8de4e424;color:#8de4e4;font-family:inherit;font-size:11px;font-weight:800}
-#vc-action-strip{opacity:.88;padding:5px 12px;border-radius:999px;border:1px solid #ffffff1c;background:rgba(9,11,18,.68);color:#c9c5d3;font-size:10px;letter-spacing:.03em;backdrop-filter:blur(8px);white-space:nowrap}
+#vc-action-strip{opacity:.88;padding:5px 12px;border-radius:999px;border:1px solid #ffffff1c;background:rgba(9,11,18,.72);color:#c9c5d3;font-size:10px;letter-spacing:.03em;backdrop-filter:blur(8px);white-space:nowrap}
 #vc-action-strip.hidden{display:none}
 #vc-toast-layer{position:fixed;left:50%;top:24%;transform:translateX(-50%);z-index:26;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
 .vc-toast{padding:6px 14px;border-radius:999px;border:1px solid #ffffff33;background:rgba(12,15,24,.88);color:#a6f5b9;font-weight:800;font-size:13px;letter-spacing:.06em;box-shadow:0 8px 24px #0008;animation:vcToastUp 1.7s ease forwards}
@@ -90,8 +90,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 `;
 
-    // Self-contained Three.js Face Sculpting + Vice City Human Object Interaction Engine.
-    // Serialized into the loaded game's main script scope right after scene.add(jasonMesh, luciaMesh).
+    // Self-contained Realistic Anatomical Human Head + Auto-Matched Skin Portrait Maps + Vice City Interactions Engine.
     function vcEnhancementModule() {
       if (window.__VC_ENHANCED_ACTIVE__) return;
       window.__VC_ENHANCED_ACTIVE__ = true;
@@ -102,7 +101,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       }
 
       // -----------------------------------------------------------------------
-      // 1. PROCEDURAL RETRO VICE CITY AUDIO (Web Audio API, zero external files)
+      // 1. PROCEDURAL RETRO VICE CITY AUDIO (Web Audio API)
       // -----------------------------------------------------------------------
       var audioCtx = null;
       function getAudio() {
@@ -201,12 +200,12 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
             osc.connect(gain); gain.connect(ctx.destination);
             osc.start(now); osc.stop(now + 0.12);
-          } else if (type === 'shades') {
+          } else if (type === 'shades' || type === 'cam') {
             osc = ctx.createOscillator();
             gain = ctx.createGain();
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(620, now);
-            osc.frequency.exponentialRampToValueAtTime(980, now + 0.09);
+            osc.frequency.setValueAtTime(type === 'cam' ? 480 : 620, now);
+            osc.frequency.exponentialRampToValueAtTime(type === 'cam' ? 760 : 980, now + 0.09);
             gain.gain.setValueAtTime(0.06, now);
             gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
             osc.connect(gain); gain.connect(ctx.destination);
@@ -223,7 +222,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       uiWrap.innerHTML =
         '<div id="vc-speech" aria-live="polite"></div>' +
         '<div id="vc-prompt"></div>' +
-        '<div id="vc-action-strip"><kbd>X</kbd>Interact &nbsp;|&nbsp; <kbd>Q</kbd>Punch/Kick &nbsp;|&nbsp; <kbd>Z</kbd>Emote &nbsp;|&nbsp; <kbd>B</kbd>Shades</div>';
+        '<div id="vc-action-strip"><kbd>X</kbd>Interact &nbsp;|&nbsp; <kbd>Q</kbd>Punch/Kick &nbsp;|&nbsp; <kbd>Z</kbd>Emote &nbsp;|&nbsp; <kbd>B</kbd>Shades &nbsp;|&nbsp; <kbd>U</kbd>Face Cam</div>';
       document.body.appendChild(uiWrap);
 
       var toastLayer = document.createElement('div');
@@ -258,7 +257,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             extra.style.marginTop = '4px';
             extra.style.borderTop = '1px solid rgba(255,255,255,.15)';
             extra.style.paddingTop = '4px';
-            extra.innerHTML = '<b>X</b> Interact / Sit / Talk &nbsp; <b>Q</b> Punch / Kick &nbsp; <b>Z</b> Emote &nbsp; <b>B</b> Shades';
+            extra.innerHTML = '<b>X</b> Interact &nbsp; <b>Q</b> Punch/Kick &nbsp; <b>Z</b> Emote &nbsp; <b>B</b> Shades &nbsp; <b>U</b> Face Cam';
             help.appendChild(extra);
           }
           var tbl = document.querySelector('#menu table');
@@ -267,7 +266,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             var rows = [
               ['X', 'Interact with ATMs, vending machines, payphones, benches & NPCs'],
               ['Q', '3-hit melee punch / kick combo (NPCs & street props)'],
-              ['Z / B', 'Human emotes (Z) & toggle Vice City Aviator shades (B)']
+              ['Z / B / U', 'Emotes (Z), Vice Aviator shades (B), Close-up Face Cam (U)']
             ];
             rows.forEach(function (r) {
               var tr = document.createElement('tr');
@@ -280,7 +279,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       patchControlsUI();
       setTimeout(patchControlsUI, 1200);
 
-      // Safe stat synchronizer (bridges base game stats if reachable + pulses HUD)
       function adjustStats(opts) {
         var cashDelta = opts.cash || 0;
         var hpDelta = opts.hp || 0;
@@ -343,7 +341,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       }
 
       // -----------------------------------------------------------------------
-      // 3. ENHANCED 3D HUMAN FACE ENGINE (Sculpted Anatomy, Irises, Blinking, Expressions)
+      // 3. REALISTIC ANATOMICAL HUMAN HEAD + LINEAR-UV PORTRAIT TEXTURE ENGINE
       // -----------------------------------------------------------------------
       function setTexSRGB(tex) {
         if (!tex) return;
@@ -351,85 +349,719 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         else if ('encoding' in tex && THREE.sRGBEncoding) tex.encoding = THREE.sRGBEncoding;
       }
 
-      var skinBumpTex = (function () {
-        var c = document.createElement('canvas');
-        c.width = 128; c.height = 128;
-        var g = c.getContext('2d');
-        var img = g.createImageData(128, 128);
-        for (var i = 0; i < img.data.length; i += 4) {
-          var v = 120 + Math.floor(Math.random() * 24);
-          img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
-          img.data[i + 3] = 255;
-        }
-        g.putImageData(img, 0, 0);
-        var t = new THREE.CanvasTexture(c);
-        t.wrapS = t.wrapT = THREE.RepeatWrapping;
-        t.repeat.set(3, 3);
-        return t;
-      })();
-
-      var irisTexCache = {};
-      function getIrisTexture(hexOuter, hexInner) {
-        var key = hexOuter + '_' + hexInner;
-        if (irisTexCache[key]) return irisTexCache[key];
-        var c = document.createElement('canvas');
-        c.width = 128; c.height = 128;
-        var g = c.getContext('2d');
-        var cx = 64, cy = 64;
-        g.fillStyle = '#f4f0ea';
-        g.fillRect(0, 0, 128, 128);
-
-        var rad = g.createRadialGradient(cx, cy, 10, cx, cy, 56);
-        rad.addColorStop(0.0, '#070709');
-        rad.addColorStop(0.32, '#0b0b10');
-        rad.addColorStop(0.38, hexInner);
-        rad.addColorStop(0.76, hexOuter);
-        rad.addColorStop(0.92, '#1d1c22');
-        rad.addColorStop(1.0, '#e5dfd7');
-        g.fillStyle = rad;
-        g.beginPath();
-        g.arc(cx, cy, 56, 0, Math.PI * 2);
-        g.fill();
-
-        g.save();
-        g.translate(cx, cy);
-        for (var a = 0; a < 42; a++) {
-          g.rotate((Math.PI * 2) / 42);
-          g.strokeStyle = a % 2 === 0 ? 'rgba(255,255,255,0.16)' : 'rgba(0,0,0,0.22)';
-          g.lineWidth = 1.6;
-          g.beginPath();
-          g.moveTo(21, 0);
-          g.lineTo(48, 0);
-          g.stroke();
-        }
-        g.restore();
-
-        g.fillStyle = '#050608';
-        g.beginPath();
-        g.arc(cx, cy, 19, 0, Math.PI * 2);
-        g.fill();
-
-        g.fillStyle = 'rgba(255,255,255,0.94)';
-        g.beginPath();
-        g.arc(cx - 12, cy - 13, 7.5, 0, Math.PI * 2);
-        g.fill();
-        g.fillStyle = 'rgba(255,255,255,0.55)';
-        g.beginPath();
-        g.arc(cx + 10, cy + 9, 3.2, 0, Math.PI * 2);
-        g.fill();
-
-        var tex = new THREE.CanvasTexture(c);
-        setTexSRGB(tex);
-        irisTexCache[key] = tex;
-        return tex;
+      function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+      function gauss(d, s) { return Math.exp(-(d * d) / (2 * s * s)); }
+      function smoothstep(a, b, x) {
+        var t = clamp((x - a) / (b - a), 0, 1);
+        return t * t * (3 - 2 * t);
       }
 
-      var NPC_EYE_PALETTES = [
-        ['#3c6e8c', '#82b6c7'],
-        ['#5c3d28', '#9c6e44'],
-        ['#3d6847', '#7fa872'],
-        ['#4b3b2c', '#7d5a3b'],
-        ['#455873', '#7d98b5']
+      function mulberry32(seed) {
+        return function () {
+          var t = seed += 0x6D2B79F5;
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      // Convert THREE.Color to CSS rgba string with lightness/saturation tweaks
+      function rgbaCol(col, mulR, mulG, mulB, alpha) {
+        var r = clamp(Math.round(col.r * 255 * mulR), 0, 255);
+        var g = clamp(Math.round(col.g * 255 * mulG), 0, 255);
+        var b = clamp(Math.round(col.b * 255 * mulB), 0, 255);
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      }
+
+      // Evaluate exact anatomical human skull + facial surface for any angle phi (-PI..PI) and vertical y (-1..1).
+      // Width/height = 0.66 (true slim adult human skull, NOT a round ball/pumpkin!).
+      // Eyes sit at y = +0.04 (true human midpoint), nose tip at y = -0.26, mouth at y = -0.54, chin at y = -0.98.
+      function evalHumanHeadPoint(phi, y0, isFemale) {
+        var absP = Math.abs(phi);
+        var sinP = Math.sin(phi);
+        var cosP = Math.cos(phi);
+
+        // Smooth elliptical vertical profile from crown (+1) to chin (-1)
+        var rVert = Math.sqrt(Math.max(0.0001, 1.0 - y0 * y0));
+
+        // Slim realistic human cranium proportions
+        var baseW = isFemale ? 0.63 : 0.67;
+        var baseD = isFemale ? 0.78 : 0.81;
+
+        // Taper lower third dramatically into a realistic human jawline & chin (no fat round cheeks!)
+        var lowerT = smoothstep(0.04, -0.92, y0);
+        var backFactor = smoothstep(0.6, 2.2, absP);
+        // Back of lower skull tucks inward into the neck; front tapers to a clean chin
+        var jawNarrowX = isFemale
+          ? (1.0 - lowerT * (0.42 + 0.12 * backFactor))
+          : (1.0 - lowerT * (0.30 + 0.14 * backFactor));
+
+        // Distinct male gonial jaw angle at side of jaw (y = -0.58, |phi| = 0.95)
+        var gonialJaw = (!isFemale ? 0.052 : 0.012) * gauss(y0 - (-0.56), 0.14) * gauss(absP - 0.96, 0.28);
+
+        // Subtle temple flatness above cheekbones (makes silhouette unmistakably human!)
+        var templeFlat = -0.045 * gauss(y0 - 0.28, 0.18) * gauss(absP - 0.98, 0.26);
+
+        // Back of cranium (occiput) fullness + clean tuck under back of skull into neck
+        var occiput = 0.075 * gauss(y0 - 0.16, 0.34) * smoothstep(1.35, 2.65, absP);
+        var neckTuck = -0.22 * smoothstep(-0.45, -0.94, y0) * smoothstep(0.85, 2.2, absP);
+
+        var rx = baseW * jawNarrowX + gonialJaw + templeFlat;
+        var rz = baseD + occiput + neckTuck;
+
+        var x = sinP * rVert * rx;
+        var y = y0 * (isFemale ? 1.01 : 1.03);
+        var z = cosP * rVert * rz;
+
+        // Keep front face plane flatter like a real human face (less curved than a sphere)
+        if (absP < 1.35) {
+          var frontPlane = gauss(absP, 0.58) * gauss(y0 + 0.12, 0.55);
+          z -= 0.032 * frontPlane;
+
+          var dz = 0;
+
+          // 1. Forehead & Brow Ridge (stronger on male)
+          dz += (isFemale ? 0.024 : 0.048) * gauss(y0 - 0.23, 0.072) * gauss(absP, 0.46);
+
+          // 2. Recessed Eye Sockets (eyes sit naturally inside orbital cavities)
+          dz -= 0.068 * gauss(y0 - 0.04, 0.075) * gauss(absP - 0.37, 0.155);
+          // Soft eyelid plane inside socket
+          dz += 0.018 * gauss(y0 - 0.065, 0.028) * gauss(absP - 0.37, 0.11);
+
+          // 3. Sculpted Cheekbones (zygomatic arch) & slim lower cheeks
+          dz += (isFemale ? 0.048 : 0.038) * gauss(y0 - (-0.16), 0.11) * gauss(absP - 0.62, 0.22);
+          x += Math.sign(phi) * (isFemale ? 0.024 : 0.018) * gauss(y0 - (-0.14), 0.11) * gauss(absP - 0.72, 0.20);
+          dz -= (isFemale ? 0.026 : 0.034) * gauss(y0 - (-0.42), 0.11) * gauss(absP - 0.58, 0.18);
+
+          // 4. Prominent Sculpted Human Nose (Nasion -> Straight Bridge -> Defined Tip -> Nostril Wings)
+          var nasion = -0.026 * gauss(y0 - 0.10, 0.038) * gauss(absP, 0.085);
+          var bridgeEnv = smoothstep(0.14, 0.00, y0) * smoothstep(-0.35, -0.21, y0);
+          var bridgeSlope = smoothstep(0.12, -0.25, y0);
+          var noseBridge = bridgeEnv * ((isFemale ? 0.145 : 0.175) * bridgeSlope + 0.04) * gauss(absP, 0.082 + 0.022 * bridgeSlope);
+          var noseTip = (isFemale ? 0.095 : 0.112) * gauss(y0 - (-0.265), 0.046) * gauss(absP, 0.090);
+          var noseWings = (isFemale ? 0.045 : 0.056) * gauss(y0 - (-0.285), 0.036) * gauss(absP - 0.135, 0.046);
+          var noseBaseCut = -0.052 * gauss(y0 - (-0.345), 0.026) * gauss(absP, 0.15);
+          dz += nasion + noseBridge + noseTip + noseWings + noseBaseCut;
+
+          // 5. Realistic Muzzle, Philtrum & Sculpted Lips
+          dz += 0.036 * gauss(y0 - (-0.52), 0.12) * gauss(absP, 0.28);
+          // Upper lip with Cupid's bow
+          var cupid = 1.0 - 0.22 * gauss(absP, 0.035);
+          dz += (isFemale ? 0.048 : 0.038) * cupid * gauss(y0 - (-0.495), 0.026) * gauss(absP, 0.175);
+          // Mouth line indentation
+          dz -= 0.028 * gauss(y0 - (-0.540), 0.015) * gauss(absP, 0.215);
+          // Lower lip fullness
+          dz += (isFemale ? 0.052 : 0.042) * gauss(y0 - (-0.585), 0.030) * gauss(absP, 0.155);
+          // Chin cleft / labiomental fold
+          dz -= 0.038 * gauss(y0 - (-0.685), 0.044) * gauss(absP, 0.20);
+          // Strong sculpted human chin projecting slightly forward and down
+          dz += (isFemale ? 0.075 : 0.105) * gauss(y0 - (-0.845), 0.10) * gauss(absP, isFemale ? 0.17 : 0.24);
+          y -= (isFemale ? 0.042 : 0.055) * gauss(y0 - (-0.88), 0.10) * gauss(absP, 0.26);
+
+          z += dz;
+        }
+
+        return [x, y, z];
+      }
+
+      // Build clean parametric sculpted human head BufferGeometry with distortion-free LINEAR vertical UVs!
+      var sculptedHeadGeoCache = {};
+      function getSculptedHeadGeometry(isFemale) {
+        var key = isFemale ? 'female' : 'male';
+        if (sculptedHeadGeoCache[key]) return sculptedHeadGeoCache[key];
+
+        var segU = 64, segV = 48;
+        var positions = [];
+        var uvs = [];
+        var indices = [];
+
+        for (var j = 0; j <= segV; j++) {
+          var vTex = j / segV; // 0 = crown (+1), 1 = chin (-1)
+          // Slightly pack rings near poles to avoid pinch, while keeping linear UV!
+          var y0 = Math.cos(vTex * Math.PI);
+          var uvY = (y0 + 1.0) * 0.5; // Linear height UV: 1 at crown, 0.5 at eye midline, 0 at chin!
+
+          for (var i = 0; i <= segU; i++) {
+            var u = i / segU; // 0 = back (-PI), 0.5 = front (0), 1 = back (+PI)
+            var phi = (u - 0.5) * Math.PI * 2;
+            var pt = evalHumanHeadPoint(phi, y0, isFemale);
+            positions.push(pt[0], pt[1], pt[2]);
+            uvs.push(u, uvY);
+          }
+        }
+
+        var row = segU + 1;
+        for (var j2 = 0; j2 < segV; j2++) {
+          for (var i2 = 0; i2 < segU; i2++) {
+            var a = j2 * row + i2;
+            var b = (j2 + 1) * row + i2;
+            var c = j2 * row + (i2 + 1);
+            var d = (j2 + 1) * row + (i2 + 1);
+            if (j2 > 0) indices.push(a, b, c);
+            if (j2 < segV - 1) indices.push(b, d, c);
+          }
+        }
+
+        var geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+        geo.setIndex(indices);
+        geo.computeVertexNormals();
+        sculptedHeadGeoCache[key] = geo;
+        return geo;
+      }
+
+      // Build sleek, skull-hugging sculpted 3D hair shell (NO floating spheres, NO mushroom caps!)
+      var sculptedHairGeoCache = {};
+      function getSculptedHairGeometry(style) {
+        if (sculptedHairGeoCache[style]) return sculptedHairGeoCache[style];
+        var isFemale = (style === 'lucia');
+        var segU = 56, segV = 36;
+        var positions = [];
+        var uvs = [];
+        var indices = [];
+
+        for (var j = 0; j <= segV; j++) {
+          var t = j / segV; // 0 = crown, 1 = hair hem
+          var yCrown = 1.0;
+
+          for (var i = 0; i <= segU; i++) {
+            var u = i / segU;
+            var phi = (u - 0.5) * Math.PI * 2;
+            var absP = Math.abs(phi);
+
+            // Compute exact natural hairline bottom edge yBottom(phi) around the skull
+            var yBottom;
+            if (style === 'jason') {
+              // High natural male forehead (+0.60), sweeps down around temples (+0.32), crisp sideburns (-0.08), clean taper at nape (-0.42)
+              var frontMask = smoothstep(1.25, 0.45, absP);
+              var templeDip = -0.26 * gauss(absP - 1.15, 0.24);
+              var sideburn = -0.34 * gauss(absP - 1.38, 0.14);
+              var backNape = -0.44 * smoothstep(1.45, 2.35, absP);
+              yBottom = 0.08 + frontMask * 0.54 + templeDip + sideburn + backNape;
+            } else if (style === 'lucia') {
+              // Sleek parted hairline at forehead (+0.58), framing temples, flowing past ears down behind shoulders (-1.45 at back!)
+              var fMask = smoothstep(1.10, 0.35, absP);
+              var sideFlow = -0.95 * smoothstep(0.95, 1.85, absP);
+              var backCascade = -0.62 * smoothstep(1.55, 2.75, absP);
+              yBottom = 0.05 + fMask * 0.54 + sideFlow + backCascade;
+            } else {
+              var nfMask = smoothstep(1.20, 0.42, absP);
+              yBottom = -0.05 + nfMask * 0.62 - 0.38 * smoothstep(1.4, 2.4, absP);
+            }
+
+            var ySample = yCrown + (yBottom - yCrown) * t;
+            var yClamped = clamp(ySample, -0.96, 0.999);
+            var basePt = evalHumanHeadPoint(phi, yClamped, isFemale);
+
+            // Hair thickness off the skull (tapers to 0 right at the hairline edge for seamless fit!)
+            var edgeTaper = smoothstep(1.0, 0.72, t);
+            var thick = 0.055 * edgeTaper + 0.014;
+
+            if (style === 'jason') {
+              // Styled swept-up Vice City waves on top front
+              var topVolume = 0.14 * smoothstep(0.55, 0.92, ySample) * smoothstep(1.3, 0.2, absP);
+              var waveRip = 0.018 * Math.sin(phi * 9.0 + t * 5.0) * edgeTaper;
+              thick += topVolume + waveRip;
+            } else if (style === 'lucia') {
+              // Lush smooth parted volume at crown & flowing hair waves down the back
+              var crownLift = 0.085 * smoothstep(0.45, 0.92, ySample);
+              var partGroove = -0.026 * gauss(phi - 0.12, 0.08) * smoothstep(0.45, 0.90, ySample);
+              var waveBack = 0.022 * Math.sin(phi * 7.0 + ySample * 6.0) * smoothstep(0.8, 1.8, absP);
+              thick += crownLift + partGroove + waveBack;
+            } else {
+              thick += 0.09 * smoothstep(0.5, 0.9, ySample);
+            }
+
+            // Push outward smoothly along radial skull direction
+            var nx = basePt[0], ny = Math.max(0, basePt[1]), nz = basePt[2];
+            var nLen = Math.sqrt(nx * nx + ny * ny + nz * nz) || 1;
+            var hx = basePt[0] + (nx / nLen) * thick;
+            var hy = basePt[1] + (ny / nLen) * thick * (style === 'jason' ? 1.15 : 0.92);
+            var hz = basePt[2] + (nz / nLen) * thick;
+
+            // For Lucia's hair flowing below the head onto upper back/shoulders
+            if (ySample < -0.82) {
+              var drop = (-0.82 - ySample);
+              hy = basePt[1] - drop * 0.95;
+              hz -= drop * 0.22;
+              hx *= (1.0 - drop * 0.12);
+            }
+
+            positions.push(hx, hy, hz);
+            uvs.push(u * 3.0, t * 2.0);
+          }
+        }
+
+        var row = segU + 1;
+        for (var j2 = 0; j2 < segV; j2++) {
+          for (var i2 = 0; i2 < segU; i2++) {
+            var a = j2 * row + i2;
+            var b = (j2 + 1) * row + i2;
+            var c = j2 * row + (i2 + 1);
+            var d = (j2 + 1) * row + (i2 + 1);
+            if (j2 > 0) indices.push(a, b, c);
+            indices.push(b, d, c);
+          }
+        }
+
+        var geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+        geo.setIndex(indices);
+        geo.computeVertexNormals();
+        sculptedHairGeoCache[style] = geo;
+        return geo;
+      }
+
+      // Generate Clean Studio-Lit 1024x1024 Realistic Human Portrait Maps (Diffuse + Bump + Roughness)
+      // Automatically color-matched to the character's real body skin tone!
+      var portraitPackCache = {};
+      function getPortraitTexturePack(cfg, bodySkinColor) {
+        var skinHex = bodySkinColor ? bodySkinColor.getHexString() : 'e5bca0';
+        var cacheKey = cfg.id + '_' + skinHex;
+        if (portraitPackCache[cacheKey]) return portraitPackCache[cacheKey];
+
+        var W = 1024, H = 1024;
+        var rand = mulberry32(cfg.seed || 1986);
+
+        // Start from the character's REAL body skin color so head and arms match 100% seamlessly!
+        var baseCol = bodySkinColor ? bodySkinColor.clone() : new THREE.Color(0xe4ba9c);
+        // Very subtle warm skin calibration (never turns orange!)
+        baseCol.lerp(new THREE.Color(cfg.isFemale ? 0xe8bea2 : 0xdfb496), 0.22);
+
+        var diffC = document.createElement('canvas'); diffC.width = W; diffC.height = H;
+        var g = diffC.getContext('2d');
+
+        var bumpC = document.createElement('canvas'); bumpC.width = W; bumpC.height = H;
+        var gb = bumpC.getContext('2d');
+
+        var roughC = document.createElement('canvas'); roughC.width = W; roughC.height = H;
+        var gr = roughC.getContext('2d');
+
+        // Exact linear UV mapping matching getSculptedHeadGeometry!
+        function pxOf(phi) { return (0.5 + phi / (Math.PI * 2)) * W; }
+        function pyOf(y0) { return (1.0 - (y0 + 1.0) * 0.5) * H; }
+
+        function softGlow(ctx, cx, cy, rx, ry, innerColor, outerColor) {
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.scale(1, ry / Math.max(1, rx));
+          var rad = ctx.createRadialGradient(0, 0, rx * 0.04, 0, 0, rx);
+          rad.addColorStop(0, innerColor);
+          rad.addColorStop(1, outerColor);
+          ctx.fillStyle = rad;
+          ctx.beginPath();
+          ctx.arc(0, 0, rx, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        // Base fills
+        g.fillStyle = '#' + baseCol.getHexString();
+        g.fillRect(0, 0, W, H);
+        gb.fillStyle = 'rgb(128,128,128)';
+        gb.fillRect(0, 0, W, H);
+        gr.fillStyle = 'rgb(172,172,172)';
+        gr.fillRect(0, 0, W, H);
+
+        // --- A. Clean Natural Human Skin Color Zones (Bright, lifelike, zero muddy orange!) ---
+        // Soft sunlit forehead, nose ridge, cheekbones & chin highlights
+        softGlow(g, W * 0.5, pyOf(0.42), W * 0.14, H * 0.10, 'rgba(255,246,236,0.22)', 'rgba(255,246,236,0)');
+        softGlow(g, W * 0.5, pyOf(-0.10), W * 0.015, H * 0.085, 'rgba(255,248,240,0.30)', 'rgba(255,248,240,0)');
+        softGlow(g, W * 0.5, pyOf(-0.26), W * 0.018, H * 0.018, 'rgba(255,248,242,0.34)', 'rgba(255,248,242,0)');
+        softGlow(g, W * 0.5, pyOf(-0.84), W * 0.042, H * 0.036, 'rgba(255,244,234,0.20)', 'rgba(255,244,234,0)');
+
+        // Subtle healthy peach-rose cheek warmth
+        var blushStr = cfg.isFemale ? 'rgba(222,126,124,0.18)' : 'rgba(204,118,108,0.11)';
+        softGlow(g, pxOf(-0.56), pyOf(-0.18), W * 0.068, H * 0.055, blushStr, 'rgba(222,126,124,0)');
+        softGlow(g, pxOf(0.56), pyOf(-0.18), W * 0.068, H * 0.055, blushStr, 'rgba(222,126,124,0)');
+
+        // Gentle specular skin zones in roughness map (nose, forehead, cheekbones)
+        softGlow(gr, W * 0.5, pyOf(-0.14), W * 0.028, H * 0.11, 'rgb(106,106,106)', 'rgba(172,172,172,0)');
+        softGlow(gr, W * 0.5, pyOf(0.42), W * 0.10, H * 0.07, 'rgb(126,126,126)', 'rgba(172,172,172,0)');
+
+        // --- B. Refined Portrait Contour Shading (Clean & Subtle, No Dark Smudges) ---
+        var shadeSoft = rgbaCol(baseCol, 0.74, 0.65, 0.62, 0.24);
+        var shadeDeep = rgbaCol(baseCol, 0.56, 0.45, 0.43, 0.34);
+
+        [-1, 1].forEach(function (s) {
+          // Soft eye-socket upper hollow
+          softGlow(g, pxOf(s * 0.36), pyOf(0.11), W * 0.052, H * 0.032, shadeSoft, 'rgba(0,0,0,0)');
+          // Clean nose-side planes (defines nose bridge crisply at gameplay distance!)
+          softGlow(g, pxOf(s * 0.125), pyOf(-0.11), W * 0.022, H * 0.088, shadeSoft, 'rgba(0,0,0,0)');
+          // Subtle jaw/cheek contour along sides of face
+          softGlow(g, pxOf(s * 0.68), pyOf(-0.46), W * 0.065, H * 0.085, shadeSoft, 'rgba(0,0,0,0)');
+        });
+
+        // Under-nose shadow + Realistic Small Nostrils
+        softGlow(g, W * 0.5, pyOf(-0.33), W * 0.038, H * 0.018, shadeDeep, 'rgba(0,0,0,0)');
+        [-1, 1].forEach(function (s) {
+          g.save();
+          g.translate(pxOf(s * 0.095), pyOf(-0.312));
+          g.rotate(s * -0.22);
+          g.fillStyle = rgbaCol(baseCol, 0.28, 0.18, 0.17, 0.80);
+          g.beginPath();
+          g.ellipse(0, 0, W * 0.010, H * 0.0055, 0, 0, Math.PI * 2);
+          g.fill();
+          g.restore();
+
+          gb.save();
+          gb.translate(pxOf(s * 0.095), pyOf(-0.312));
+          gb.fillStyle = 'rgb(42,42,42)';
+          gb.beginPath();
+          gb.ellipse(0, 0, W * 0.011, H * 0.0065, 0, 0, Math.PI * 2);
+          gb.fill();
+          gb.restore();
+        });
+
+        // Philtrum & subtle under-lip chin shadow
+        softGlow(g, W * 0.5, pyOf(-0.415), W * 0.011, H * 0.026, shadeSoft, 'rgba(0,0,0,0)');
+        softGlow(g, W * 0.5, pyOf(-0.68), W * 0.044, H * 0.022, shadeDeep, 'rgba(0,0,0,0)');
+
+        // Subtle realistic skin micro-grain
+        for (var p = 0; p < 2400; p++) {
+          var rx = (0.22 + rand() * 0.56) * W;
+          var ry = (0.18 + rand() * 0.74) * H;
+          gb.fillStyle = rand() < 0.5 ? 'rgb(116,116,116)' : 'rgb(140,140,140)';
+          gb.fillRect(rx, ry, 2, 2);
+        }
+
+        // --- C. Realistic Light Stubble for Jason / Male Characters ---
+        if (cfg.stubble > 0) {
+          softGlow(g, W * 0.5, pyOf(-0.76), W * 0.14, H * 0.15, rgbaCol(baseCol, 0.62, 0.58, 0.57, 0.20 * cfg.stubble), 'rgba(0,0,0,0)');
+          softGlow(g, W * 0.5, pyOf(-0.43), W * 0.056, H * 0.024, rgbaCol(baseCol, 0.62, 0.58, 0.57, 0.22 * cfg.stubble), 'rgba(0,0,0,0)');
+          var folCount = Math.floor(1900 * cfg.stubble);
+          for (var f = 0; f < folCount; f++) {
+            var a = (rand() * 2 - 1) * 1.12;
+            var yy = -0.37 - rand() * 0.58;
+            if (Math.abs(a) < 0.23 && yy > -0.62 && yy < -0.46) continue;
+            var inMoustache = (Math.abs(a) < 0.28 && yy > -0.47 && yy < -0.37);
+            var inChinJaw = (yy < -0.60 && Math.abs(a) < 0.98);
+            var inSide = (Math.abs(a) > 0.72 && Math.abs(a) < 1.12 && yy > -0.72 && yy < -0.14);
+            if (!inMoustache && !inChinJaw && !inSide && rand() > 0.18) continue;
+            g.fillStyle = 'rgba(42,32,26,' + (0.16 + rand() * 0.20) + ')';
+            g.fillRect(pxOf(a), pyOf(yy), 1.5, 2.5);
+            gb.fillStyle = 'rgb(148,148,148)';
+            gb.fillRect(pxOf(a), pyOf(yy), 1.5, 2.2);
+          }
+        }
+
+        // --- D. Crisp, Anatomically Spaced Human Eyes (Centered at y = +0.04, phi = +/- 0.37) ---
+        [-1, 1].forEach(function (side) {
+          var ecx = pxOf(side * 0.37);
+          var ecy = pyOf(0.04);
+          var ew = W * 0.036; // True human eye half-width (leaves clean 1-eye-width bridge between eyes!)
+          var eh = H * (cfg.isFemale ? 0.0185 : 0.0158);
+
+          // Delicate upper eyelid crease (double eyelid fold)
+          g.save();
+          g.strokeStyle = rgbaCol(baseCol, 0.52, 0.40, 0.38, 0.55);
+          g.lineWidth = 2.2;
+          g.lineCap = 'round';
+          g.beginPath();
+          g.moveTo(ecx - side * ew * 0.88, ecy - eh * 0.60);
+          g.quadraticCurveTo(ecx, ecy - eh * 2.05, ecx + side * ew * 1.02, ecy - eh * 0.48);
+          g.stroke();
+          g.restore();
+
+          // Almond eye contour
+          function traceEye(ctx) {
+            var innerX = ecx - side * ew;
+            var outerX = ecx + side * ew;
+            var innerY = ecy + eh * 0.16;
+            var outerY = ecy - eh * 0.08;
+            ctx.beginPath();
+            ctx.moveTo(innerX, innerY);
+            ctx.bezierCurveTo(ecx - side * ew * 0.35, ecy - eh * 1.32, ecx + side * ew * 0.40, ecy - eh * 1.28, outerX, outerY);
+            ctx.bezierCurveTo(ecx + side * ew * 0.40, ecy + eh * 1.10, ecx - side * ew * 0.35, ecy + eh * 1.14, innerX, innerY);
+            ctx.closePath();
+          }
+
+          g.save();
+          traceEye(g);
+          g.clip();
+
+          // Clean realistic sclera
+          var sclGrad = g.createLinearGradient(ecx, ecy - eh, ecx, ecy + eh);
+          sclGrad.addColorStop(0.0, '#cfc8c2');
+          sclGrad.addColorStop(0.28, '#f7f4ef');
+          sclGrad.addColorStop(0.80, '#f3eee8');
+          sclGrad.addColorStop(1.0, '#e0d2cc');
+          g.fillStyle = sclGrad;
+          g.fillRect(ecx - ew * 1.2, ecy - eh * 1.4, ew * 2.4, eh * 2.8);
+
+          // Subtle pink inner tear duct
+          softGlow(g, ecx - side * ew * 0.88, ecy + eh * 0.14, ew * 0.25, eh * 0.48, 'rgba(212,126,126,0.85)', 'rgba(212,126,126,0)');
+
+          // Iris (proportionally realistic — ~46% of eye width)
+          var irisR = eh * 0.94;
+          var irisGrad = g.createRadialGradient(ecx, ecy, irisR * 0.18, ecx, ecy, irisR);
+          irisGrad.addColorStop(0.0, '#070709');
+          irisGrad.addColorStop(0.35, '#0b0b10');
+          irisGrad.addColorStop(0.42, cfg.irisInner);
+          irisGrad.addColorStop(0.82, cfg.irisOuter);
+          irisGrad.addColorStop(0.95, '#19171e');
+          irisGrad.addColorStop(1.0, 'rgba(28,26,32,0.15)');
+          g.fillStyle = irisGrad;
+          g.beginPath();
+          g.arc(ecx, ecy, irisR, 0, Math.PI * 2);
+          g.fill();
+
+          // Iris fibers
+          g.save();
+          g.translate(ecx, ecy);
+          for (var sp = 0; sp < 30; sp++) {
+            g.rotate((Math.PI * 2) / 30);
+            g.strokeStyle = sp % 2 === 0 ? 'rgba(255,255,255,0.20)' : 'rgba(0,0,0,0.22)';
+            g.lineWidth = 0.9;
+            g.beginPath();
+            g.moveTo(irisR * 0.38, 0);
+            g.lineTo(irisR * 0.88, 0);
+            g.stroke();
+          }
+          g.restore();
+
+          // Pupil
+          g.fillStyle = '#060709';
+          g.beginPath();
+          g.arc(ecx, ecy, irisR * 0.37, 0, Math.PI * 2);
+          g.fill();
+
+          // Upper lid shadow over top of eyeball
+          var lidSh = g.createLinearGradient(ecx, ecy - eh * 1.1, ecx, ecy + eh * 0.2);
+          lidSh.addColorStop(0.0, 'rgba(18,12,16,0.48)');
+          lidSh.addColorStop(0.55, 'rgba(18,12,16,0.10)');
+          lidSh.addColorStop(1.0, 'rgba(18,12,16,0)');
+          g.fillStyle = lidSh;
+          g.fillRect(ecx - ew * 1.2, ecy - eh * 1.2, ew * 2.4, eh * 1.5);
+
+          // Crisp twin specular catchlights
+          g.fillStyle = 'rgba(255,254,250,0.96)';
+          g.beginPath();
+          g.arc(ecx - irisR * 0.26, ecy - irisR * 0.25, irisR * 0.18, 0, Math.PI * 2);
+          g.fill();
+          g.fillStyle = 'rgba(255,255,255,0.55)';
+          g.beginPath();
+          g.arc(ecx + irisR * 0.24, ecy + irisR * 0.22, irisR * 0.08, 0, Math.PI * 2);
+          g.fill();
+          g.restore();
+
+          // Wet eye gloss on roughness map
+          gr.save();
+          traceEye(gr);
+          gr.fillStyle = 'rgb(16,16,16)';
+          gr.fill();
+          gr.restore();
+
+          // Crisp upper lash line (graceful subtle wing for Lucia, natural for Jason)
+          g.save();
+          g.strokeStyle = cfg.isFemale ? 'rgba(20,13,15,0.94)' : 'rgba(34,22,18,0.82)';
+          g.lineWidth = cfg.isFemale ? 3.8 : 2.8;
+          g.lineCap = 'round';
+          var iX = ecx - side * ew, oX = ecx + side * ew;
+          g.beginPath();
+          g.moveTo(iX, ecy + eh * 0.14);
+          g.bezierCurveTo(ecx - side * ew * 0.35, ecy - eh * 1.32, ecx + side * ew * 0.40, ecy - eh * 1.28, oX + side * (cfg.isFemale ? 3.5 : 0), ecy - eh * (cfg.isFemale ? 0.22 : 0.08));
+          g.stroke();
+
+          // Soft lower lash rim
+          g.strokeStyle = rgbaCol(baseCol, 0.46, 0.36, 0.35, 0.36);
+          g.lineWidth = 1.6;
+          g.beginPath();
+          g.moveTo(iX + side * 4, ecy + eh * 0.22);
+          g.bezierCurveTo(ecx - side * ew * 0.32, ecy + eh * 1.12, ecx + side * ew * 0.40, ecy + eh * 1.08, oX, ecy - eh * 0.04);
+          g.stroke();
+          g.restore();
+
+          // --- E. Feathered Hair-Stroke Eyebrows (Clean arch at y = +0.20) ---
+          g.save();
+          gb.save();
+          var browCount = cfg.isFemale ? 72 : 95;
+          for (var br = 0; br < browCount; br++) {
+            var bt = br / browCount;
+            var bx = pxOf(side * (0.17 + bt * 0.42));
+            var arch = Math.sin(Math.pow(bt, 0.78) * Math.PI);
+            var byBase = pyOf(0.195 + arch * (cfg.isFemale ? 0.052 : 0.025) - bt * 0.015);
+            var thick = (cfg.isFemale ? 0.010 : 0.017) * (1.0 - bt * 0.56) * H;
+            var jitterY = (rand() - 0.5) * thick;
+            var len = (cfg.isFemale ? 7 : 9.5) * (1.0 - bt * 0.35);
+            var slope = (bt < 0.65 ? -0.26 : 0.34);
+
+            g.strokeStyle = cfg.browColor;
+            g.globalAlpha = 0.48 + rand() * 0.42;
+            g.lineWidth = 1.2 + rand() * 0.9;
+            g.beginPath();
+            g.moveTo(bx, byBase + jitterY);
+            g.lineTo(bx + side * len, byBase + jitterY + len * slope);
+            g.stroke();
+
+            gb.strokeStyle = 'rgb(164,164,164)';
+            gb.lineWidth = 1.4;
+            gb.beginPath();
+            gb.moveTo(bx, byBase + jitterY);
+            gb.lineTo(bx + side * len, byBase + jitterY + len * slope);
+            gb.stroke();
+          }
+          g.restore(); gb.restore();
+        });
+
+        // --- F. Natural Shaded Human Lips (Centered at y = -0.54) ---
+        var mcx = W * 0.5;
+        var mcy = pyOf(-0.54);
+        var mw = W * (cfg.isFemale ? 0.048 : 0.052);
+        var uH = H * (cfg.isFemale ? 0.019 : 0.014);
+        var lH = H * (cfg.isFemale ? 0.025 : 0.019);
+
+        // Harmonize lip colors gently with character skin tone
+        var lipU = baseCol.clone().lerp(new THREE.Color(cfg.lipUpper), cfg.isFemale ? 0.78 : 0.58);
+        var lipL = baseCol.clone().lerp(new THREE.Color(cfg.lipLower), cfg.isFemale ? 0.76 : 0.54);
+        var lipD = baseCol.clone().lerp(new THREE.Color(cfg.lipDark), 0.72);
+
+        softGlow(g, mcx, mcy, mw * 1.15, (uH + lH) * 0.95, rgbaCol(lipL, 1, 1, 1, 0.32), 'rgba(0,0,0,0)');
+
+        // Upper lip with Cupid's bow
+        g.save();
+        g.beginPath();
+        g.moveTo(mcx - mw, mcy);
+        g.bezierCurveTo(mcx - mw * 0.48, mcy - uH * 1.24, mcx - mw * 0.16, mcy - uH * 1.26, mcx, mcy - uH * 0.72);
+        g.bezierCurveTo(mcx + mw * 0.16, mcy - uH * 1.26, mcx + mw * 0.48, mcy - uH * 1.24, mcx + mw, mcy);
+        g.quadraticCurveTo(mcx, mcy + uH * 0.22, mcx - mw, mcy);
+        g.closePath();
+        var uGrad = g.createLinearGradient(mcx, mcy - uH, mcx, mcy + 2);
+        uGrad.addColorStop(0, '#' + lipU.getHexString());
+        uGrad.addColorStop(1, '#' + lipD.getHexString());
+        g.fillStyle = uGrad;
+        g.fill();
+        g.restore();
+
+        // Lower lip
+        g.save();
+        g.beginPath();
+        g.moveTo(mcx - mw * 0.96, mcy);
+        g.quadraticCurveTo(mcx, mcy + uH * 0.18, mcx + mw * 0.96, mcy);
+        g.bezierCurveTo(mcx + mw * 0.60, mcy + lH * 1.32, mcx - mw * 0.60, mcy + lH * 1.32, mcx - mw * 0.96, mcy);
+        g.closePath();
+        var lGrad = g.createLinearGradient(mcx, mcy, mcx, mcy + lH * 1.25);
+        lGrad.addColorStop(0, '#' + lipD.getHexString());
+        lGrad.addColorStop(0.35, '#' + lipL.getHexString());
+        lGrad.addColorStop(1, rgbaCol(lipL, 1, 1, 1, 0.35));
+        g.fillStyle = lGrad;
+        g.fill();
+        g.clip();
+        softGlow(g, mcx, mcy + lH * 0.44, mw * 0.46, lH * 0.36, 'rgba(255,242,244,' + (cfg.isFemale ? 0.34 : 0.18) + ')', 'rgba(255,242,244,0)');
+        g.restore();
+
+        // Satin lip sheen in roughness map
+        softGlow(gr, mcx, mcy + lH * 0.2, mw * 0.92, lH * 0.85, cfg.isFemale ? 'rgb(64,64,64)' : 'rgb(108,108,108)', 'rgba(172,172,172,0)');
+
+        // Clean mouth line
+        g.save();
+        g.strokeStyle = rgbaCol(lipD, 0.62, 0.48, 0.48, 0.82);
+        g.lineWidth = 2.2;
+        g.lineCap = 'round';
+        g.beginPath();
+        g.moveTo(mcx - mw * 1.02, mcy - 1);
+        g.quadraticCurveTo(mcx, mcy + uH * 0.20, mcx + mw * 1.02, mcy - 1);
+        g.stroke();
+        g.restore();
+
+        // --- G. Clean Scalp Undercoat ONLY Under the 3D Hair Shell (ZERO forehead stripes!) ---
+        g.save();
+        g.fillStyle = cfg.hairColor;
+        // High crown undercoat (y > 0.72) & back of head (u < 0.25 or u > 0.75) so scalp never peeks through
+        g.fillRect(0, 0, W, pyOf(0.72));
+        g.fillRect(0, 0, W * 0.25, pyOf(-0.32));
+        g.fillRect(W * 0.75, 0, W * 0.25, pyOf(-0.32));
+        g.restore();
+
+        var diffTex = new THREE.CanvasTexture(diffC);
+        setTexSRGB(diffTex);
+        if (R && R.capabilities && R.capabilities.getMaxAnisotropy) {
+          diffTex.anisotropy = Math.min(8, R.capabilities.getMaxAnisotropy());
+        }
+        var bumpTex = new THREE.CanvasTexture(bumpC);
+        var roughTex = new THREE.CanvasTexture(roughC);
+
+        var pack = { map: diffTex, bumpMap: bumpTex, roughnessMap: roughTex, baseCol: baseCol };
+        portraitPackCache[cacheKey] = pack;
+        return pack;
+      }
+
+      // Smooth brushed hair-strand diffuse & bump texture for sculpted 3D hair shell
+      var hairTexCache = {};
+      function getHairTextures(hexColor) {
+        if (hairTexCache[hexColor]) return hairTexCache[hexColor];
+        var c = document.createElement('canvas'); c.width = 256; c.height = 256;
+        var g = c.getContext('2d');
+        var bc = document.createElement('canvas'); bc.width = 256; bc.height = 256;
+        var gb = bc.getContext('2d');
+
+        var baseCol = new THREE.Color(hexColor);
+        g.fillStyle = '#' + baseCol.getHexString();
+        g.fillRect(0, 0, 256, 256);
+        gb.fillStyle = 'rgb(128,128,128)';
+        gb.fillRect(0, 0, 256, 256);
+
+        var rand = mulberry32(baseCol.getHex() ^ 0x55AA);
+        for (var i = 0; i < 420; i++) {
+          var x = rand() * 256;
+          var bright = rand() > 0.48;
+          g.strokeStyle = bright ? 'rgba(255,236,216,0.11)' : 'rgba(8,5,4,0.22)';
+          g.lineWidth = 0.9 + rand() * 1.4;
+          g.beginPath();
+          g.moveTo(x, 0);
+          g.bezierCurveTo(x + (rand() - 0.5) * 10, 85, x + (rand() - 0.5) * 10, 170, x, 256);
+          g.stroke();
+
+          gb.strokeStyle = bright ? 'rgb(172,172,172)' : 'rgb(88,88,88)';
+          gb.lineWidth = 1.1 + rand() * 1.3;
+          gb.beginPath();
+          gb.moveTo(x, 0);
+          gb.lineTo(x + (rand() - 0.5) * 6, 256);
+          gb.stroke();
+        }
+        var map = new THREE.CanvasTexture(c); setTexSRGB(map);
+        map.wrapS = map.wrapT = THREE.RepeatWrapping;
+        var bump = new THREE.CanvasTexture(bc);
+        bump.wrapS = bump.wrapT = THREE.RepeatWrapping;
+        hairTexCache[hexColor] = { map: map, bumpMap: bump };
+        return hairTexCache[hexColor];
+      }
+
+      var JASON_CFG = {
+        id: 'jason_vc',
+        seed: 198601,
+        isFemale: false,
+        irisOuter: '#2d5c78',
+        irisInner: '#7cb7cc',
+        browColor: '#3a271a',
+        lipUpper: '#b56c62',
+        lipLower: '#c88076',
+        lipDark: '#7e433c',
+        hairColor: '#3a271b',
+        stubble: 0.92
+      };
+
+      var LUCIA_CFG = {
+        id: 'lucia_vc',
+        seed: 198602,
+        isFemale: true,
+        irisOuter: '#422414',
+        irisInner: '#9e6234',
+        browColor: '#241611',
+        lipUpper: '#be5464',
+        lipLower: '#d46b7b',
+        lipDark: '#822e3c',
+        hairColor: '#211510',
+        stubble: 0.0
+      };
+
+      var NPC_PRESETS = [
+        { id: 'npc_1', seed: 101, isFemale: false, irisOuter: '#355c42', irisInner: '#7ca87d', browColor: '#483422', lipUpper: '#b27065', lipLower: '#c58378', lipDark: '#7a443c', hairColor: '#4a3523', stubble: 0.55 },
+        { id: 'npc_2', seed: 202, isFemale: true,  irisOuter: '#3a2214', irisInner: '#7f4d2c', browColor: '#20140e', lipUpper: '#b44f60', lipLower: '#ca6474', lipDark: '#752938', hairColor: '#1f1410', stubble: 0.0 },
+        { id: 'npc_3', seed: 303, isFemale: false, irisOuter: '#261710', irisInner: '#5a3824', browColor: '#1c130e', lipUpper: '#995c54', lipLower: '#ad6d64', lipDark: '#63342e', hairColor: '#1a1310', stubble: 0.80 },
+        { id: 'npc_4', seed: 404, isFemale: true,  irisOuter: '#326085', irisInner: '#7db4d6', browColor: '#5c4128', lipUpper: '#c86070', lipLower: '#db7686', lipDark: '#8a3746', hairColor: '#755030', stubble: 0.0 }
       ];
 
       function isSkinMaterial(mat) {
@@ -441,14 +1073,14 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         }
         if (mat.color) {
           var r = mat.color.r, g = mat.color.g, b = mat.color.b;
-          if (r > 0.34 && r > g * 0.96 && g > b * 0.90 && (r - b) > 0.06 && (r - b) < 0.62) {
+          if (r > 0.30 && r >= g * 0.94 && g >= b * 0.86 && (r - b) > 0.05 && (r - b) < 0.65) {
             return true;
           }
         }
         return false;
       }
 
-      function getMeshBoundsInGroup(mesh, group, invGroupMat) {
+      function getMeshBoundsInGroup(mesh, invGroupMat) {
         if (!mesh.geometry) return null;
         if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
         var bb = mesh.geometry.boundingBox;
@@ -466,7 +1098,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var totalBox = new THREE.Box3();
         charGroup.traverse(function (obj) {
           if (obj.isMesh && !obj.userData.__vcAdded) {
-            var b = getMeshBoundsInGroup(obj, charGroup, invGroup);
+            var b = getMeshBoundsInGroup(obj, invGroup);
             if (b) {
               var sz = new THREE.Vector3();
               var ct = new THREE.Vector3();
@@ -482,6 +1114,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var H = totalSize.y;
         if (H < 0.9 || H > 3.0) return null;
 
+        // 1. Identify Head mesh
         var headItem = null;
         var bestScore = -999;
         for (var i = 0; i < meshes.length; i++) {
@@ -492,9 +1125,9 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
           var score = 0;
           if (/head|face|skull/i.test(it.mesh.name || '')) score += 50;
           if (isSkinMaterial(it.mesh.material)) score += 25;
-          if (relY > 0.72 && relY < 0.97) score += 20;
+          if (relY > 0.78 && relY < 0.97) score += 24;
           if (Math.abs(it.center.x) < H * 0.14) score += 12;
-          if (maxDim > H * 0.085 && maxDim < H * 0.30 && minDim > H * 0.06) score += 15;
+          if (maxDim > H * 0.085 && maxDim < H * 0.28 && minDim > H * 0.06) score += 15;
           if (it.size.y < H * 0.065) score -= 35;
           if (score > bestScore) {
             bestScore = score;
@@ -503,42 +1136,62 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         }
         if (!headItem || bestScore < 20) return null;
 
-        var hairColor = new THREE.Color(0x2a1d15);
+        // Sample the character's REAL body skin color so the new face matches arms/hands/legs seamlessly
+        var bodySkinColor = null;
+        if (headItem.mesh.material && headItem.mesh.material.color && isSkinMaterial(headItem.mesh.material)) {
+          bodySkinColor = headItem.mesh.material.color.clone();
+        } else {
+          for (var sIdx = 0; sIdx < meshes.length; sIdx++) {
+            if (isSkinMaterial(meshes[sIdx].mesh.material) && meshes[sIdx].mesh.material.color) {
+              bodySkinColor = meshes[sIdx].mesh.material.color.clone();
+              break;
+            }
+          }
+        }
+
+        // 2. Detect forward direction (+Z or -Z) & hide EVERY legacy head/face/hair/bun mesh above the neck!
         var zVotes = 0;
-        var oldFaceDots = [];
+        var oldHeadExtras = [];
         var headR = Math.max(headItem.size.x, headItem.size.y, headItem.size.z) * 0.5;
+        var headCutY = headItem.box.min.y - headItem.size.y * 0.08;
+
         for (var j = 0; j < meshes.length; j++) {
           var m = meshes[j];
           if (m.mesh === headItem.mesh) continue;
-          var dist = m.center.distanceTo(headItem.center);
-          if (dist < headR * 1.9) {
-            var mMax = Math.max(m.size.x, m.size.y, m.size.z);
-            var dz = m.center.z - headItem.center.z;
-            if (mMax < headR * 0.56 && Math.abs(dz) > headR * 0.42 && m.center.y < headItem.center.y + headR * 0.55) {
-              zVotes += dz > 0 ? 1 : -1;
-              oldFaceDots.push(m.mesh);
-            } else if (m.center.y >= headItem.center.y + headR * 0.15 && m.mesh.material && m.mesh.material.color && !isSkinMaterial(m.mesh.material)) {
-              hairColor.copy(m.mesh.material.color);
-            }
+          var rY = (m.center.y - totalBox.min.y) / H;
+          var mMax = Math.max(m.size.x, m.size.y, m.size.z);
+          var dz = m.center.z - headItem.center.z;
+
+          if (m.center.distanceTo(headItem.center) < headR * 2.0 && mMax < headR * 0.65 && Math.abs(dz) > headR * 0.30) {
+            zVotes += dz > 0 ? 1 : -1;
+          }
+          // Catch ALL old eyes, nose, mouth, hair caps, AND floating top hair buns cleanly!
+          if (m.box.min.y >= headCutY && Math.abs(m.center.x - headItem.center.x) < H * 0.24) {
+            oldHeadExtras.push(m.mesh);
+          }
+          // Backup forward check using shoes
+          if (rY < 0.12 && m.size.z > m.size.x * 1.15 && Math.abs(m.center.z) > 0.02) {
+            zVotes += m.center.z > 0 ? 0.5 : -0.5;
           }
         }
         var fwdZ = zVotes < 0 ? -1 : 1;
 
+        // 3. Identify limbs for Vice City procedural actions
         var limbs = { leftArm: null, rightArm: null, leftLeg: null, rightLeg: null };
         for (var k = 0; k < meshes.length; k++) {
           var lm = meshes[k];
           if (lm.mesh === headItem.mesh) continue;
-          var rY = (lm.center.y - totalBox.min.y) / H;
+          var ryL = (lm.center.y - totalBox.min.y) / H;
           var n = (lm.mesh.name || '').toLowerCase();
           var targetObj = (lm.mesh.parent && lm.mesh.parent !== charGroup && lm.mesh.parent.children.length <= 4) ? lm.mesh.parent : lm.mesh;
-          if (rY > 0.40 && rY < 0.78 && Math.abs(lm.center.x) > H * 0.09) {
+          if (ryL > 0.40 && ryL < 0.78 && Math.abs(lm.center.x) > H * 0.09) {
             var isRight = (lm.center.x * fwdZ) < 0;
             if (/right.*arm|r_arm|armr/i.test(n)) isRight = true;
             if (/left.*arm|l_arm|arml/i.test(n)) isRight = false;
             if (isRight && !limbs.rightArm) limbs.rightArm = targetObj;
             if (!isRight && !limbs.leftArm) limbs.leftArm = targetObj;
           }
-          if (rY < 0.46 && Math.abs(lm.center.x) > H * 0.04 && lm.size.y > H * 0.16) {
+          if (ryL < 0.46 && Math.abs(lm.center.x) > H * 0.04 && lm.size.y > H * 0.16) {
             var isRLeg = (lm.center.x * fwdZ) < 0;
             if (/right.*leg|r_leg|legr/i.test(n)) isRLeg = true;
             if (/left.*leg|l_leg|legl/i.test(n)) isRLeg = false;
@@ -550,16 +1203,18 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         return {
           headMesh: headItem.mesh,
           headSize: headItem.size,
+          headCenter: headItem.center,
+          bodySkinColor: bodySkinColor,
           totalBox: totalBox,
           height: H,
           fwdZ: fwdZ,
-          hairColor: hairColor,
-          oldFaceDots: oldFaceDots,
+          oldHeadExtras: oldHeadExtras,
           limbs: limbs
         };
       }
 
       var humanRegistry = [];
+      var invisibleMat = new THREE.MeshBasicMaterial({ visible: false });
 
       function enhanceHumanFace(charGroup, profile) {
         if (!charGroup || charGroup.userData.__vcFaceEnhanced) return null;
@@ -570,312 +1225,211 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         var headMesh = anat.headMesh;
         var fwd = anat.fwdZ;
 
-        anat.oldFaceDots.forEach(function (dot) { dot.visible = false; });
+        var cfg = profile === 'jason'
+          ? JASON_CFG
+          : (profile === 'lucia' ? LUCIA_CFG : NPC_PRESETS[Math.floor(Math.random() * NPC_PRESETS.length)]);
 
-        var baseMat = headMesh.material;
-        var skinMat = baseMat && baseMat.clone ? baseMat.clone() : new THREE.MeshStandardMaterial({ color: 0xdca583 });
-        skinMat.roughness = profile === 'lucia' ? 0.50 : 0.56;
-        skinMat.metalness = 0.0;
-        skinMat.bumpMap = skinBumpTex;
-        skinMat.bumpScale = 0.004;
-        if ('envMapIntensity' in skinMat) skinMat.envMapIntensity = 0.25;
-        headMesh.material = skinMat;
-
-        var skinShadowMat = skinMat.clone();
-        skinShadowMat.color = skinMat.color.clone().multiplyScalar(0.84);
-        skinShadowMat.roughness = 0.65;
-
-        var cheekMat = skinMat.clone();
-        cheekMat.color = skinMat.color.clone().lerp(new THREE.Color(0xd96b6b), profile === 'lucia' ? 0.16 : 0.07);
-
-        var browColor = anat.hairColor.clone();
-        if (profile === 'jason') browColor.setHex(0x3a281c);
-        else if (profile === 'lucia') browColor.setHex(0x231610);
-        var browMat = new THREE.MeshStandardMaterial({ color: browColor, roughness: 0.78, metalness: 0.02 });
-
-        var lipColor = skinMat.color.clone();
-        if (profile === 'lucia') lipColor.lerp(new THREE.Color(0xb84a5e), 0.58);
-        else if (profile === 'jason') lipColor.lerp(new THREE.Color(0x9b554e), 0.38);
-        else lipColor.lerp(new THREE.Color(0x9e5456), 0.42);
-        var lipMat = new THREE.MeshStandardMaterial({
-          color: lipColor,
-          roughness: profile === 'lucia' ? 0.32 : 0.48,
-          metalness: 0.04
+        // Hide old primitive head & every legacy hair/bun/dot mesh via invisible material (preserves rig hierarchy!)
+        headMesh.material = invisibleMat;
+        headMesh.castShadow = false;
+        headMesh.receiveShadow = false;
+        anat.oldHeadExtras.forEach(function (ex) {
+          ex.material = invisibleMat;
+          ex.castShadow = false;
+          ex.receiveShadow = false;
         });
-
-        var mouthInteriorMat = new THREE.MeshBasicMaterial({ color: 0x260c10 });
 
         headMesh.geometry.computeBoundingBox();
         var bb = headMesh.geometry.boundingBox;
-        var c = new THREE.Vector3();
-        bb.getCenter(c);
-        var rx = Math.max(0.04, (bb.max.x - bb.min.x) * 0.5);
-        var ry = Math.max(0.04, (bb.max.y - bb.min.y) * 0.5);
-        var rz = Math.max(0.04, (bb.max.z - bb.min.z) * 0.5);
+        var localCenter = new THREE.Vector3();
+        bb.getCenter(localCenter);
 
-        var hs = headMesh.scale;
-        var avgS = (Math.abs(hs.x) + Math.abs(hs.y) + Math.abs(hs.z)) / 3 || 1;
-        var faceRig = new THREE.Group();
-        faceRig.name = 'VC_SculptedFace';
-        faceRig.userData.__vcAdded = true;
-        faceRig.position.copy(c);
-        headMesh.add(faceRig);
+        // True world-scale compensation relative to charGroup so head is NEVER squashed or oversized!
+        charGroup.updateMatrixWorld(true);
+        var hws = new THREE.Vector3(), cws = new THREE.Vector3();
+        headMesh.getWorldScale(hws);
+        charGroup.getWorldScale(cws);
+        var relSx = Math.max(0.01, hws.x / Math.max(0.01, cws.x));
+        var relSy = Math.max(0.01, hws.y / Math.max(0.01, cws.y));
+        var relSz = Math.max(0.01, hws.z / Math.max(0.01, cws.z));
 
-        function markAdded(obj) {
-          obj.userData.__vcAdded = true;
-          obj.castShadow = false;
-          obj.receiveShadow = true;
-          return obj;
-        }
+        // Exact realistic adult human head half-height (~5.8% of total character height => 11.6% total head height)
+        var targetHeadR = anat.height * (cfg.isFemale ? 0.056 : 0.059);
 
-        // Sculpted Chin & Jawline
-        var chin = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.46, 12, 10), skinMat));
-        chin.scale.set(profile === 'jason' ? 1.15 : 0.92, 0.72, 0.85);
-        chin.position.set(0, -ry * 0.70, fwd * rz * 0.52);
-        faceRig.add(chin);
+        var headRoot = new THREE.Group();
+        headRoot.name = 'VC_RealisticHeadRoot';
+        headRoot.userData.__vcAdded = true;
+        // Sit slightly higher (+0.12 local head radius) so chin clears the bandana & shows a clean human neck!
+        headRoot.position.set(localCenter.x, localCenter.y + (targetHeadR * 0.16) / relSy, localCenter.z);
+        headRoot.scale.set(targetHeadR / relSx, targetHeadR / relSy, targetHeadR / relSz);
+        if (fwd < 0) headRoot.rotation.y = Math.PI;
+        headMesh.add(headRoot);
 
-        // Cheekbones
-        [-1, 1].forEach(function (side) {
-          var cheek = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.30, 10, 8), cheekMat));
-          cheek.scale.set(1.05, 0.78, 0.75);
-          cheek.position.set(side * rx * 0.48, -ry * 0.14, fwd * rz * 0.68);
-          faceRig.add(cheek);
+        // --- 1. Sculpted Anatomical Human Head + Auto-Matched 1024x1024 Portrait Maps ---
+        var headGeo = getSculptedHeadGeometry(cfg.isFemale);
+        var pack = getPortraitTexturePack(cfg, anat.bodySkinColor);
+        var headMat = new THREE.MeshStandardMaterial({
+          map: pack.map,
+          bumpMap: pack.bumpMap,
+          bumpScale: 0.012,
+          roughnessMap: pack.roughnessMap,
+          roughness: 1.0,
+          metalness: 0.02
         });
+        if ('envMapIntensity' in headMat) headMat.envMapIntensity = 0.25;
 
-        // Jason's Light Jaw Stubble
-        if (profile === 'jason') {
-          var stubbleMat = new THREE.MeshStandardMaterial({
-            color: 0x3b2c22,
-            transparent: true,
-            opacity: 0.28,
-            roughness: 0.92,
-            depthWrite: false
-          });
-          var jawStubble = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.52, 12, 8, 0, Math.PI * 2, Math.PI * 0.45, Math.PI * 0.42), stubbleMat));
-          jawStubble.scale.set(1.25, 0.92, 0.92);
-          jawStubble.position.set(0, -ry * 0.36, fwd * rz * 0.48);
-          faceRig.add(jawStubble);
+        var sculptedHead = new THREE.Mesh(headGeo, headMat);
+        sculptedHead.userData.__vcAdded = true;
+        sculptedHead.castShadow = true;
+        sculptedHead.receiveShadow = true;
+        headRoot.add(sculptedHead);
 
-          var stache = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.56, ry * 0.10, rz * 0.10), stubbleMat));
-          stache.position.set(0, -ry * 0.25, fwd * rz * 0.92);
-          faceRig.add(stache);
-        }
-
-        // Multi-Part Sculpted Nose
-        var noseGroup = new THREE.Group();
-        noseGroup.userData.__vcAdded = true;
-        var bridge = markAdded(new THREE.Mesh(new THREE.CylinderGeometry(rx * 0.085, rx * 0.14, ry * 0.44, 8), skinMat));
-        bridge.rotation.x = fwd * -0.26;
-        bridge.position.set(0, ry * 0.02, fwd * rz * 0.94);
-        noseGroup.add(bridge);
-
-        var noseTip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.155, 10, 8), skinMat));
-        noseTip.scale.set(profile === 'lucia' ? 0.88 : 1.05, 0.86, 1.05);
-        noseTip.position.set(0, -ry * 0.14, fwd * rz * 1.06);
-        noseGroup.add(noseTip);
-
-        var nostrilMat = new THREE.MeshBasicMaterial({ color: 0x3a1c17 });
-        [-1, 1].forEach(function (s) {
-          var wing = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.095, 8, 6), skinShadowMat));
-          wing.position.set(s * rx * 0.12, -ry * 0.16, fwd * rz * 0.96);
-          noseGroup.add(wing);
-
-          var hole = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.042, 6, 6), nostrilMat));
-          hole.scale.set(1.1, 0.55, 0.9);
-          hole.position.set(s * rx * 0.085, -ry * 0.21, fwd * rz * 0.99);
-          noseGroup.add(hole);
+        // --- 2. Clean Anatomical Neck (Matches Skin Tone Seamlessly) ---
+        var skinToneCol = pack.baseCol.clone();
+        var neckMat = new THREE.MeshStandardMaterial({
+          color: skinToneCol.clone().multiplyScalar(0.95),
+          roughness: 0.66,
+          metalness: 0.01
         });
-        faceRig.add(noseGroup);
+        var neckMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.37, 0.72, 16), neckMat);
+        neckMesh.userData.__vcAdded = true;
+        neckMesh.position.set(0, -1.06, -0.08);
+        neckMesh.castShadow = true;
+        neckMesh.receiveShadow = true;
+        headRoot.add(neckMesh);
 
-        // Eyes, Eyelids & Expressive Brows
-        var eyePalette = profile === 'jason'
-          ? ['#3f708d', '#86bfd0']
-          : (profile === 'lucia'
-            ? ['#52331f', '#a66d3f']
-            : NPC_EYE_PALETTES[Math.floor(Math.random() * NPC_EYE_PALETTES.length)]);
-
-        var irisTex = getIrisTexture(eyePalette[0], eyePalette[1]);
-        var scleraMat = new THREE.MeshStandardMaterial({ color: 0xf7f4ee, roughness: 0.10, metalness: 0.05 });
-        var irisMat = new THREE.MeshStandardMaterial({ map: irisTex, roughness: 0.08, metalness: 0.12 });
-        var lashMat = new THREE.MeshStandardMaterial({ color: 0x161214, roughness: 0.6 });
-        var socketMat = new THREE.MeshStandardMaterial({
-          color: skinShadowMat.color,
-          transparent: true,
-          opacity: 0.42,
-          roughness: 0.78,
-          depthWrite: false
-        });
-
-        var eyeR = rx * 0.175;
-        var eyes = [];
-        var lids = [];
-        var brows = [];
-
-        [-1, 1].forEach(function (side) {
-          var ex = side * rx * 0.36;
-          var ey = ry * 0.14;
-          var ez = fwd * rz * 0.84;
-
-          var sock = markAdded(new THREE.Mesh(new THREE.SphereGeometry(eyeR * 1.38, 10, 8), socketMat));
-          sock.scale.set(1.18, 0.86, 0.55);
-          sock.position.set(ex, ey, ez - fwd * rx * 0.04);
-          faceRig.add(sock);
-
-          var eyePivot = new THREE.Group();
-          eyePivot.userData.__vcAdded = true;
-          eyePivot.position.set(ex, ey, ez);
-          if (Math.abs(hs.x) > 0.01 && Math.abs(hs.y) > 0.01 && Math.abs(hs.z) > 0.01) {
-            eyePivot.scale.set(avgS / Math.abs(hs.x), avgS / Math.abs(hs.y), avgS / Math.abs(hs.z));
-          }
-
-          var eyeball = markAdded(new THREE.Mesh(new THREE.SphereGeometry(eyeR, 12, 10), scleraMat));
-          eyeball.scale.set(1.0, 0.92, 0.78);
-          eyePivot.add(eyeball);
-
-          var irisDisc = markAdded(new THREE.Mesh(new THREE.CircleGeometry(eyeR * 0.72, 16), irisMat));
-          irisDisc.position.set(0, 0, fwd * eyeR * 0.79);
-          if (fwd < 0) irisDisc.rotation.y = Math.PI;
-          eyePivot.add(irisDisc);
-
-          faceRig.add(eyePivot);
-          eyes.push(eyePivot);
-
-          var lidPivot = new THREE.Group();
-          lidPivot.userData.__vcAdded = true;
-          lidPivot.position.set(ex, ey, ez);
-
-          var upperLid = markAdded(new THREE.Mesh(
-            new THREE.SphereGeometry(eyeR * 1.12, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.52),
-            skinMat
-          ));
-          upperLid.scale.set(1.06, 0.96, 0.88);
-          upperLid.rotation.x = fwd * -0.45;
-          lidPivot.add(upperLid);
-
-          var lash = markAdded(new THREE.Mesh(
-            new THREE.TorusGeometry(eyeR * 0.98, eyeR * (profile === 'lucia' ? 0.13 : 0.08), 6, 12, Math.PI),
-            lashMat
-          ));
-          lash.position.set(0, eyeR * 0.16, fwd * eyeR * 0.65);
-          if (fwd < 0) lash.rotation.y = Math.PI;
-          lidPivot.add(lash);
-
-          faceRig.add(lidPivot);
-          lids.push({ pivot: lidPivot, baseRotX: 0 });
-
-          var lowerLid = markAdded(new THREE.Mesh(new THREE.TorusGeometry(eyeR * 0.95, eyeR * 0.09, 6, 10, Math.PI), skinShadowMat));
-          lowerLid.rotation.z = Math.PI;
-          lowerLid.position.set(ex, ey - eyeR * 0.24, ez + fwd * eyeR * 0.55);
-          if (fwd < 0) lowerLid.rotation.y = Math.PI;
-          faceRig.add(lowerLid);
-
-          var browPivot = new THREE.Group();
-          browPivot.userData.__vcAdded = true;
-          browPivot.position.set(ex, ey + ry * 0.22, ez + fwd * rx * 0.12);
-
-          var browMesh = markAdded(new THREE.Mesh(
-            new THREE.BoxGeometry(rx * 0.40, ry * (profile === 'lucia' ? 0.068 : 0.095), rz * 0.10),
-            browMat
-          ));
-          browMesh.rotation.z = side * (profile === 'lucia' ? -0.10 : -0.05);
-          browPivot.add(browMesh);
-          faceRig.add(browPivot);
-          brows.push({ pivot: browPivot, side: side, baseY: browPivot.position.y, baseRotZ: 0 });
-        });
-
-        // Sculpted Lips & Expressive Mouth
-        var mouthPivot = new THREE.Group();
-        mouthPivot.userData.__vcAdded = true;
-        mouthPivot.position.set(0, -ry * 0.42, fwd * rz * 0.87);
-
-        var mouthCav = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.22, 10, 8), mouthInteriorMat));
-        mouthCav.scale.set(1.15, 0.22, 0.35);
-        mouthCav.position.set(0, 0, -fwd * rx * 0.02);
-        mouthPivot.add(mouthCav);
-
-        var upperLip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.21, 10, 8), lipMat));
-        upperLip.scale.set(1.22, profile === 'lucia' ? 0.36 : 0.28, 0.52);
-        upperLip.position.set(0, ry * 0.036, fwd * rx * 0.03);
-        mouthPivot.add(upperLip);
-
-        var lowerLip = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.19, 10, 8), lipMat));
-        lowerLip.scale.set(1.14, profile === 'lucia' ? 0.40 : 0.32, 0.55);
-        lowerLip.position.set(0, -ry * 0.038, fwd * rx * 0.03);
-        mouthPivot.add(lowerLip);
-
-        faceRig.add(mouthPivot);
-
-        // Sculpted Ears (+ Gold Hoop Earrings for Lucia)
-        var goldMat = profile === 'lucia'
-          ? new THREE.MeshStandardMaterial({ color: 0xf4c96b, metalness: 0.92, roughness: 0.18 })
+        // --- 3. Realistic Human Ears (+ Gold Hoop Earrings for Lucia) ---
+        var earMat = new THREE.MeshStandardMaterial({ color: skinToneCol.clone().lerp(new THREE.Color(0xdc8878), 0.12), roughness: 0.62 });
+        var earInMat = new THREE.MeshStandardMaterial({ color: skinToneCol.clone().multiplyScalar(0.80), roughness: 0.72 });
+        var goldMat = cfg.id === 'lucia_vc'
+          ? new THREE.MeshStandardMaterial({ color: 0xf5cb69, metalness: 0.92, roughness: 0.16 })
           : null;
-        [-1, 1].forEach(function (side) {
-          var ear = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.17, 8, 8), skinMat));
-          ear.scale.set(0.45, 1.32, 0.80);
-          ear.position.set(side * rx * 0.96, -ry * 0.03, 0);
-          faceRig.add(ear);
 
-          var innerEar = markAdded(new THREE.Mesh(new THREE.SphereGeometry(rx * 0.10, 6, 6), skinShadowMat));
-          innerEar.scale.set(0.38, 1.0, 0.65);
-          innerEar.position.set(side * rx * 0.99, -ry * 0.03, fwd * rx * 0.02);
-          faceRig.add(innerEar);
+        [-1, 1].forEach(function (side) {
+          var earG = new THREE.Group();
+          earG.userData.__vcAdded = true;
+          earG.position.set(side * (cfg.isFemale ? 0.62 : 0.65), -0.08, -0.04);
+          earG.rotation.y = side * 0.24;
+          earG.rotation.z = side * -0.06;
+
+          var outerEar = new THREE.Mesh(new THREE.SphereGeometry(0.20, 12, 10), earMat);
+          outerEar.userData.__vcAdded = true;
+          outerEar.scale.set(0.32, 1.16, 0.68);
+          earG.add(outerEar);
+
+          var concha = new THREE.Mesh(new THREE.SphereGeometry(0.12, 10, 8), earInMat);
+          concha.userData.__vcAdded = true;
+          concha.scale.set(0.30, 0.84, 0.52);
+          concha.position.set(side * 0.025, -0.02, 0.035);
+          earG.add(concha);
 
           if (goldMat) {
-            var hoop = markAdded(new THREE.Mesh(new THREE.TorusGeometry(rx * 0.11, rx * 0.018, 6, 14), goldMat));
+            var hoop = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.020, 8, 16), goldMat);
+            hoop.userData.__vcAdded = true;
             hoop.rotation.y = Math.PI * 0.5;
-            hoop.position.set(side * rx * 0.99, -ry * 0.25, fwd * rx * 0.02);
-            faceRig.add(hoop);
+            hoop.position.set(side * 0.025, -0.25, 0.02);
+            earG.add(hoop);
           }
+          headRoot.add(earG);
         });
 
-        // 80s Vice City Aviator Sunglasses (Toggleable via B key)
+        // --- 4. Natural Animated Blinking Eyelids (Conformal to Eye Sockets) ---
+        var lidMat = new THREE.MeshStandardMaterial({
+          color: skinToneCol.clone().multiplyScalar(0.92),
+          roughness: 0.62,
+          metalness: 0.0
+        });
+        var lids = [];
+
+        [-1, 1].forEach(function (side) {
+          var eyePt = evalHumanHeadPoint(side * 0.37, 0.04, cfg.isFemale);
+          var lid = new THREE.Mesh(new THREE.PlaneGeometry(0.24, 0.12), lidMat);
+          lid.userData.__vcAdded = true;
+          lid.position.set(eyePt[0], eyePt[1] + 0.045, eyePt[2] + 0.025);
+          lid.rotation.y = side * 0.26;
+          lid.scale.y = 0.01;
+          lid.visible = false;
+          headRoot.add(lid);
+          lids.push({ mesh: lid, baseY: eyePt[1] + 0.045 });
+        });
+
+        // --- 5. Talking Mouth Overlay (Hidden when silent, opens smoothly when speaking) ---
+        var mouthPt = evalHumanHeadPoint(0, -0.54, cfg.isFemale);
+        var mouthOpenMesh = new THREE.Mesh(new THREE.CircleGeometry(0.095, 14), new THREE.MeshBasicMaterial({ color: 0x260b0e }));
+        mouthOpenMesh.userData.__vcAdded = true;
+        mouthOpenMesh.position.set(0, mouthPt[1], mouthPt[2] + 0.015);
+        mouthOpenMesh.scale.set(1.22, 0.01, 1);
+        mouthOpenMesh.visible = false;
+        headRoot.add(mouthOpenMesh);
+
+        // --- 6. Seamless Skull-Fitted Sculpted 3D Hair Shell ---
+        var hairStyle = profile === 'jason' ? 'jason' : (profile === 'lucia' ? 'lucia' : 'npc');
+        var hTex = getHairTextures(cfg.hairColor);
+        var hairMat = new THREE.MeshStandardMaterial({
+          map: hTex.map,
+          bumpMap: hTex.bumpMap,
+          bumpScale: 0.018,
+          roughness: 0.64,
+          metalness: 0.05,
+          side: THREE.DoubleSide
+        });
+        var hairMesh = new THREE.Mesh(getSculptedHairGeometry(hairStyle), hairMat);
+        hairMesh.userData.__vcAdded = true;
+        hairMesh.castShadow = true;
+        hairMesh.receiveShadow = true;
+        headRoot.add(hairMesh);
+
+        // --- 7. 80s Vice City Aviator Sunglasses (Toggleable with B) ---
         var shadesRig = new THREE.Group();
         shadesRig.userData.__vcAdded = true;
-        var frameMat = new THREE.MeshStandardMaterial({ color: 0xf2cb72, metalness: 0.9, roughness: 0.2 });
+        var frameMat = new THREE.MeshStandardMaterial({ color: 0xf4cb6e, metalness: 0.92, roughness: 0.18 });
         var lensMat = new THREE.MeshStandardMaterial({
-          color: profile === 'lucia' ? 0x3b1838 : 0x162436,
-          emissive: profile === 'lucia' ? 0x260822 : 0x071b24,
+          color: profile === 'lucia' ? 0x3b1538 : 0x132234,
+          emissive: profile === 'lucia' ? 0x240720 : 0x061a24,
           emissiveIntensity: 0.35,
-          metalness: 0.72,
-          roughness: 0.08,
+          metalness: 0.78,
+          roughness: 0.06,
           transparent: true,
           opacity: 0.86
         });
 
         [-1, 1].forEach(function (side) {
-          var lens = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.44, ry * 0.28, rz * 0.045), lensMat));
-          lens.position.set(side * rx * 0.36, ry * 0.13, fwd * rz * 1.05);
+          var lens = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.23, 0.03), lensMat);
+          lens.userData.__vcAdded = true;
+          lens.position.set(side * 0.24, 0.04, 0.82);
+          lens.rotation.y = side * 0.14;
           shadesRig.add(lens);
 
-          var rim = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.47, ry * 0.03, rz * 0.055), frameMat));
-          rim.position.set(side * rx * 0.36, ry * 0.27, fwd * rz * 1.05);
-          shadesRig.add(rim);
+          var topBar = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.024, 0.038), frameMat);
+          topBar.userData.__vcAdded = true;
+          topBar.position.set(side * 0.24, 0.16, 0.82);
+          topBar.rotation.y = side * 0.14;
+          shadesRig.add(topBar);
 
-          var temple = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.04, ry * 0.035, rz * 1.08), frameMat));
-          temple.position.set(side * rx * 0.88, ry * 0.17, fwd * rz * 0.52);
-          shadesRig.add(temple);
+          var arm = new THREE.Mesh(new THREE.BoxGeometry(0.028, 0.028, 0.88), frameMat);
+          arm.userData.__vcAdded = true;
+          arm.position.set(side * 0.64, 0.08, 0.38);
+          shadesRig.add(arm);
         });
-        var shadeBridge = markAdded(new THREE.Mesh(new THREE.BoxGeometry(rx * 0.26, ry * 0.035, rz * 0.05), frameMat));
-        shadeBridge.position.set(0, ry * 0.22, fwd * rz * 1.06);
-        shadesRig.add(shadeBridge);
+        var bridgeBar = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.024, 0.035), frameMat);
+        bridgeBar.userData.__vcAdded = true;
+        bridgeBar.position.set(0, 0.14, 0.84);
+        shadesRig.add(bridgeBar);
 
-        shadesRig.visible = (profile === 'npc') ? (Math.random() < 0.28) : false;
-        faceRig.add(shadesRig);
+        shadesRig.visible = (profile === 'npc') ? (Math.random() < 0.24) : false;
+        headRoot.add(shadesRig);
 
         var entry = {
           group: charGroup,
           profile: profile,
           name: profile === 'jason' ? 'Jason' : (profile === 'lucia' ? 'Lucia' : 'Vice Local'),
           anat: anat,
-          faceRig: faceRig,
-          eyes: eyes,
+          headRoot: headRoot,
           lids: lids,
-          brows: brows,
-          mouthCav: mouthCav,
-          lowerLip: lowerLip,
+          mouthOpenMesh: mouthOpenMesh,
           shadesRig: shadesRig,
           fwd: fwd,
-          blinkTimer: 1.5 + Math.random() * 3.5,
+          blinkTimer: 1.4 + Math.random() * 3.5,
           blinkState: 0,
           talkTimer: 0,
           emotion: 'neutral',
@@ -1353,7 +1907,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       }
 
       // -----------------------------------------------------------------------
-      // 5. VICE CITY DIALOGUE, HUMAN ACTIONS, MELEE & EMOTES
+      // 5. VICE CITY DIALOGUE, HUMAN ACTIONS, MELEE, EMOTES & PORTRAIT CAM
       // -----------------------------------------------------------------------
       var NPC_GREETINGS = [
         'Ocean Drive is electric tonight. Stay sharp out there.',
@@ -1397,7 +1951,9 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         comboWindow: 0,
         emoteIdx: 0,
         sittingBench: null,
-        handProp: null
+        handProp: null,
+        faceCam: false,
+        faceCamAngle: 0
       };
 
       function getActivePlayer(cam) {
@@ -1674,7 +2230,14 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         showToast(active.shadesRig.visible ? 'VICE AVIATORS ON' : 'VICE AVIATORS OFF', 'gold');
       }
 
-      // Bind Vice City interaction keys (conflict-free with WASD/F/E/G/T/V/C/H/R)
+      function toggleFaceCam() {
+        if (!playerState.onFoot) return;
+        playerState.faceCam = !playerState.faceCam;
+        playerState.faceCamAngle = 0;
+        playSfx('cam');
+        showToast(playerState.faceCam ? 'PORTRAIT FACE CAM (PRESS U TO EXIT)' : 'GAMEPLAY CAMERA', 'cyan');
+      }
+
       window.addEventListener('keydown', function (e) {
         if (e.repeat) return;
         var tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '';
@@ -1684,6 +2247,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         else if (k === 'q') triggerMelee();
         else if (k === 'z') triggerEmote();
         else if (k === 'b') toggleShades();
+        else if (k === 'u') toggleFaceCam();
         else if (playerState.sittingBench && (k === 'w' || k === 'a' || k === 's' || k === 'd' || k === 'f' || k === 'e' || k === 'g' || k === ' ' || k.indexOf('arrow') === 0)) {
           playerState.sittingBench = null;
           playerState.action = null;
@@ -1691,75 +2255,52 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
       });
 
       // -----------------------------------------------------------------------
-      // 6. PER-FRAME ANIMATION LOOP (Hooked cleanly into R.render)
+      // 6. PER-FRAME ANIMATION LOOP (Faces, Blinking, Portrait Cam, Interactions)
       // -----------------------------------------------------------------------
-      function updateFaceAnimation(entry, dt, nowSec, focusPoint) {
+      function updateFaceAnimation(entry, dt, nowSec) {
         entry.blinkTimer -= dt;
         if (entry.blinkTimer <= 0) {
           entry.blinkState = 1.0;
           entry.blinkTimer = 2.4 + Math.random() * 3.8;
         }
         if (entry.blinkState > 0) {
-          entry.blinkState = Math.max(0, entry.blinkState - dt * 6.5);
+          entry.blinkState = Math.max(0, entry.blinkState - dt * 6.8);
         }
-        var blinkClose = Math.sin(entry.blinkState * Math.PI);
+        var blinkAmt = Math.sin(entry.blinkState * Math.PI);
         for (var i = 0; i < entry.lids.length; i++) {
-          entry.lids[i].pivot.rotation.x = entry.fwd * (blinkClose * 0.95);
+          var l = entry.lids[i];
+          if (blinkAmt > 0.05) {
+            l.mesh.visible = true;
+            l.mesh.scale.y = blinkAmt * 1.1;
+            l.mesh.position.y = l.baseY - blinkAmt * 0.045;
+          } else {
+            l.mesh.visible = false;
+          }
         }
 
         if (entry.emotionTimer > 0) {
           entry.emotionTimer -= dt;
           if (entry.emotionTimer <= 0) entry.emotion = 'neutral';
         }
-        for (var b = 0; b < entry.brows.length; b++) {
-          var br = entry.brows[b];
-          var targetY = br.baseY;
-          var targetZ = 0;
-          if (entry.emotion === 'angry') {
-            targetY = br.baseY - 0.015;
-            targetZ = br.side * 0.28;
-          } else if (entry.emotion === 'surprised') {
-            targetY = br.baseY + 0.025;
-            targetZ = -br.side * 0.14;
-          } else if (entry.emotion === 'happy') {
-            targetY = br.baseY + 0.012;
-            targetZ = -br.side * 0.08;
-          } else if (entry.emotion === 'focused') {
-            targetY = br.baseY - 0.008;
-            targetZ = br.side * 0.10;
-          }
-          br.pivot.position.y += (targetY - br.pivot.position.y) * Math.min(1, dt * 10);
-          br.pivot.rotation.z += (targetZ - br.pivot.rotation.z) * Math.min(1, dt * 10);
-        }
-
         var mouthOpen = 0;
         if (entry.talkTimer > 0) {
           entry.talkTimer -= dt;
-          mouthOpen = 0.45 + 0.55 * Math.abs(Math.sin(nowSec * 15 + entry.blinkTimer));
+          mouthOpen = 0.35 + 0.65 * Math.abs(Math.sin(nowSec * 15 + entry.blinkTimer));
         } else if (entry.emotion === 'surprised') {
-          mouthOpen = 0.72;
-        } else if (entry.emotion === 'angry') {
-          mouthOpen = 0.22;
+          mouthOpen = 0.60;
         }
-        entry.mouthCav.scale.y = 0.18 + mouthOpen * 0.78;
-        entry.lowerLip.position.y = -0.012 - mouthOpen * 0.024;
 
-        var gazeX = Math.sin(nowSec * 0.9 + entry.blinkTimer) * 0.08;
-        var gazeY = Math.cos(nowSec * 0.65) * 0.04;
-        if (focusPoint && entry.group.visible) {
-          var dist = entry.group.position.distanceTo(focusPoint);
-          if (dist > 0.5 && dist < 8) {
-            var toF = Math.atan2(focusPoint.x - entry.group.position.x, focusPoint.z - entry.group.position.z);
-            var relAng = toF - entry.group.rotation.y - (entry.fwd < 0 ? Math.PI : 0);
-            while (relAng > Math.PI) relAng -= Math.PI * 2;
-            while (relAng < -Math.PI) relAng += Math.PI * 2;
-            gazeX = Math.max(-0.22, Math.min(0.22, relAng * 0.35));
-          }
+        if (mouthOpen > 0.05) {
+          entry.mouthOpenMesh.visible = true;
+          entry.mouthOpenMesh.scale.y = 0.15 + mouthOpen * 0.50;
+        } else {
+          entry.mouthOpenMesh.visible = false;
         }
-        for (var e = 0; e < entry.eyes.length; e++) {
-          entry.eyes[e].rotation.y = gazeX;
-          entry.eyes[e].rotation.x = gazeY;
-        }
+
+        var nod = entry.talkTimer > 0 ? Math.sin(nowSec * 7.5) * 0.04 : Math.sin(nowSec * 1.4 + entry.blinkTimer) * 0.014;
+        var turn = entry.emotion === 'angry' ? 0 : Math.sin(nowSec * 0.7 + entry.blinkTimer) * 0.032;
+        entry.headRoot.rotation.x = nod;
+        entry.headRoot.rotation.y = (entry.fwd < 0 ? Math.PI : 0) + turn;
       }
 
       function applyPlayerActionPose(active, dt, nowSec) {
@@ -1830,6 +2371,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
 
       var _origRender = R.render.bind(R);
       R.render = function (sc, cam) {
+        var savedPos = null, savedQuat = null;
         try {
           var nowMs = performance.now();
           var dt = Math.min(0.05, Math.max(0.001, (nowMs - lastTime) / 1000));
@@ -1840,7 +2382,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             speechTimer -= dt;
             if (speechTimer <= 0) elSpeech.classList.remove('show');
           }
-
           if (playerState.comboWindow > 0) playerState.comboWindow -= dt;
 
           var active = getActivePlayer(cam);
@@ -1949,7 +2490,6 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             }
           }
 
-          var focusPt = active ? active.group.position : (cam ? cam.position : null);
           for (var h = 0; h < humanRegistry.length; h++) {
             var hum = humanRegistry[h];
             if (!hum.group || !hum.group.parent) continue;
@@ -1978,7 +2518,7 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
               }
             }
 
-            updateFaceAnimation(hum, dt, nowSec, hum === active ? (cam ? cam.position : null) : focusPt);
+            updateFaceAnimation(hum, dt, nowSec);
           }
 
           if (active && playerState.onFoot) {
@@ -2003,8 +2543,25 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
               }
             }
           } else {
+            playerState.faceCam = false;
             elStrip.classList.add('hidden');
             elPrompt.classList.remove('show');
+          }
+
+          // Close-Up Portrait Face Cam (toggle with U)
+          if (playerState.faceCam && active && cam) {
+            savedPos = cam.position.clone();
+            savedQuat = cam.quaternion.clone();
+            playerState.faceCamAngle += dt * 0.35;
+            var headWorld = new THREE.Vector3();
+            active.headRoot.getWorldPosition(headWorld);
+            var faceYaw = active.group.rotation.y + (active.fwd < 0 ? Math.PI : 0) + Math.sin(playerState.faceCamAngle) * 0.42;
+            cam.position.set(
+              headWorld.x + Math.sin(faceYaw) * 0.72,
+              headWorld.y + 0.03,
+              headWorld.z + Math.cos(faceYaw) * 0.72
+            );
+            cam.lookAt(headWorld.x, headWorld.y - 0.01, headWorld.z);
           }
         } catch (err) {
           if (!loggedErr) {
@@ -2012,7 +2569,14 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
             console.warn('VC enhancement warning:', err);
           }
         }
-        return _origRender.apply(this, arguments);
+
+        var res = _origRender.apply(this, arguments);
+
+        if (savedPos && cam) {
+          cam.position.copy(savedPos);
+          cam.quaternion.copy(savedQuat);
+        }
+        return res;
       };
     }
 
@@ -2033,22 +2597,18 @@ body:before{content:"";position:fixed;inset:0;z-index:3;pointer-events:none;back
         let html=await response.text();
         if(!html.includes('</style>')||!html.includes("addEventListener('keydown'")||!html.includes('THREE.WebGLRenderer'))throw new Error('The saved game source did not pass its integrity checks.');
 
-        // Show script/CDN failures directly in the page instead of silently appearing frozen.
         const diagnostics=`<script>(function(){function report(message){if(document.getElementById('vc-runtime-error'))return;var box=document.createElement('div');box.id='vc-runtime-error';box.setAttribute('role','alert');box.innerHTML='<b>Game runtime error</b><br>';box.appendChild(document.createTextNode(String(message||'Unknown error')));document.body.appendChild(box)}window.addEventListener('error',function(e){if(e.message)report(e.message);else if(e.target&&e.target.src)report('Could not load dependency: '+e.target.src)},{capture:true});window.addEventListener('unhandledrejection',function(e){report(e.reason&&e.reason.message||e.reason)});setTimeout(function(){if(!document.querySelector('canvas.main'))report('The renderer did not initialize. Check WebGL and the Three.js CDN connection.')},12000)})();<\/script>`;
 
-        // Use function replacers (() => ...) so '$' characters in injected code are NEVER interpreted as special replacement tokens.
         html=html.replace('</head>',()=>diagnostics+'\n</head>');
         html=html.replace('</style>',()=>polish+'\n</style>');
 
-        // Lighting polish + Sculpted Faces & Vice City Human Interaction Engine
-        const visualTune=`\n/* Enhanced natural-light/material response; keep stylized meshes and gameplay intact. */\nR.toneMappingExposure=1.08;\nhemi.color.setHex(0xffd5c4);hemi.groundColor.setHex(0x38333a);hemi.intensity=.82;\nsun.color.setHex(0xffe1c2);sun.intensity=2.0;sun.shadow.bias=-.00025;sun.shadow.normalBias=.025;\nscene.fog.color.setHex(0xc78d91);scene.fog.density=.0028;\nfor(const material of skinCache.values()){material.roughness=.56;material.metalness=0;material.envMapIntensity=.22;material.needsUpdate=true}\n`;
+        const visualTune=`\n/* Enhanced natural-light/material response; keep gameplay intact. */\nR.toneMappingExposure=1.10;\nhemi.color.setHex(0xffe6db);hemi.groundColor.setHex(0x463f48);hemi.intensity=.98;\nsun.color.setHex(0xffe6cc);sun.intensity=1.95;sun.shadow.bias=-.00025;sun.shadow.normalBias=.025;\nscene.fog.color.setHex(0xc78d91);scene.fog.density=.0028;\nfor(const material of skinCache.values()){material.roughness=.58;material.metalness=0;material.envMapIntensity=.22;material.needsUpdate=true}\n`;
         const enhancementScript='\n;('+vcEnhancementModule.toString()+')();\n';
 
         const sceneReady='scene.add(jasonMesh,luciaMesh);';
         if(!html.includes(sceneReady))throw new Error('Could not find the character setup point to apply the visual treatment.');
         html=html.replace(sceneReady,()=>sceneReady+visualTune+enhancementScript);
 
-        // Ignore keyboard auto-repeat on one-shot actions, not held movement keys.
         const keydown=/addEventListener\(['"]keydown['"]\s*,\s*e\s*=>\s*\{\s*const\s+k\s*=\s*e\.key\.toLowerCase\(\)\s*;\s*keys\[k\]\s*=\s*true\s*;/;
         if(!keydown.test(html))throw new Error('Could not locate the keyboard handler; refusing to apply an incomplete input fix.');
         html=html.replace(keydown,match=>match+'if(e.repeat)return;');
